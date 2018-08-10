@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">csProject</string>
     <string name="tutorial_1">Tell us yourpreferences</string>
+    <string name="tutorial_2">Your events will be\nscheduled automatically</string>
 </resources>
