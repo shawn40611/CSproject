@@ -12,7 +12,7 @@
         android:src="@drawable/message"
         />
     <Button
-        android:id="@+id/btn_right"
+        android:id="@+id/btn_tutorial_1_right"
         android:layout_width="@dimen/dp_39"
         android:layout_height="@dimen/dp_64"
         android:layout_alignParentEnd="true"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/btn_right"
+        android:layout_below="@id/btn_tutorial_1_right"
         android:layout_marginTop="@dimen/dp_62"
         android:fontFamily="@font/montserrat"
         android:text="@string/tutorial_1"
