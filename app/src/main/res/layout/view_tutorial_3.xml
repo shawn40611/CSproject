@@ -3,6 +3,13 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/main_color">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressbar"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <ImageView
         android:layout_width="@dimen/dp_133"
         android:layout_height="@dimen/dp_133"
