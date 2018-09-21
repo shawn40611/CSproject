@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/white">
-    <TextView
+    >
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:background="#fff"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/test"
-        android:textColor="@color/black"/>
-    <CalendarView
+        app:mcv_tileWidth="@dimen/dp_42"
+        app:mcv_tileHeight="@dimen/dp_36"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="#F00"
+        />
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/test"
-        android:id="@+id/cv_main"/>
+        android:id="@+id/calendar_content"
+        android:layout_below="@id/calendarView"/>
+
+
+
+
 
 </RelativeLayout>

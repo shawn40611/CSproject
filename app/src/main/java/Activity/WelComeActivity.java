@@ -1,6 +1,7 @@
 package Activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -16,9 +18,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +36,7 @@ import static android.content.ContentValues.TAG;
 public class WelComeActivity extends Activity {
 
 
+    private GoogleSignInAccount mAccount;
     private int RC_SIGN_IN = 1;
     private SignInButton btn_signin;
     private GoogleSignInClient mGoogleSignInClient;
@@ -39,6 +44,7 @@ public class WelComeActivity extends Activity {
     private Button btn_tutorial_2_left;
     private Button btn_tutorial_2_right;
     private Button btn_tutorial_3_left;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -93,11 +99,16 @@ public class WelComeActivity extends Activity {
             }
         });
         btn_signin = findViewById(R.id.btn_signin);
+       mProgressBar = findViewById(R.id.progressbar);
         setSignInButtonText(btn_signin, "Sign In With GOOGLE");
 
         // Configure sign-in to request the user's ID, email address, and basic
         // Configure Google Sign In
+        String serverClientId = getString(R.string.server_client_id);
+        System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestServerAuthCode(serverClientId)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -106,6 +117,7 @@ public class WelComeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 signIn();
+                mProgressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -146,10 +158,22 @@ public class WelComeActivity extends Activity {
     {
         if(account != null)
         {
-            setSignInButtonText(btn_signin,account.getEmail().toString());
+            //setSignInButtonText(btn_signin,account.getEmail().toString());
+            mAccount = account;
+            Intent intent = new Intent();
+            intent.setClass(WelComeActivity.this,MainActivity.class);
+            if(mAccount != null) {
+                System.out.println("have account" + mAccount.getEmail().toString());
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("mAccount", mAccount);
+                intent.putExtras(bundle);
+            }
+            startActivity(intent);
+            finish();
         }
         else{
-            btn_signin.setVisibility(View.VISIBLE);
+            setSignInButtonText(btn_signin,"Login Fail");
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 
