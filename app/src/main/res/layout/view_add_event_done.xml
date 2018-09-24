@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/add_event_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingEnd="@dimen/dp_0"
+        android:paddingStart="@dimen/dp_20">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_60"
+            android:contentDescription="@string/add_event_done_title"
+            android:src="@drawable/green_check" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_100"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            android:text="@string/add_event_done_title"
+            android:textSize="@dimen/sp_32" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_below="@+id/imageView"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_30"
+            android:text="@string/add_event_done_content1"
+            android:textSize="@dimen/sp_24" />
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_below="@+id/textView4"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/add_event_done_content2"
+            android:textSize="@dimen/sp_24" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_below="@+id/textView5"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/add_event_done_content3"
+            android:textSize="@dimen/sp_24" />
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_below="@+id/textView6"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:text="@string/add_event_done_content4"
+            android:textSize="@dimen/sp_24" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="end">
+
+        <Button
+            android:id="@+id/addEventNo"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginEnd="30dp"
+            android:background="@color/orange_grey"
+            android:text="@string/add_event_done_no"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_24"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/addEventOk"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginEnd="40dp"
+            android:background="@color/green_grey"
+            android:text="@string/add_event_done_yes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_24"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+</LinearLayout>

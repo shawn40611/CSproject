@@ -1,7 +1,34 @@
 <resources>
     <string name="app_name">csProject</string>
-    <string name="tutorial_1">Tell us yourpreferences</string>
+    <string name="tutorial_1">Tell us your preferences</string>
     <string name="tutorial_2">Your events will be\nscheduled automatically</string>
     <string name="tutorial_3">LET\'S&#160;GET&#160;STARTED</string>
     <string name="server_client_id">944195913670-l96k2b8m86e50v8c0i9nnp1pglu6e37q.apps.googleusercontent.com</string>
+    <string name="add_event_name">行程名稱</string>
+    <string name="add_event_time">需要時間</string>
+    <string name="add_event_hint">名稱</string>
+    <string name="add_event_button_submit">送出</string>
+    <string name="add_event_done_yes">好</string>
+    <string name="add_event_done_no">不要</string>
+    <string name="add_event_done_title">完成</string>
+    <string name="add_event_done_content1">為你把</string>
+    <string name="add_event_done_content2">(event name)</string>
+    <string name="add_event_done_content3">安排在</string>
+    <string name="add_event_done_content4">(event time)</string>
+    <string-array name="add_event_hr">
+        <item>0 小時</item>
+        <item>1 小時</item>
+        <item>2 小時</item>
+        <item>3 小時</item>
+        <item>4 小時</item>
+        <item>5 小時</item>
+        <item>6 小時</item>
+    </string-array>
+    <string-array name="add_event_min">
+        <item>0 分鐘</item>
+        <item>15 分鐘</item>
+        <item>30 分鐘</item>
+        <item>45 分鐘</item>
+    </string-array>
+
 </resources>

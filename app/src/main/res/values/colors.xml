@@ -4,7 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="main_color">#5C8BB6</color>
-    <color name="transparnet">#00000000</color>
+    <color name="add_event_background">#3A4855</color>
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="orange_grey">#D1902F</color>
+    <color name="green_grey">#6AAC53</color>
 </resources>
