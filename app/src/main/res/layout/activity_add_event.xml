@@ -14,7 +14,7 @@
         android:paddingEnd="@dimen/dp_0">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_add_event_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_48"
@@ -23,7 +23,7 @@
             android:textSize="@dimen/sp_28" />
 
         <EditText
-            android:id="@+id/eventName"
+            android:id="@+id/et_add_event_name"
             android:layout_width="@dimen/dp_300"
             android:layout_height="@dimen/dp_60"
             android:layout_marginTop="@dimen/dp_24"
@@ -32,7 +32,7 @@
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_add_event_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_40"
@@ -41,13 +41,13 @@
             android:textSize="@dimen/sp_28" />
 
         <Spinner
-            android:id="@+id/addEventHr"
+            android:id="@+id/add_event_hr"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_60"
             android:layout_marginTop="@dimen/dp_24" />
 
         <Spinner
-            android:id="@+id/addEventMin"
+            android:id="@+id/add_event_min"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_60"
             android:layout_marginTop="@dimen/dp_10" />
@@ -58,7 +58,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/addEventSubmit"
+            android:id="@+id/btn_add_event_submit"
             android:layout_width="@dimen/dp_120"
             android:layout_height="@dimen/dp_60"
             android:layout_gravity="end"
@@ -67,6 +67,6 @@
             android:background="@color/orange_grey"
             android:text="@string/add_event_button_submit"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_24"/>
+            android:textSize="@dimen/sp_24" />
     </LinearLayout>
 </LinearLayout>

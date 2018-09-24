@@ -13,7 +13,7 @@
         android:paddingStart="@dimen/dp_20">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/img_green_check"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_100"
             android:layout_alignParentStart="true"
@@ -24,61 +24,64 @@
             android:src="@drawable/green_check" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_add_event_done_title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_100"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
+            android:layout_alignTop="@+id/img_green_check"
+            android:layout_toEndOf="@+id/img_green_check"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/dp_20"
             android:paddingEnd="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_20"
             android:text="@string/add_event_done_title"
             android:textSize="@dimen/sp_32" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_add_event_done_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
-            android:layout_alignStart="@+id/imageView"
-            android:layout_below="@+id/imageView"
+            android:layout_alignStart="@+id/img_green_check"
+            android:layout_below="@+id/img_green_check"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_30"
             android:text="@string/add_event_done_content1"
             android:textSize="@dimen/sp_24" />
+
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tv_add_event_done_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
-            android:layout_alignStart="@+id/imageView"
-            android:layout_below="@+id/textView4"
+            android:layout_alignStart="@+id/img_green_check"
+            android:layout_below="@+id/tv_add_event_done_1"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
             android:text="@string/add_event_done_content2"
             android:textSize="@dimen/sp_24" />
+
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_add_event_done_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
-            android:layout_alignStart="@+id/imageView"
-            android:layout_below="@+id/textView5"
+            android:layout_alignStart="@+id/img_green_check"
+            android:layout_below="@+id/tv_add_event_done_2"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
             android:text="@string/add_event_done_content3"
             android:textSize="@dimen/sp_24" />
+
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tv_add_event_done_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
-            android:layout_alignStart="@+id/imageView"
-            android:layout_below="@+id/textView6"
+            android:layout_alignStart="@+id/img_green_check"
+            android:layout_below="@+id/tv_add_event_done_3"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
             android:text="@string/add_event_done_content4"
@@ -91,25 +94,25 @@
         android:layout_gravity="end">
 
         <Button
-            android:id="@+id/addEventNo"
+            android:id="@+id/btn_add_event_done_no"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_60"
             android:layout_marginEnd="30dp"
             android:background="@color/orange_grey"
             android:text="@string/add_event_done_no"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_24"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="@dimen/sp_24" />
 
         <Button
-            android:id="@+id/addEventOk"
+            android:id="@+id/btn_add_event_done_yes"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_60"
             android:layout_marginEnd="40dp"
             android:background="@color/green_grey"
             android:text="@string/add_event_done_yes"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_24"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="@dimen/sp_24" />
     </LinearLayout>
 </LinearLayout>
