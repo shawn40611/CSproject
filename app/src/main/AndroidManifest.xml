@@ -31,7 +31,7 @@
         <activity
             android:name="com.nctucs.csproject.Activity.MainActivity"
             android:screenOrientation="portrait" />
-      
+
     </application>
 
 </manifest>
