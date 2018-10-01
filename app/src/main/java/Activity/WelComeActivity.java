@@ -108,6 +108,7 @@ public class WelComeActivity extends Activity {
         System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestIdToken(serverClientId)
                 .requestServerAuthCode(serverClientId)
                 .requestEmail()
                 .build();

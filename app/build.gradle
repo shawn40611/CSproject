@@ -39,6 +39,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.3'
 
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.prolificinteractive:material-calendarview:1.4.0'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'pub.devrel:easypermissions:0.3.0'
+    implementation('com.google.api-client:google-api-client-android:1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-calendar:v3-rev323-1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    apply plugin: 'com.google.gms.google-services'
 }
-apply plugin: 'com.google.gms.google-services'
