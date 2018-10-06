@@ -96,23 +96,23 @@
         <Button
             android:id="@+id/btn_add_event_done_no"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_50"
             android:layout_marginEnd="30dp"
             android:background="@color/orange_grey"
             android:text="@string/add_event_done_no"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_24" />
+            android:textSize="@dimen/sp_20" />
 
         <Button
             android:id="@+id/btn_add_event_done_yes"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_50"
             android:layout_marginEnd="40dp"
             android:background="@color/green_grey"
             android:text="@string/add_event_done_yes"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_24" />
+            android:textSize="@dimen/sp_20" />
     </LinearLayout>
 </LinearLayout>
