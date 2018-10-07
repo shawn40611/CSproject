@@ -16,7 +16,7 @@
         app:mcv_tileWidth="@dimen/dp_42"
         app:mcv_tileHeight="@dimen/dp_36"
         app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="#F00"
+        app:mcv_selectionColor="@color/green_grey"
         app:mcv_arrowColor="@color/main_color"
         app:mcv_dateTextAppearance="@color/white"
         app:mcv_headerTextAppearance="@color/white"

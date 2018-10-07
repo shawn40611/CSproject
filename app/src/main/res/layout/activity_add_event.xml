@@ -21,6 +21,15 @@
             android:text="@string/add_event_name"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_24" />
+<!--
+<android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/design_et_name">
+</android.support.design.widget.TextInputLayout>
+        -->
+
+
 
         <EditText
             android:id="@+id/et_add_event_name"

@@ -2,6 +2,7 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -49,8 +50,27 @@ public class WelComeActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switchto1();
 
+        final String PREFS_NAME = "MyPrefsFile";
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        if (settings.getBoolean("my_first_time", true)) {
+            //the app is being launched for first time, do something
+            Log.d("check", "First time");
+
+            settings.edit().putBoolean("my_first_time", false).apply();
+            switchto1();
+
+        }
+        else {
+            Log.d("check", "Many times");
+            switchto3();
+            //Intent intent = new Intent(WelComeActivity.this, MainActivity.class);
+            //startActivity(intent);
+            //WelComeActivity.this.finish();
+        }
+
+        //startActivity(intent);
 
     }
 

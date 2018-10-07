@@ -37,6 +37,8 @@
         <activity
             android:name="com.nctucs.csproject.Activity.AddEventActivity"
             android:exported="true"/>
+        <activity android:name=".Activity.AddEventDoneActivity"
+            android:exported="true"/>
 
     </application>
 

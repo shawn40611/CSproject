@@ -30,8 +30,8 @@ public class AddEventActivity extends Activity {
                 R.array.add_event_min,
                 android.R.layout.simple_spinner_item);
 
-        arrAdapHr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        arrAdapMin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        arrAdapHr.setDropDownViewResource(R.layout.spinner_dropdown);
+        arrAdapMin.setDropDownViewResource(R.layout.spinner_dropdown);
 
         spnHr.setAdapter(arrAdapHr);
         spnMin.setAdapter(arrAdapMin);
