@@ -31,10 +31,14 @@
         <activity
             android:name="com.nctucs.csproject.Activity.MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activity.TestActivity"
+                    android:screenOrientation="portrait"/>
+
         <activity
             android:name="com.nctucs.csproject.Activity.AddEventActivity"
             android:exported="true"/>
 
     </application>
+
 
 </manifest>

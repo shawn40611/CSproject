@@ -19,7 +19,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.google.api.services.calendar.CalendarScopes;
 import com.nctucs.csproject.R;
+
+import java.io.IOException;
+import java.net.Socket;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,6 +39,11 @@ public class WelComeActivity extends Activity {
     private Button btn_tutorial_2_right;
     private Button btn_tutorial_3_left;
     private ProgressBar mProgressBar;
+    private Socket mSocket;
+    private int ServerPort = 6666;
+    private Boolean Connected = false;
+
+    private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
 
     @Override
@@ -89,7 +98,7 @@ public class WelComeActivity extends Activity {
             }
         });
         btn_signin = findViewById(R.id.btn_signin);
-       mProgressBar = findViewById(R.id.progressbar);
+        mProgressBar = findViewById(R.id.progressbar);
         setSignInButtonText(btn_signin, "Sign In With GOOGLE");
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -97,7 +106,7 @@ public class WelComeActivity extends Activity {
         String serverClientId = getString(R.string.server_client_id);
         System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestScopes(new Scope(SCOPES))
                 .requestIdToken(serverClientId)
                 .requestServerAuthCode(serverClientId)
                 .requestEmail()
@@ -132,6 +141,7 @@ public class WelComeActivity extends Activity {
     }
 
 
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -154,10 +164,10 @@ public class WelComeActivity extends Activity {
             Intent intent = new Intent();
             intent.setClass(WelComeActivity.this,MainActivity.class);
             if(mAccount != null) {
-                System.out.println("have account" + mAccount.getEmail().toString());
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("mAccount", mAccount);
                 intent.putExtras(bundle);
+
             }
             startActivity(intent);
             finish();

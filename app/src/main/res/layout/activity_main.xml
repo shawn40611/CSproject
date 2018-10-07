@@ -17,6 +17,10 @@
         app:mcv_tileHeight="@dimen/dp_36"
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="#F00"
+        app:mcv_arrowColor="@color/main_color"
+        app:mcv_dateTextAppearance="@color/white"
+        app:mcv_headerTextAppearance="@color/white"
+        app:mcv_weekDayTextAppearance="@color/white"
         />
 
     <android.support.v7.widget.RecyclerView
@@ -24,7 +28,7 @@
         android:layout_height="match_parent"
         android:id="@+id/rv_content"
         android:layout_below="@id/calendarView"
-        android:background="@color/main_color">
+        android:background="@color/calendar_content">
 
     </android.support.v7.widget.RecyclerView>
 

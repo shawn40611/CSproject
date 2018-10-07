@@ -17,17 +17,29 @@ import android.widget.TextView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.services.calendar.CalendarScopes;
 import com.nctucs.csproject.R;
+import com.nctucs.csproject.SocketHandler;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import com.nctucs.csproject.Adapter.ContentAdapter;
@@ -51,6 +63,9 @@ import com.google.api.services.calendar.model.*;
 
 public class MainActivity extends Activity {
 
+    public static final String ADDRESS = "178.128.90.63";
+    public static final int PORT = 6666;
+
     MaterialCalendarView materialCalendarView;//布局内的控件
     CalendarDay currentDate;//自定义的日期对象
     int mYear, mMonth,mDay;
@@ -69,6 +84,11 @@ public class MainActivity extends Activity {
     private GoogleAccountCredential mCredential;
     private List<Event> items;
 
+    private static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+    private static  Socket mSocket;
+    private Boolean connected = false;
+    private OutputStream outputStream;
 
 
     @Override
@@ -76,17 +96,19 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mAccount = getIntent().getParcelableExtra("mAccount");
 
-        mCredential = GoogleAccountCredential.usingOAuth2
-                (getApplicationContext(), Arrays.asList(SCOPES))
-                .setSelectedAccount(mAccount.getAccount());
+
+        mCredential =  GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(SCOPES))
+            .setSelectedAccount(mAccount.getAccount());
 
         getResultsFromApi();
         if(items != null)
             System.out.println(items.get(0));
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);// 實例化
-
+        materialCalendarView.setBackgroundColor(getResources().getColor(R.color.main_background));
         //编辑日历属性
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)   //设置每周开始的第一天
@@ -113,6 +135,53 @@ public class MainActivity extends Activity {
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final String authcode = mAccount.getServerAuthCode();
+        Thread t = new Thread(mConnectServer);
+        t.start();
+        while (t.isAlive())
+            ;
+
+        if(connected) {
+            SocketHandler.setSocket(mSocket);
+            try {
+                outputStream = mSocket.getOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        outputStream.write(authcode.getBytes(Charset.forName("UTF-8")));
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+            th.start();
+        }
+    }
+
+
+    private Runnable mConnectServer = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                mSocket = new Socket(ADDRESS, PORT);
+                connected = true;
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    };
     public void getTime(View view) {
         if (currentDate != null) {
             int year = currentDate.getYear();
@@ -170,12 +239,15 @@ public class MainActivity extends Activity {
         private com.google.api.services.calendar.Calendar mService = null;
         private Exception
                 mLastError = null;
+        private   HttpTransport transport;
         MakeRequestTask(GoogleAccountCredential credential) {
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            transport = AndroidHttp.newCompatibleTransport();
             mService = new com.google.api.services.calendar.Calendar.Builder(
                     transport, jsonFactory, credential)
+                    .setApplicationName(getString(R.string.app_name))
                     .build();
+
+
         }
 
         /**
@@ -261,7 +333,24 @@ public class MainActivity extends Activity {
                System.out.println("Request cancelled.");
             }
         }
+
+        /*private Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {
+            // Load client secrets.
+            InputStream in = mcontext.getResources().openRawResource(R.raw.credentials);
+            System.out.println(in != null);
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
+
+            // Build flow and trigger user authorization request.
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                    transport, jsonFactory, clientSecrets, SCOPES)
+                    //.setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                    .setAccessType("offline")
+                    .build();
+            return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+        }*/
     }
+
+
 
 
 }
