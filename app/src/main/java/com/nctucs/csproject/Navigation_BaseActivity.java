@@ -3,9 +3,12 @@ package com.nctucs.csproject;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +21,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,7 +55,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     protected int CurrentMenuItem = 0;//紀錄目前User位於哪一個項目
     private DateTime start,end;
-    private String zero_clock = "T00:00:00Z";
+    private GoogleSignInAccount mAccount = InformationHandler.getAccount();
     private GoogleAccountCredential mCredential = InformationHandler.getCredential();
     private Boolean done = false;
     private MakeRequestTask requestTask;
@@ -64,6 +69,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    private ImageView iv_user_photo;
+    private TextView tv_user_email;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -74,6 +81,12 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         getLayoutInflater().inflate(layoutResID, FL, true);
         super.setContentView(DL);
         setUpNavigation();
+        View header = NV.getHeaderView(0);
+        tv_user_email = header.findViewById(R.id.tv_usr_email);
+        iv_user_photo = header.findViewById(R.id.iv_usr_photo);
+        tv_user_email.setText(mAccount.getEmail());
+        iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+
 
 
 

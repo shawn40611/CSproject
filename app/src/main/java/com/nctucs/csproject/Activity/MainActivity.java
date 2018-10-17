@@ -60,8 +60,7 @@ import com.nctucs.csproject.Adapter.ContentAdapter;
 
 public class MainActivity extends Navigation_BaseActivity {
 
-    public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8888;
+
 
     MaterialCalendarView materialCalendarView;//布局内的控件
     CalendarDay currentDate;//自定义的日期对象
@@ -95,13 +94,34 @@ public class MainActivity extends Navigation_BaseActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
 
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         NavigationView navigationView = findViewById(R.id.view_nav);
 
         setToolbar(toolbar);
         mAccount = InformationHandler.getAccount();
+        mSocket = InformationHandler.getSocket();
 
+        final String authcode = mAccount.getServerAuthCode();
+        try {
+            outputStream = mSocket.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    outputStream.write(authcode.getBytes(Charset.forName("UTF-8")));
+                    outputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        th.start();
 
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);// 實例化
@@ -148,50 +168,10 @@ public class MainActivity extends Navigation_BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        final String authcode = mAccount.getServerAuthCode();
-        Thread t = new Thread(mConnectServer);
-        t.start();
-        while (t.isAlive())
-            ;
 
-        if(connected) {
-            System.out.println("connected");
-            InformationHandler.setSocket(mSocket);
-            try {
-                outputStream = mSocket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Thread th = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        outputStream.write(authcode.getBytes(Charset.forName("UTF-8")));
-                        outputStream.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            });
-            th.start();
-        }
     }
 
 
-    private Runnable mConnectServer = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                mSocket = new Socket(ADDRESS, PORT);
-                connected = true;
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    };
     public void getTime(View view) {
         if (currentDate != null) {
             int year = currentDate.getYear();

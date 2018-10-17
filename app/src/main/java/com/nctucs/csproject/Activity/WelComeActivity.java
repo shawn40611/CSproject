@@ -2,7 +2,11 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +29,10 @@ import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.R;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
@@ -46,6 +53,9 @@ public class WelComeActivity extends Activity {
     private int ServerPort = 6666;
     private Boolean Connected = false;
     private GoogleAccountCredential mCredential;
+    private Bitmap user_photo;
+    public static final String ADDRESS = "178.128.90.63";
+    public static final int PORT = 8888;
 
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
@@ -172,6 +182,39 @@ public class WelComeActivity extends Activity {
                         getApplicationContext(), Arrays.asList(SCOPES))
                         .setSelectedAccount(mAccount.getAccount());
                 InformationHandler.setCredential(mCredential);
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            HttpURLConnection connection = (HttpURLConnection) new URL(mAccount.getPhotoUrl().toString()).openConnection();
+                            connection.connect();
+                            InputStream input = connection.getInputStream();
+
+                            user_photo = BitmapFactory.decodeStream(input);
+
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                });
+                Thread connect = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            mSocket = new Socket(ADDRESS, PORT);
+                        }
+                        catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                connect.start();
+                t.start();
+                while(t.isAlive()||connect.isAlive())
+                    ;
+                InformationHandler.setBitmap(user_photo);
+                InformationHandler.setSocket(mSocket);
             }
             startActivity(intent);
             finish();

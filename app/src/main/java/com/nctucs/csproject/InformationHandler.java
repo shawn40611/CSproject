@@ -2,6 +2,8 @@ package com.nctucs.csproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -14,6 +16,7 @@ public class InformationHandler {
     public static Socket socket;
     public static GoogleSignInAccount mAccount;
     public static GoogleAccountCredential mCredential;
+    public static Bitmap mphoto;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
@@ -32,6 +35,12 @@ public class InformationHandler {
 
     public static void setCredential(GoogleAccountCredential credential){
         mCredential = credential;
+    }
+    public  static void setBitmap(Bitmap bitmap){
+        mphoto = bitmap;
+    }
+    public static Bitmap getBitmap(){
+        return mphoto;
     }
     public static synchronized Socket getSocket(){
         return socket;
