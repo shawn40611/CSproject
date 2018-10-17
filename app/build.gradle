@@ -6,6 +6,7 @@ android {
         applicationId "com.nctucs.csproject"
         minSdkVersion 17
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,6 +39,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'

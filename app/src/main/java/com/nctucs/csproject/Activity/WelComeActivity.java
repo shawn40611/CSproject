@@ -19,11 +19,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
+import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.R;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,6 +45,7 @@ public class WelComeActivity extends Activity {
     private Socket mSocket;
     private int ServerPort = 6666;
     private Boolean Connected = false;
+    private GoogleAccountCredential mCredential;
 
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
@@ -103,12 +107,11 @@ public class WelComeActivity extends Activity {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // Configure Google Sign In
-        String serverClientId = getString(R.string.server_client_id);
+        String serverClientId = getString(R.string.server_client_id_1);
         System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(SCOPES))
-                .requestIdToken(serverClientId)
-                .requestServerAuthCode(serverClientId)
+                .requestServerAuthCode(serverClientId,false)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -164,10 +167,11 @@ public class WelComeActivity extends Activity {
             Intent intent = new Intent();
             intent.setClass(WelComeActivity.this,MainActivity.class);
             if(mAccount != null) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("mAccount", mAccount);
-                intent.putExtras(bundle);
-
+                InformationHandler.setAccount(mAccount);
+                mCredential =  GoogleAccountCredential.usingOAuth2(
+                        getApplicationContext(), Arrays.asList(SCOPES))
+                        .setSelectedAccount(mAccount.getAccount());
+                InformationHandler.setCredential(mCredential);
             }
             startActivity(intent);
             finish();

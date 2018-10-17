@@ -53,22 +53,22 @@ public class TestActivity extends Activity {
 
         mAccount = getIntent().getParcelableExtra("mAccount");
         APPLICATION_NAME = getString(R.string.app_name);
-        try {
+        /*try {
 
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            Calendar service = new Calendar.Builder(transport, JSON_FACTORY, getCredentials(transport,mAccount,TestActivity.this))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
+            //Calendar service = new Calendar.Builder(transport, JSON_FACTORY, getCredentials(transport,mAccount,TestActivity.this))
+                    //.setApplicationName(APPLICATION_NAME)
+                    //.build();
 
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
-            Events events = service.events().list("primary")
-                    .setMaxResults(10)
-                    .setTimeMin(now)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-            List<Event> items = events.getItems();
+            //Events events = service.events().list("primary")
+              //      .setMaxResults(10)
+                //    .setTimeMin(now)
+                  //  .setOrderBy("startTime")
+                    //.setSingleEvents(true)
+                    //.execute();
+            //List<Event> items = events.getItems();
             if (items.isEmpty()) {
                 System.out.println("No upcoming events found.");
             } else {
@@ -86,13 +86,13 @@ public class TestActivity extends Activity {
         }
         catch (IOException e){
             System.out.println(e.getMessage());
-        }
+        }*/
 
     }
 
-    private static Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {
+    /*private static Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {
         // Load client secrets.
-        InputStream in = mcontext.getResources().openRawResource(R.raw.credentials);
+       // InputStream in = mcontext.getResources().openRawResource(R.raw.credentials);
         System.out.println(in != null);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
@@ -104,5 +104,5 @@ public class TestActivity extends Activity {
                 .build();
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize(mAccount.getId());
     }
-
+*/
 }

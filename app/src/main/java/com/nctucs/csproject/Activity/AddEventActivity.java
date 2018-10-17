@@ -2,6 +2,7 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,17 +10,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.util.Log;
 
+
+import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
-public class AddEventActivity extends Activity {
+public class AddEventActivity extends Navigation_BaseActivity {
     private Spinner spnHr, spnMin;
     private int hr = -1, min = -1;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+        CurrentMenuItem = 1;
 
+        toolbar = findViewById(R.id.toolbar);
+        setToolbar(toolbar);
         spnHr = findViewById(R.id.add_event_hr);
         spnMin = findViewById(R.id.add_event_min);
 
