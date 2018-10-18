@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    >
-    
-    <include layout="@layout/topbar"
-             android:id="@+id/main_topbar"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:gravity="center"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" >
+    </android.support.v7.widget.Toolbar>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:background="#fff"
-        android:layout_below="@id/main_topbar"
+        android:layout_below="@id/toolbar"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -28,7 +36,7 @@
         android:layout_height="match_parent"
         android:id="@+id/rv_content"
         android:layout_below="@id/calendarView"
-        android:background="@color/calendar_content">
+        android:background="@color/main_background">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -40,3 +48,6 @@
 
 
 </RelativeLayout>
+
+
+

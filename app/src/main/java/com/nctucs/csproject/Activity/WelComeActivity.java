@@ -2,8 +2,11 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +23,17 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
+import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.R;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
+import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
 
@@ -43,6 +52,10 @@ public class WelComeActivity extends Activity {
     private Socket mSocket;
     private int ServerPort = 6666;
     private Boolean Connected = false;
+    private GoogleAccountCredential mCredential;
+    private Bitmap user_photo;
+    public static final String ADDRESS = "178.128.90.63";
+    public static final int PORT = 8888;
 
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
@@ -50,27 +63,8 @@ public class WelComeActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        switchto1();
 
-        final String PREFS_NAME = "MyPrefsFile";
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-        if (settings.getBoolean("my_first_time", true)) {
-            //the app is being launched for first time, do something
-            Log.d("check", "First time");
-
-            settings.edit().putBoolean("my_first_time", false).apply();
-            switchto1();
-
-        }
-        else {
-            Log.d("check", "Many times");
-            switchto3();
-            //Intent intent = new Intent(WelComeActivity.this, MainActivity.class);
-            //startActivity(intent);
-            //WelComeActivity.this.finish();
-        }
-
-        //startActivity(intent);
 
     }
 
@@ -123,12 +117,11 @@ public class WelComeActivity extends Activity {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // Configure Google Sign In
-        String serverClientId = getString(R.string.server_client_id);
+        String serverClientId = getString(R.string.server_client_id_1);
         System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(SCOPES))
-                .requestIdToken(serverClientId)
-                .requestServerAuthCode(serverClientId)
+                .requestServerAuthCode(serverClientId,false)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -184,10 +177,44 @@ public class WelComeActivity extends Activity {
             Intent intent = new Intent();
             intent.setClass(WelComeActivity.this,MainActivity.class);
             if(mAccount != null) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("mAccount", mAccount);
-                intent.putExtras(bundle);
+                InformationHandler.setAccount(mAccount);
+                mCredential =  GoogleAccountCredential.usingOAuth2(
+                        getApplicationContext(), Arrays.asList(SCOPES))
+                        .setSelectedAccount(mAccount.getAccount());
+                InformationHandler.setCredential(mCredential);
 
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            HttpURLConnection connection = (HttpURLConnection) new URL(mAccount.getPhotoUrl().toString()).openConnection();
+                            connection.connect();
+                            InputStream input = connection.getInputStream();
+
+                            user_photo = BitmapFactory.decodeStream(input);
+
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                });
+                Thread connect = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            mSocket = new Socket(ADDRESS, PORT);
+                        }
+                        catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                connect.start();
+                t.start();
+                while(t.isAlive()||connect.isAlive())
+                    ;
+                InformationHandler.setBitmap(user_photo);
+                InformationHandler.setSocket(mSocket);
             }
             startActivity(intent);
             finish();

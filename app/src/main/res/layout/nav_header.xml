@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:background="@color/nav_header"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/iv_usr_photo"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/tv_usr_email"
+        android:src="@drawable/calendar"/>
+
+    <TextView
+        android:id="@+id/tv_usr_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My header title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+</RelativeLayout>

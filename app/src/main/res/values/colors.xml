@@ -4,11 +4,16 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="main_color">#5C8BB6</color>
-    <color name="main_background">#3A4855</color>
+    <color name="main_darkbackground">#3A4855</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="orange_grey">#D1902F</color>
     <color name="green_grey">#6AAC53</color>
-    <color name="calendar_content">#C2CBD2</color>
+    <color name="main_background">#C2CBD2</color>
+    <color name="nav_header">#D1902F</color>
+    <color name="ok_yellow">#E29500</color>
+    <color name="menu_background">#3E5A6A</color>
+    <color name="spinner_background">#E5E5E5</color>
+    <color name="content_time_grey">#5F5F5F</color>
 </resources>

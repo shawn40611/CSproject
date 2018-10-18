@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_90">
+    android:layout_height="@dimen/dp_72">
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="@dimen/dp_326"
-        android:layout_height="@dimen/dp_80"
+        android:layout_height="@dimen/dp_64"
+        android:clickable="true"
         android:layout_centerInParent="true"
-        android:background="@drawable/content" />
+        android:gravity="left|center_vertical"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dp_24"
+        android:fontFamily="@font/montserrat"
+        android:background="@drawable/content"
+        android:paddingLeft="@dimen/dp_20" />
+    <TextView
+        android:id="@+id/tv_content_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_content"
+        android:layout_alignRight="@id/tv_content"
+        android:paddingRight="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_11"
+        android:textSize="@dimen/dp_12"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/content_time_grey" />
+    <View
+        android:id="@+id/highlight"
+        android:layout_width="@dimen/dp_6"
+        android:layout_height="@dimen/dp_64"
+        android:layout_alignLeft="@id/tv_content"
+        android:layout_alignTop="@id/tv_content"
+        android:background="@color/orange_grey"/>
+
+
 
 </RelativeLayout>
