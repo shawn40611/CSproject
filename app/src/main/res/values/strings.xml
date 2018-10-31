@@ -19,7 +19,7 @@
     <string name="add_event_done_content4">(event time)</string>
     <string name="calendar">CALENDAR</string>
     <string name="groups">GROUPS</string>
-    <string name="log_out">LOG &#160; OUT</string>
+    <string name="log_out">LOG&#160;OUT</string>
     <string name="notification">NOTIFICATION</string>
     <string name="add">ADD</string>
     <string name="delete">DELETE</string>
