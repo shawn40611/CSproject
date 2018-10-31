@@ -7,12 +7,16 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_usr_photo"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:adjustViewBounds="false"
         android:background="@drawable/usr_photo"
+        android:cropToPadding="true"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
         android:src="@drawable/user" />
 
     <TextView

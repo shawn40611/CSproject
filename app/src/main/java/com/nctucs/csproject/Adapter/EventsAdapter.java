@@ -102,7 +102,7 @@ public class EventsAdapter extends android.support.v7.widget.RecyclerView.Adapte
             dialog_add = new Dialog(mContext);
             dialog_add.setContentView(R.layout.dialog_log_out);
             TextView add_title = dialog_add.findViewById(R.id.tv_dialog_title);
-            add_title.setText(R.string.confirme_add);
+            add_title.setText(R.string.confirm_add);
             btn_confirm_add = dialog_add.findViewById(R.id.btn_confirm);
             btn_cancel_add = dialog_add.findViewById(R.id.btn_cancel);
 

@@ -147,7 +147,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                             overridePendingTransition(0,0);
                             finish();
                             break;
-                        case R.id.nav_notifycation:
+                        case R.id.nav_notification:
                             Intent intent4 = new Intent();
                             intent4.setClass(Navigation_BaseActivity.this, NotificationActivity.class);
                             startActivity(intent4);

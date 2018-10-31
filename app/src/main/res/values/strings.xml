@@ -24,7 +24,7 @@
     <string name="add">ADD</string>
     <string name="delete">DELETE</string>
     <string name="confirm_delete">確定要刪除事件嗎?</string>
-    <string name="confirme_add">確定要添加事件嗎?</string>
+    <string name="confirm_add">確定要添加事件嗎?</string>
     <string-array name="add_event_hr">
         <item>0 小時</item>
         <item>1 小時</item>
