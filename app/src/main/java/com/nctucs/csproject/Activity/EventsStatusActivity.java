@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.EventsAdapter;
 import com.nctucs.csproject.Data.EventsStatusData;
@@ -26,6 +27,10 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         setContentView(R.layout.activity_events_status);
         toolbar = findViewById(R.id.toolbar);
         setToolbar(toolbar);
+        CurrentMenuItem = 1;
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText(R.string.events_status);
+
 
         mRecyclerview = findViewById(R.id.rv_events_status);
         mLayoutmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);

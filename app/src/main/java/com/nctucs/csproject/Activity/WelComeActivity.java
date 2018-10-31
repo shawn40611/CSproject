@@ -116,7 +116,6 @@ public class WelComeActivity extends Activity {
         // Configure sign-in to request the user's ID, email address, and basic
         // Configure Google Sign In
         String serverClientId = getString(R.string.server_client_id_1);
-        System.out.println(serverClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(SCOPES))
                 .requestServerAuthCode(serverClientId,false)

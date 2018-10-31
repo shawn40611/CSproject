@@ -96,6 +96,8 @@ public class MainActivity extends Navigation_BaseActivity {
         NavigationView navigationView = findViewById(R.id.view_nav);
 
         setToolbar(toolbar);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText(R.string.calendar);
         mAccount = InformationHandler.getAccount();
         mSocket = InformationHandler.getSocket();
 

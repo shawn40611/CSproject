@@ -20,7 +20,7 @@
     <string name="calendar">CALENDAR</string>
     <string name="groups">GROUPS</string>
     <string name="log_out">LOG &#160; OUT</string>
-    <string name="notifycation">NOTIFYCATION</string>
+    <string name="notification">NOTIFICATION</string>
     <string name="add">ADD</string>
     <string name="delete">DELETE</string>
     <string name="confirm_delete">確定要刪除事件嗎?</string>

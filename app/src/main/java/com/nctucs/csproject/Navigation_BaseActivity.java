@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
@@ -62,10 +63,11 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     protected int CurrentMenuItem = 0;//紀錄目前User位於哪一個項目
     private DateTime start,end;
     private GoogleSignInAccount mAccount = InformationHandler.getAccount();
-    private GoogleAccountCredential mCredential = InformationHandler.getCredential();
+    private GoogleAccountCredential mCredential = InformationHandler.getCredential(this);
     private Boolean done = false;
     private MakeRequestTask requestTask;
     private isLoadDataListener loadLisneter;
+    private final String ACCOUNT = "myaccount";
 
 
     private static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -102,10 +104,13 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         confirm = dialog_log_out.findViewById(R.id.btn_confirm);
         cancel = dialog_log_out.findViewById(R.id.btn_cancel);
 
-
-
-
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     public void setToolbar(Toolbar toolbar){
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();

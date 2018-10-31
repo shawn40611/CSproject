@@ -10,6 +10,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -19,15 +21,20 @@ public class InformationHandler {
     public static GoogleAccountCredential mCredential;
     public static Bitmap mphoto;
     public static GoogleSignInClient mClient;
+    public static final String ADDRESS = "178.128.90.63";
+    public static final int PORT = 8888;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
         InformationHandler.mAccount = account;
     }
     public static GoogleSignInClient getClient(){
-        if(mClient != null)
+        if(mClient == null){
+
+        }
+
             return mClient;
-        else return  null;
+
     }
     public static  void setClient(GoogleSignInClient client){
         mClient = client;
@@ -39,7 +46,12 @@ public class InformationHandler {
         return  null;
     }
 
-    public static GoogleAccountCredential getCredential(){
+    public static GoogleAccountCredential getCredential(Context context){
+            if(mCredential == null){
+                mCredential =  GoogleAccountCredential.usingOAuth2(
+                        context, Arrays.asList(SCOPES))
+                        .setSelectedAccount(mAccount.getAccount());
+            }
             return  mCredential;
     }
 
@@ -53,6 +65,20 @@ public class InformationHandler {
         return mphoto;
     }
     public static synchronized Socket getSocket(){
+        if(socket == null){
+            Thread connect = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket = new Socket(ADDRESS, PORT);
+                    }
+                    catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+            connect.start();
+        }
         return socket;
     }
 

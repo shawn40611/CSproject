@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.NotificationAdapter;
 import com.nctucs.csproject.Data.NotificationData;
@@ -27,6 +28,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        CurrentMenuItem = 3;
 
         mRecyclerview = findViewById(R.id.rv_notification);
         mLayourmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
@@ -46,6 +48,8 @@ public class NotificationActivity extends Navigation_BaseActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setToolbar(toolbar);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText(R.string.notification);
 
     }
 }
