@@ -186,11 +186,13 @@ public class WelComeActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            HttpURLConnection connection = (HttpURLConnection) new URL(mAccount.getPhotoUrl().toString()).openConnection();
-                            connection.connect();
-                            InputStream input = connection.getInputStream();
+                            if(mAccount.getPhotoUrl() != null) {
+                                HttpURLConnection connection = (HttpURLConnection) new URL(mAccount.getPhotoUrl().toString()).openConnection();
+                                connection.connect();
+                                InputStream input = connection.getInputStream();
 
-                            user_photo = BitmapFactory.decodeStream(input);
+                                user_photo = BitmapFactory.decodeStream(input);
+                            }
 
                         }catch (IOException e){
                             System.out.println(e.getMessage());
