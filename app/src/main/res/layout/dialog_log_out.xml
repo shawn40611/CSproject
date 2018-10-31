@@ -6,10 +6,17 @@
         android:id="@+id/tv_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_30"
         android:text="確定要登出嗎？"
         android:fontFamily="@font/montserrat"
         android:textSize="@dimen/dp_30"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentLeft="true"
+        android:background="@color/content_time_grey"
+        android:layout_above="@id/btn_confirm"/>
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="@dimen/dp_150"
@@ -19,6 +26,12 @@
         android:background="@color/transparent"
         android:fontFamily="@font/montserrat"
         android:text="確定"/>
+    <View
+        android:layout_width="1px"
+        android:layout_height="@dimen/dp_60"
+        android:layout_toRightOf="@id/btn_confirm"
+        android:layout_alignParentBottom="true"
+        android:background="@color/content_time_grey"/>
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="@dimen/dp_150"
