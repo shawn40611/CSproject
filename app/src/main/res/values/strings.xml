@@ -8,7 +8,7 @@
     <string name="add_event_name">行程名稱</string>
     <string name="add_event_time">需要時間</string>
     <string name="add_event_hint">名稱</string>
-    <string name="events_status">EVENTS_STATUS</string>
+    <string name="events_status">EVENTS&#160;STATUS</string>
     <string name="add_event_button_submit">送出</string>
     <string name="add_event_done_yes">好</string>
     <string name="add_event_done_no">不要</string>
