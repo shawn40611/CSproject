@@ -71,12 +71,7 @@ public class MainActivity extends Navigation_BaseActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private GoogleSignInAccount mAccount;
 
-
-
-
-
-
-
+    private  Dialog dialog_register;
 
     private DrawerLayout mDrawerLayout;
 
@@ -105,23 +100,29 @@ public class MainActivity extends Navigation_BaseActivity {
         mSocket = InformationHandler.getSocket();
 
         final String authcode = mAccount.getServerAuthCode();
-        try {
-            outputStream = mSocket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    outputStream.write(authcode.getBytes(Charset.forName("UTF-8")));
-                    outputStream.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        if(mSocket != null) {
+            try {
+                outputStream = mSocket.getOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-        th.start();
+            Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String str = "Auth:'" + authcode + "'";
+                        outputStream.write(str.getBytes(Charset.forName("UTF-8")));
+                        outputStream.flush();
+                        String verify = "Verify:'"+mAccount.getId()+"'";
+                        outputStream.write(verify.getBytes(Charset.forName("UTF-8")));
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            th.start();
+        }
 
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);// 實例化
@@ -132,6 +133,9 @@ public class MainActivity extends Navigation_BaseActivity {
                 .setCalendarDisplayMode(CalendarMode.MONTHS)//设置显示模式，可以显示月的模式，也可以显示周的模式
                 .commit();// 返回对象并保存
         //      设置点击日期的监听
+        Calendar now_c = Calendar.getInstance();
+
+        //init
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, @NonNull com.prolificinteractive.materialcalendarview.CalendarDay date, boolean selected) {
@@ -146,7 +150,6 @@ public class MainActivity extends Navigation_BaseActivity {
                     @Override
                     public void loadComplete() {
                         events = getData();
-                        System.out.println(events == null);
                         adapter.setData(events);
                     }
                 });
@@ -154,14 +157,17 @@ public class MainActivity extends Navigation_BaseActivity {
             }
         });
 
+        materialCalendarView.setDateSelected(now_c,true);
+
+
         mRecyclerview = findViewById(R.id.rv_content);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         adapter = new ContentAdapter(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
         mRecyclerview.setAdapter(adapter);
 
-
-
+        dialog_register = new Dialog(this);
+        dialog_register.setContentView(R.layout.dialog_register);
 
     }
 

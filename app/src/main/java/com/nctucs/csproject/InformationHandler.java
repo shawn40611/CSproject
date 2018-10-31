@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 
@@ -17,10 +18,19 @@ public class InformationHandler {
     public static GoogleSignInAccount mAccount;
     public static GoogleAccountCredential mCredential;
     public static Bitmap mphoto;
+    public static GoogleSignInClient mClient;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
         InformationHandler.mAccount = account;
+    }
+    public static GoogleSignInClient getClient(){
+        if(mClient != null)
+            return mClient;
+        else return  null;
+    }
+    public static  void setClient(GoogleSignInClient client){
+        mClient = client;
     }
 
     public static GoogleSignInAccount getAccount(){

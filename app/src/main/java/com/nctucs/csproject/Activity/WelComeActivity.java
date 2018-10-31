@@ -50,13 +50,11 @@ public class WelComeActivity extends Activity {
     private Button btn_tutorial_3_left;
     private ProgressBar mProgressBar;
     private Socket mSocket;
-    private int ServerPort = 6666;
     private Boolean Connected = false;
     private GoogleAccountCredential mCredential;
     private Bitmap user_photo;
     public static final String ADDRESS = "178.128.90.63";
     public static final int PORT = 8888;
-
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
 
@@ -182,6 +180,7 @@ public class WelComeActivity extends Activity {
                         getApplicationContext(), Arrays.asList(SCOPES))
                         .setSelectedAccount(mAccount.getAccount());
                 InformationHandler.setCredential(mCredential);
+                InformationHandler.setClient(mGoogleSignInClient);
 
                 Thread t = new Thread(new Runnable() {
                     @Override

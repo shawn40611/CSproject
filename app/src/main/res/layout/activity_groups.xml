@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/main_darkbackground">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:gravity="center"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" >
+    </android.support.v7.widget.Toolbar>
+
+    <Spinner
+        android:id="@+id/groups"
+        android:layout_below="@id/toolbar"
+        android:layout_width="@dimen/dp_280"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_48"
+        android:layout_centerHorizontal="true"
+        android:background="@color/spinner_background"
+        android:spinnerMode="dropdown"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_groups_member"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/groups"
+        android:layout_marginTop="@dimen/dp_48"
+        android:layout_above="@id/btn_add_groups">
+
+    </android.support.v7.widget.RecyclerView>
+    
+    <Button
+        android:id="@+id/btn_add_groups"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_18"
+        android:layout_marginBottom="@dimen/dp_18"
+        android:background="@drawable/add_groups"/>
+
+</RelativeLayout>

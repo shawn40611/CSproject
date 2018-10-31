@@ -8,7 +8,7 @@
     <string name="add_event_name">行程名稱</string>
     <string name="add_event_time">需要時間</string>
     <string name="add_event_hint">名稱</string>
-    <string name="add_event">ADD&#160;EVENT</string>
+    <string name="events_status">EVENTS_STATUS</string>
     <string name="add_event_button_submit">送出</string>
     <string name="add_event_done_yes">好</string>
     <string name="add_event_done_no">不要</string>
@@ -18,7 +18,13 @@
     <string name="add_event_done_content3">安排在</string>
     <string name="add_event_done_content4">(event time)</string>
     <string name="calendar">CALENDAR</string>
-    <string name="my_account">MY&#160;ACCOUNT</string>
+    <string name="groups">GROUPS</string>
+    <string name="log_out">LOG &#160; OUT</string>
+    <string name="notifycation">NOTIFYCATION</string>
+    <string name="add">ADD</string>
+    <string name="delete">DELETE</string>
+    <string name="confirm_delete">確定要刪除事件嗎?</string>
+    <string name="confirme_add">確定要添加事件嗎?</string>
     <string-array name="add_event_hr">
         <item>0 小時</item>
         <item>1 小時</item>
