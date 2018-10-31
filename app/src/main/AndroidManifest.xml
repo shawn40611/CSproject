@@ -37,6 +37,12 @@
         <activity
             android:name="com.nctucs.csproject.Activity.AddEventActivity"
             android:exported="true"/>
+        <activity android:name=".Activity.EventsStatusActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.NotificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.GroupsActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

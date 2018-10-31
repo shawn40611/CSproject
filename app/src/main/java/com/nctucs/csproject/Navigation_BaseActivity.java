@@ -20,14 +20,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.auth.oauth2.OAuth2Utils;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -39,7 +42,10 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.nctucs.csproject.Activity.AddEventActivity;
+import com.nctucs.csproject.Activity.EventsStatusActivity;
+import com.nctucs.csproject.Activity.GroupsActivity;
 import com.nctucs.csproject.Activity.MainActivity;
+import com.nctucs.csproject.Activity.NotificationActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,6 +77,9 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     private ImageView iv_user_photo;
     private TextView tv_user_email;
+    public Dialog dialog_log_out;
+    private GoogleSignInClient mClient = InformationHandler.getClient();
+    Button confirm,cancel;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -85,7 +94,13 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         tv_user_email = header.findViewById(R.id.tv_usr_email);
         iv_user_photo = header.findViewById(R.id.iv_usr_photo);
         tv_user_email.setText(mAccount.getEmail());
-        iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+        if(InformationHandler.getBitmap() != null)
+            iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+        iv_user_photo.setBackgroundResource(R.drawable.usr_photo);
+        dialog_log_out = new Dialog(this);
+        dialog_log_out.setContentView(R.layout.dialog_log_out);
+        confirm = dialog_log_out.findViewById(R.id.btn_confirm);
+        cancel = dialog_log_out.findViewById(R.id.btn_cancel);
 
 
 
@@ -113,15 +128,43 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                             overridePendingTransition(0, 0);
                             finish();
                             break;
-                        case R.id.nav_add_event:
-                            System.out.println("add");
+                        case R.id.nav_events:
                             Intent intent2 = new Intent();
-                            intent2.setClass(Navigation_BaseActivity.this, AddEventActivity.class);
+                            intent2.setClass(Navigation_BaseActivity.this, EventsStatusActivity.class);
                             startActivity(intent2);
                             overridePendingTransition(0, 0);
                             finish();
                             break;
-                        case R.id.nav_my_account:
+                        case R.id.nav_groups:
+                            Intent intent3 = new Intent();
+                            intent3.setClass(Navigation_BaseActivity.this, GroupsActivity.class);
+                            startActivity(intent3);
+                            overridePendingTransition(0,0);
+                            finish();
+                            break;
+                        case R.id.nav_notifycation:
+                            Intent intent4 = new Intent();
+                            intent4.setClass(Navigation_BaseActivity.this, NotificationActivity.class);
+                            startActivity(intent4);
+                            overridePendingTransition(0,0);
+                            finish();
+                            break;
+                        case R.id.nav_log_out:
+                            dialog_log_out.show();
+                            confirm.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mClient.signOut();
+                                    dialog_log_out.dismiss();
+                                    finish();
+                                }
+                            });
+                            cancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog_log_out.dismiss();
+                                }
+                            });
                             break;
                     }
                 }

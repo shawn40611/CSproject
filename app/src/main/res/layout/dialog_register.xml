@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_300" android:layout_height="@dimen/dp_494"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_25"
+        android:fontFamily="@font/montserrat"
+        android:text="Register Now"
+        android:textSize="@dimen/dp_32"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="@dimen/dp_54"
+        android:fontFamily="@font/montserrat"
+        android:text="Name"
+        android:textSize="@dimen/dp_24"/>
+    <EditText
+        android:id="@+id/et_add_name"
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="@dimen/dp_50"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName" />
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_add_name"
+        android:layout_marginTop="@dimen/dp_68"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:fontFamily="@font/montserrat"
+        android:textSize="@dimen/dp_24"
+        android:text="Student ID"/>
+    <EditText
+        android:id="@+id/et_add_ID"
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="@dimen/dp_50"
+        android:layout_below="@id/tv_id"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:ems="10"
+        android:hint="Student ID"
+        android:inputType="textPersonName" />
+    <Button
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_31"
+        android:background="@color/transparent"
+        android:textColor="@color/ok_yellow"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_29"
+        android:text="OK"/>
+
+</RelativeLayout>
