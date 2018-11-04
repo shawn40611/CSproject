@@ -8,9 +8,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,7 +44,7 @@ import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
 
-public class WelComeActivity extends Activity {
+public class WelComeActivity extends FragmentActivity {
 
 
     private GoogleSignInAccount mAccount;
@@ -58,13 +65,75 @@ public class WelComeActivity extends Activity {
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
 
 
+    private static final int NUM_PAGES = 3;
+
+
+    private ViewPager mPager;
+
+
+    private PagerAdapter mPagerAdapter;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switchto1();
+
+        //switchto1();
+
+        setContentView(R.layout.view_slide);
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new WelComeActivity.ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                ImageView img = (ImageView) findViewById(R.id.dot) ;
+                if(position == 0) img.setImageResource(R.drawable.page_1);
+                else if(position == 1) img.setImageResource(R.drawable.page_2);
+                else {
+                    img.setImageResource(R.drawable.page_3);
+                    pageThree();
+                }
+            }
+        });
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+
+    }
+
+    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return SlideFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+    }
+
+
 
     private void switchto1()
     {
@@ -76,10 +145,7 @@ public class WelComeActivity extends Activity {
                 switchto2();
             }
         });
-
-
     }
-
     private void switchto2()
     {
         setContentView(R.layout.view_tutorial_2);
@@ -130,8 +196,33 @@ public class WelComeActivity extends Activity {
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         });
-
     }
+
+
+    private void pageThree() {
+        btn_signin = findViewById(R.id.btn_signin);
+        mProgressBar = findViewById(R.id.progressbar);
+        setSignInButtonText(btn_signin, "Sign In With GOOGLE");
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // Configure Google Sign In
+        String serverClientId = getString(R.string.server_client_id_1);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(SCOPES))
+                .requestServerAuthCode(serverClientId,false)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        btn_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -236,4 +327,6 @@ public class WelComeActivity extends Activity {
             }
         }
     }
+
+
 }
