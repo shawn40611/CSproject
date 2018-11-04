@@ -6,7 +6,7 @@
         android:id="@+id/tv_events_status"
         android:layout_width="@dimen/dp_303"
         android:layout_height="@dimen/dp_76"
-        android:background="@drawable/content"
+        android:background="@drawable/full_content"
         android:backgroundTint="@color/spinner_background"
         android:backgroundTintMode="src_in"
         android:gravity="left|center_vertical"

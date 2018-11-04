@@ -1,8 +1,10 @@
 package com.nctucs.csproject;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -68,6 +71,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     private MakeRequestTask requestTask;
     private isLoadDataListener loadLisneter;
     private final String ACCOUNT = "myaccount";
+    public static final String SOCKER_RCV = "ReceiveStr";
+    private String data;
 
 
     private static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -82,6 +87,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     public Dialog dialog_log_out;
     private GoogleSignInClient mClient = InformationHandler.getClient();
     Button confirm,cancel;
+    private SocketReceiver socketReceiver;
+
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -103,6 +110,19 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         dialog_log_out.setContentView(R.layout.dialog_log_out);
         confirm = dialog_log_out.findViewById(R.id.btn_confirm);
         cancel = dialog_log_out.findViewById(R.id.btn_cancel);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        socketReceiver = new SocketReceiver();
+        IntentFilter socketIntentFilter = new IntentFilter();
+        socketIntentFilter.addAction(SOCKER_RCV);
+        registerReceiver(socketReceiver,socketIntentFilter);
+        Intent socketIntent = new Intent();
+        socketIntent.setClass(this, MyService.class);
+        System.out.println("Activity Start");
+        startService(socketIntent);
 
     }
 
@@ -181,6 +201,22 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         });
 
     }
+
+    public class SocketReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(SOCKER_RCV)){
+                 data  = intent.getExtras().getString("Data");
+                 System.out.println(data);
+            }
+        }
+    }
+
+
+
+
+    /****************Get Google Calendar Data*********************/
     public void getResultsFromApi() {
         if (! isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();

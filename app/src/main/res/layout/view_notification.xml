@@ -5,7 +5,8 @@
     <RelativeLayout
         android:id="@+id/notification_content"
         android:layout_width="@dimen/dp_303" android:layout_height="@dimen/dp_288"
-        android:background="@drawable/content" android:backgroundTint="@color/spinner_background"
+        android:background="@drawable/full_content"
+        android:backgroundTint="@color/spinner_background"
         android:layout_centerHorizontal="true">
     <TextView
         android:id="@+id/tv_event_name"

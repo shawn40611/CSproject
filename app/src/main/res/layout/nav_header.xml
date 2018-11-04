@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="My header title"
+        android:fontFamily="@font/montserrat"
         android:textSize="@dimen/dp_16"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
