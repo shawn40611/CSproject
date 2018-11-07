@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.api.client.util.DateTime;
@@ -77,10 +78,29 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             });
         }
         else {
+            final Dialog add_event_dialog = new Dialog(mContext);
+            add_event_dialog.setContentView(R.layout.dialog_add_event);
+            Button btn_ok,btn_cancel;
+            btn_cancel = add_event_dialog.findViewById(R.id.btn_cancel);
+            btn_ok = add_event_dialog.findViewById(R.id.btn_ok);
+            Spinner time,preference;
+            time = add_event_dialog.findViewById(R.id.add_time);
             holder.tv_content.setClickable(true);
             holder.tv_content.setText("ADD EVENT!");
             holder.tv_content_time.setVisibility(View.GONE);
             holder.tv_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add_event_dialog.show();
+                }
+            });
+            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add_event_dialog.dismiss();
+                }
+            });
+            btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

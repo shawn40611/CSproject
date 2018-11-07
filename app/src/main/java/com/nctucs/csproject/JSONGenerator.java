@@ -13,9 +13,9 @@ public class JSONGenerator {
         JSONObject verify = new JSONObject();
         try {
             auth.put("function","Auth");
-            auth.put("data", data_auth);
+            auth.put("Data", data_auth);
             verify.put("function", "Verify");
-            verify.put("data", data_verify);
+            verify.put("Data", data_verify);
             this.arr.put(auth);
             this.arr.put(verify);
         }catch(Exception e) {

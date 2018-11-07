@@ -52,7 +52,7 @@ public class MyService extends Service {
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8888;
+    public static final int PORT = 8890;
 
     private static final String SCOPES = "https://www.googleapis.com/auth/calendar";
     private GoogleSignInClient mGoogleSignInClient;
@@ -190,6 +190,7 @@ public class MyService extends Service {
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
+                            InformationHandler.setNotificationData(parser.getNotificationData());
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
                             InformationHandler.setNotificationData(parser.getNotificationData());
