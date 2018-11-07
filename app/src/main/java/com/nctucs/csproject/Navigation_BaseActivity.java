@@ -73,7 +73,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     private Boolean done = false;
     private MakeRequestTask requestTask;
     private isLoadDataListener loadLisneter;
-    private final String ACCOUNT = "myaccount";
+    //private final String ACCOUNT = "myaccount";
     public static final String SOCKER_RCV = "ReceiveStr";
     private String data;
 
@@ -125,17 +125,13 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         mClient = InformationHandler.getClient();
         mAccount = InformationHandler.getAccount();
         mCredential = InformationHandler.getCredential(this);
-        socketReceiver = new SocketReceiver();
-        IntentFilter socketIntentFilter = new IntentFilter();
-        socketIntentFilter.addAction(SOCKER_RCV);
-        registerReceiver(socketReceiver,socketIntentFilter);
+
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(socketReceiver);
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -211,12 +207,14 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     }
 
     public class SocketReceiver extends BroadcastReceiver{
+        public Boolean notify;
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action.equals(SOCKER_RCV)){
                  data  = intent.getExtras().getString("Data");
             }
+
         }
     }
 

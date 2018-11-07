@@ -9,10 +9,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
+import com.nctucs.csproject.Data.EventsStatusData;
+import com.nctucs.csproject.Data.NotificationData;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class InformationHandler {
@@ -21,6 +24,9 @@ public class InformationHandler {
     public static GoogleAccountCredential mCredential;
     public static Bitmap mphoto;
     public static GoogleSignInClient mClient;
+    public static Boolean isRegister = false;
+    private static ArrayList<EventsStatusData> eventsStatusData;
+    private static ArrayList<NotificationData> notificationData;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
@@ -63,5 +69,29 @@ public class InformationHandler {
         return mphoto;
     }
 
+    public static void setEventsStatusData(ArrayList<EventsStatusData> data){
+        if(eventsStatusData == null)
+            eventsStatusData = data;
+        else eventsStatusData.addAll(data);
+    }
+    public static void setNotificationData(ArrayList<NotificationData> data){
+        if(notificationData == null)
+            notificationData = data;
+        else  notificationData.addAll(data);
+    }
 
+    public static ArrayList<EventsStatusData> getEventsStatusData() {
+        return eventsStatusData;
+    }
+
+    public static ArrayList<NotificationData> getNotificationData() {
+        return notificationData;
+    }
+    public static void setIsRegister(Boolean reply){
+        isRegister = reply;
+    }
+
+    public static Boolean IsRegister() {
+        return isRegister;
+    }
 }

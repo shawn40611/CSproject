@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.services.calendar.model.Event;
+import com.nctucs.csproject.JSONParser;
 import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
@@ -101,9 +102,6 @@ public class MainActivity extends Navigation_BaseActivity {
 
 
     };
-
-
-
 
 
     @Override
@@ -182,6 +180,7 @@ public class MainActivity extends Navigation_BaseActivity {
                 System.out.println("connect");
             }
         });
+        JSONParser p = new JSONParser("a");
     }
 
     public MyService getService(){

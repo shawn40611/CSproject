@@ -1,6 +1,10 @@
 package com.nctucs.csproject.Activity;
 
 import android.app.Notification;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +28,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
     private NotificationAdapter adapter;
     private RecyclerView.LayoutManager mLayourmanager;
     private Toolbar toolbar;
+    private BroadcastReceiver mReciver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +44,9 @@ public class NotificationActivity extends Navigation_BaseActivity {
         for (int i = 0; i < 10; i++) {
             NotificationData tmp = new NotificationData();
             tmp.events_name = "Dinner";
-            tmp.groups = "專題生";
-            tmp.inviter = "董則遠";
-            tmp.description = String.format("%s\n%s", "this is test", "this is test");
+            tmp.event_groups = "專題生";
+            tmp.event_inviter = "董則遠";
+            tmp.event_description = String.format("%s\n%s", "this is test", "this is test");
             fake_data.add(tmp);
         }
         adapter = new NotificationAdapter(this, fake_data);
@@ -51,11 +56,26 @@ public class NotificationActivity extends Navigation_BaseActivity {
         setToolbar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.notification);
+        mReciver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                adapter.notifyDataSetChanged();
+            }
+        };
+        IntentFilter socketIntentFilter = new IntentFilter();
+        socketIntentFilter.addAction(SOCKER_RCV);
+        registerReceiver(mReciver,socketIntentFilter);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReciver);
     }
 }

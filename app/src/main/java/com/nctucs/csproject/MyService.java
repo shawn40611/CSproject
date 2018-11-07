@@ -22,6 +22,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.nctucs.csproject.Activity.MainActivity;
 import com.nctucs.csproject.Activity.WelComeActivity;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -90,6 +92,13 @@ public class MyService extends Service {
         }
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String s = intent.getStringExtra("Set_up");
+        sendData(s);
+        return super.onStartCommand(intent, flags, startId);
+
+    }
 
     @Nullable
     @Override
@@ -109,6 +118,22 @@ public class MyService extends Service {
                 public void run() {
                     try {
                         outputStream.write(data.getBytes(Charset.forName("UTF-8")));
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+    }
+    public void sendData(final JSONArray data){
+        if (outputStream != null) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        outputStream.write(data.toString().getBytes(Charset.forName("UTF-8")));
                         outputStream.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -159,9 +184,27 @@ public class MyService extends Service {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
+                    JSONParser parser = new JSONParser(data);
+                    int type = parser.getType();
+                    switch (type){
+                        case JSONParser.TYPE_UPDATE_DATA:
+                            InformationHandler.setNotificationData(parser.getNotificationData());
+                            InformationHandler.setEventsStatusData(parser.getEventStatusData());
+                            break;
+                        case  JSONParser.TYPE_NOTIFICATION:
+                            InformationHandler.setNotificationData(parser.getNotificationData());
+                            break;
+                        case  JSONParser.TYPE_STATUS:
+                            InformationHandler.setEventsStatusData(parser.getEventStatusData());
+                            break;
+                        case JSONParser.TYPE_REPLY_VERIFY:
+                            InformationHandler.setIsRegister(parser.getVerifyData());
+                            break;
+                        case JSONParser.TYPE_GROUP_LIST:
+                            break;
+                    }
                     Intent intent = new Intent(SOCKER_RCV);
                     intent.putExtra("Data", data);
-
                     sendBroadcast(intent);
 
                 }

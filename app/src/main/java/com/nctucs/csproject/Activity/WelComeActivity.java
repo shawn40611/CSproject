@@ -1,11 +1,15 @@
 package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,8 +37,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.JSONGenerator;
 import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.R;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,6 +71,7 @@ public class WelComeActivity extends FragmentActivity {
     public static final String ADDRESS = "178.128.90.63";
     public static final int PORT = 8888;
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
+
 
 
     private static final int NUM_PAGES = 3;
@@ -103,6 +111,8 @@ public class WelComeActivity extends FragmentActivity {
 
 
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -230,10 +240,7 @@ public class WelComeActivity extends FragmentActivity {
             @Override
             public void run() {
 
-                Intent socketIntent = new Intent();
-                socketIntent.setClass(WelComeActivity.this, MyService.class);
-                System.out.println("StartService");
-                startService(socketIntent);
+
             }
         });
         t.start();
@@ -279,6 +286,13 @@ public class WelComeActivity extends FragmentActivity {
             Intent intent = new Intent();
             intent.setClass(WelComeActivity.this,MainActivity.class);
             if(mAccount != null) {
+                Intent socketIntent = new Intent();
+                socketIntent.setClass(WelComeActivity.this, MyService.class);
+                System.out.println("StartService");
+                JSONGenerator generator = new JSONGenerator();
+                JSONArray data = generator.setUp(mAccount.getServerAuthCode(),mAccount.getEmail());
+                socketIntent.putExtra("Set_up",data.toString());
+                startService(socketIntent);
                 InformationHandler.setAccount(mAccount);
                 mCredential =  GoogleAccountCredential.usingOAuth2(
                         getApplicationContext(), Arrays.asList(SCOPES))

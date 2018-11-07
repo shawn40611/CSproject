@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.nctucs.csproject.Activity.NotificationActivity;
 import com.nctucs.csproject.Data.NotificationData;
 import com.nctucs.csproject.R;
 
@@ -20,11 +21,11 @@ import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
 
-    private static Context mContext;
+    private static NotificationActivity mContext;
     private LayoutInflater mInflater;
     private ArrayList<NotificationData> mData;
     public NotificationAdapter(Context context, ArrayList<NotificationData> data){
-        mContext = context;
+        mContext =(NotificationActivity) context;
         mInflater = LayoutInflater.from(mContext);
         mData = data;
     }
@@ -42,11 +43,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if(mData != null){
             NotificationData data = mData.get(position);
             holder.tv_event_name.setText(data.events_name);
-            holder.tv_groups.setText(data.groups);
-            holder.tv_inviter.setText(data.inviter);
+            holder.tv_groups.setText(data.event_groups);
+            holder.tv_inviter.setText(data.event_inviter);
             holder.tv_events_time.setText(String.format("%s\n%s","2018/10/31","12:00pm-01:00pm"));
 
-            holder.tv_events_description.setText(data.description);
+            holder.tv_events_description.setText(data.event_description);
         }
     }
 

@@ -1,16 +1,21 @@
 package com.nctucs.csproject;
 import org.json.*;
 
-public class JSONparser {
+public class JSONGenerator {
     private JSONArray arr;
-    public JSONArray SetUp(String data_auth, String data_verify) {
+
+    public JSONGenerator(){
+        arr = new JSONArray();
+    }
+
+    public JSONArray setUp(String data_auth, String data_verify) {
         JSONObject auth = new JSONObject();
         JSONObject verify = new JSONObject();
         try {
             auth.put("function","Auth");
             auth.put("data", data_auth);
             verify.put("function", "Verify");
-            verify.put("function", data_verify);
+            verify.put("data", data_verify);
             this.arr.put(auth);
             this.arr.put(verify);
         }catch(Exception e) {
@@ -18,7 +23,7 @@ public class JSONparser {
         }
         return this.arr;
     }
-    public JSONArray Register(String stu_id, String name, String email) {
+    public JSONArray register(String stu_id, String name, String email) {
         JSONObject register = new JSONObject();
         JSONObject data = new JSONObject();
         try {
@@ -33,7 +38,7 @@ public class JSONparser {
         }
         return this.arr;
     }
-    public JSONArray InviteEvent() {
+    public JSONArray inviteEvent() {
         JSONObject invitation = new JSONObject();
         try {
             invitation.put("function", "Add_Event");
@@ -43,7 +48,7 @@ public class JSONparser {
         }
         return this.arr;
     }
-    public JSONArray InviteGroup() {
+    public JSONArray inviteGroup() {
         JSONObject invitation = new JSONObject();
         try {
             invitation.put("function", "Add_Group");
@@ -53,7 +58,7 @@ public class JSONparser {
         }
         return this.arr;
     }
-    public JSONArray Reply(String type, int id, boolean status) {
+    public JSONArray reply(String type, int id, boolean status) {
         JSONObject reply = new JSONObject();
         try {
             reply.put("function", "Reply_Notification");
@@ -66,7 +71,7 @@ public class JSONparser {
         }
         return this.arr;
     }
-    public JSONArray ConfirmEvent(int id, boolean status) {
+    public JSONArray confirmEvent(int id, boolean status) {
         JSONObject confirm = new JSONObject();
         try {
             confirm.put("function", "ConfirmEvent");
