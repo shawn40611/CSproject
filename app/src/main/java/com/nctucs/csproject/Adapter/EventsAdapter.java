@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nctucs.csproject.Activity.EventsStatusActivity;
 import com.nctucs.csproject.Data.EventsStatusData;
 import com.nctucs.csproject.R;
 
@@ -27,12 +28,12 @@ import java.util.ArrayList;
 
 public class EventsAdapter extends android.support.v7.widget.RecyclerView.Adapter<EventsAdapter.EventsViewHolder> {
 
-    public static Context mContext;
+    public static EventsStatusActivity mContext;
     private LayoutInflater mInflater;
     private ArrayList<EventsStatusData> mData;
     public EventsAdapter(Context context,ArrayList<EventsStatusData> data)
     {
-        mContext = context;
+        mContext = (EventsStatusActivity)context;
         mInflater = LayoutInflater.from(mContext);
         mData = data;
     }

@@ -2,8 +2,10 @@ package com.nctucs.csproject.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
-public class EventsStatusData {
+public class EventsStatusData extends Object{
+    public int event_id;
     public String events_name = "";
     public Date   events_time;
     public ArrayList<String> member_list;
