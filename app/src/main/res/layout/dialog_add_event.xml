@@ -94,4 +94,16 @@
         android:layout_marginBottom="@dimen/dp_29"
         android:text="OK"/>
 
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_31"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_29"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_toLeftOf="@+id/btn_ok"
+        android:background="@color/transparent"
+        android:text="cancel"
+        android:textColor="@color/green_grey" />
+
 </RelativeLayout>
