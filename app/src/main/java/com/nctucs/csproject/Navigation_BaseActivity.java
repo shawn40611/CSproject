@@ -2,15 +2,18 @@ package com.nctucs.csproject;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -65,14 +68,18 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     protected int CurrentMenuItem = 0;//紀錄目前User位於哪一個項目
     private DateTime start,end;
-    private GoogleSignInAccount mAccount = InformationHandler.getAccount();
-    private GoogleAccountCredential mCredential = InformationHandler.getCredential(this);
+    private GoogleSignInAccount mAccount;
+    private GoogleAccountCredential mCredential;
     private Boolean done = false;
     private MakeRequestTask requestTask;
     private isLoadDataListener loadLisneter;
     private final String ACCOUNT = "myaccount";
     public static final String SOCKER_RCV = "ReceiveStr";
     private String data;
+
+    public MyService mService;
+    public Boolean mBound;
+
 
 
     private static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -85,7 +92,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     private ImageView iv_user_photo;
     private TextView tv_user_email;
     public Dialog dialog_log_out;
-    private GoogleSignInClient mClient = InformationHandler.getClient();
+    private GoogleSignInClient mClient;
     Button confirm,cancel;
     private SocketReceiver socketReceiver;
 
@@ -115,20 +122,20 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mClient = InformationHandler.getClient();
+        mAccount = InformationHandler.getAccount();
+        mCredential = InformationHandler.getCredential(this);
         socketReceiver = new SocketReceiver();
         IntentFilter socketIntentFilter = new IntentFilter();
         socketIntentFilter.addAction(SOCKER_RCV);
         registerReceiver(socketReceiver,socketIntentFilter);
-        Intent socketIntent = new Intent();
-        socketIntent.setClass(this, MyService.class);
-        System.out.println("Activity Start");
-        startService(socketIntent);
-
     }
 
+
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(socketReceiver);
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -181,6 +188,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                                 public void onClick(View v) {
                                     mClient.signOut();
                                     dialog_log_out.dismiss();
+                                    mService.stopSelf();
                                     finish();
                                 }
                             });
@@ -208,10 +216,10 @@ public class Navigation_BaseActivity extends AppCompatActivity{
             String action = intent.getAction();
             if(action.equals(SOCKER_RCV)){
                  data  = intent.getExtras().getString("Data");
-                 System.out.println(data);
             }
         }
     }
+
 
 
 
@@ -375,8 +383,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     public void setEndDatetime(Date date){
         end = new DateTime(date);
     }
-
-
     public   List<Event>  getData(){
         return  items.size() == 0 ? null : items;
     }
@@ -387,6 +393,9 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         this.loadLisneter = dataComplete;
     }
 
+    public void clearLoadDataComplete(){
+        this.loadLisneter = null;
+    }
 
 
 }

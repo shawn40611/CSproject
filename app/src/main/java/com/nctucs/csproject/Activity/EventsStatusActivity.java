@@ -14,6 +14,7 @@ import com.nctucs.csproject.R;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class EventsStatusActivity extends Navigation_BaseActivity {
     Toolbar toolbar;
@@ -54,6 +55,12 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
 
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 }

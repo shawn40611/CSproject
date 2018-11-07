@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationActivity extends Navigation_BaseActivity {
     private RecyclerView mRecyclerview;
@@ -31,19 +32,19 @@ public class NotificationActivity extends Navigation_BaseActivity {
         CurrentMenuItem = 3;
 
         mRecyclerview = findViewById(R.id.rv_notification);
-        mLayourmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mLayourmanager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerview.setLayoutManager(mLayourmanager);
         ArrayList<NotificationData> fake_data = new ArrayList<NotificationData>();
         Random random = new Random();
-        for(int i = 0 ; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             NotificationData tmp = new NotificationData();
             tmp.events_name = "Dinner";
-            tmp.groups ="專題生";
+            tmp.groups = "專題生";
             tmp.inviter = "董則遠";
-            tmp.description = String.format("%s\n%s","this is test","this is test");
+            tmp.description = String.format("%s\n%s", "this is test", "this is test");
             fake_data.add(tmp);
         }
-        adapter = new NotificationAdapter(this,fake_data);
+        adapter = new NotificationAdapter(this, fake_data);
         mRecyclerview.setAdapter(adapter);
 
         toolbar = findViewById(R.id.toolbar);
@@ -51,5 +52,10 @@ public class NotificationActivity extends Navigation_BaseActivity {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.notification);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

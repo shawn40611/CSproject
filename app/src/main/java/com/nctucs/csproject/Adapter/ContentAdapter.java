@@ -1,7 +1,11 @@
 package com.nctucs.csproject.Adapter;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +16,8 @@ import android.widget.TextView;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
+import com.nctucs.csproject.Activity.MainActivity;
+import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.R;
 
 import java.util.Date;
@@ -20,11 +26,11 @@ import java.util.List;
 public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapter<ContentAdapter.ContentViewHolder>{
 
 
-    public static Context mContext;
+    public static MainActivity mContext;
     private LayoutInflater mInflater;
     private List<Event> mData;
     private Boolean no_event = false;
-    public ContentAdapter(Context context)
+    public ContentAdapter(MainActivity context)
     {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
@@ -39,11 +45,10 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ContentViewHolder holder, int position) {
         RecyclerView.ViewHolder viewHolder = (ContentViewHolder)holder;
-        if(mData != null){
+        if(mData != null && position != mData.size()){
             holder.tv_content.setClickable(true);
-            System.out.println("event");
             Event event = mData.get(position);
             holder.tv_content.setText(event.getSummary());
             Date start = new Date(event.getStart().getDateTime().getValue());
@@ -63,11 +68,24 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             if(event.getLocation()!=null){
                 holder.tv_location.setText(event.getLocation());
             }else holder.tv_location.setText("No Location !");
+
+            holder.tv_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.dialog.show();
+                }
+            });
         }
         else {
-            holder.tv_content.setClickable(false);
-            holder.tv_content.setText("No Events");
+            holder.tv_content.setClickable(true);
+            holder.tv_content.setText("ADD EVENT!");
             holder.tv_content_time.setVisibility(View.GONE);
+            holder.tv_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
     }
@@ -79,7 +97,7 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             return 1;
         }
         no_event = false;
-        return mData.size();
+        return mData.size()+1;
     }
 
     public void setData(List<Event> data){
@@ -110,12 +128,7 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             tv_location = dialog.findViewById(R.id.tv_location);
             btn_ok = dialog.findViewById(R.id.btn_ok);
 
-            tv_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.show();
-                }
-            });
+
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

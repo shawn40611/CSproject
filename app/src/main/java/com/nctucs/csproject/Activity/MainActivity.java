@@ -1,12 +1,17 @@
 package com.nctucs.csproject.Activity;
 
+
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -25,14 +30,8 @@ import android.widget.TextView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
-import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -44,18 +43,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+
 import java.util.List;
+
 
 import com.nctucs.csproject.Adapter.ContentAdapter;
 
-
+import org.json.JSONObject;
 
 
 public class MainActivity extends Navigation_BaseActivity {
@@ -71,6 +70,7 @@ public class MainActivity extends Navigation_BaseActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private GoogleSignInAccount mAccount;
 
+
     private  Dialog dialog_register;
 
     private DrawerLayout mDrawerLayout;
@@ -79,16 +79,40 @@ public class MainActivity extends Navigation_BaseActivity {
     private Boolean connected = false;
     private OutputStream outputStream;
     private List<Event> events = null;
+    private CheckStatus checkstatus;
+    private MyService myService;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyService.MyBinder binder = (MyService.MyBinder) service;
+            myService = binder.getService();
+            if(myService != null) {
+                if(checkstatus != null)
+                    checkstatus.complete();
+            }
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+
+
+    };
+
+
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
-
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,34 +122,6 @@ public class MainActivity extends Navigation_BaseActivity {
         setToolbar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.calendar);
-        mAccount = InformationHandler.getAccount();
-        mSocket = InformationHandler.getSocket();
-
-        final String authcode = mAccount.getServerAuthCode();
-        if(mSocket != null) {
-            try {
-                outputStream = mSocket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Thread th = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String str = "Auth:'" + authcode + "'";
-                        outputStream.write(str.getBytes(Charset.forName("UTF-8")));
-                        outputStream.flush();
-                        String verify = "Verify:'"+mAccount.getId()+"'";
-                        outputStream.write(verify.getBytes(Charset.forName("UTF-8")));
-                        outputStream.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            th.start();
-        }
-
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);// 實例化
         materialCalendarView.setBackgroundColor(getResources().getColor(R.color.main_background));
@@ -171,14 +167,26 @@ public class MainActivity extends Navigation_BaseActivity {
         dialog_register = new Dialog(this);
         dialog_register.setContentView(R.layout.dialog_register);
 
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        Intent serviceIntent = new Intent(MainActivity.this,MyService.class);
+        bindService(serviceIntent,mConnection,Context.BIND_AUTO_CREATE);
+        setCheckStatus(new CheckStatus() {
+            @Override
+            public void complete() {
+                connected = true;
+                System.out.println("connect");
+            }
+        });
     }
 
+    public MyService getService(){
+        return myService;
+    }
 
     public void getTime(View view) {
         if (currentDate != null) {
@@ -205,5 +213,16 @@ public class MainActivity extends Navigation_BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private interface  CheckStatus{
+        public void complete();
+    }
+    private void setCheckStatus(CheckStatus check){
+        this.checkstatus = check;
+    }
+
+
+
+
 
 }
+

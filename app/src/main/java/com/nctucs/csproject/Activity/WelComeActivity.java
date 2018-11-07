@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.R;
 
 import java.io.IOException;
@@ -78,14 +79,13 @@ public class WelComeActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //switchto1();
 
         setContentView(R.layout.view_slide);
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new WelComeActivity.ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-
+        mPager.setOffscreenPageLimit(2);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {}
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -206,13 +206,8 @@ public class WelComeActivity extends FragmentActivity {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // Configure Google Sign In
-        String serverClientId = getString(R.string.server_client_id_1);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope(SCOPES))
-                .requestServerAuthCode(serverClientId,false)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
 
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,6 +219,25 @@ public class WelComeActivity extends FragmentActivity {
     }
 
     private void signIn() {
+        String serverClientId = getString(R.string.server_client_id_1);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(SCOPES))
+                .requestServerAuthCode(serverClientId,false)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent socketIntent = new Intent();
+                socketIntent.setClass(WelComeActivity.this, MyService.class);
+                System.out.println("StartService");
+                startService(socketIntent);
+            }
+        });
+        t.start();
+
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -289,23 +303,11 @@ public class WelComeActivity extends FragmentActivity {
                         }
                     }
                 });
-                Thread connect = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            mSocket = new Socket(ADDRESS, PORT);
-                        }
-                        catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                connect.start();
+
                 t.start();
-                while(t.isAlive()||connect.isAlive())
+                while(t.isAlive())
                     ;
                 InformationHandler.setBitmap(user_photo);
-                InformationHandler.setSocket(mSocket);
             }
             startActivity(intent);
             finish();

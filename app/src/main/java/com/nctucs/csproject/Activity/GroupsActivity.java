@@ -8,6 +8,8 @@ import android.widget.Toolbar;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
+import java.util.concurrent.TimeUnit;
+
 public class GroupsActivity extends Navigation_BaseActivity{
     android.support.v7.widget.Toolbar toolbar;
 
@@ -20,5 +22,10 @@ public class GroupsActivity extends Navigation_BaseActivity{
         setToolbar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.groups);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

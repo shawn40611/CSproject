@@ -21,8 +21,6 @@ public class InformationHandler {
     public static GoogleAccountCredential mCredential;
     public static Bitmap mphoto;
     public static GoogleSignInClient mClient;
-    public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8888;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
@@ -64,26 +62,6 @@ public class InformationHandler {
     public static Bitmap getBitmap(){
         return mphoto;
     }
-    public static synchronized Socket getSocket(){
-        if(socket == null){
-            Thread connect = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        socket = new Socket(ADDRESS, PORT);
-                    }
-                    catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            });
-            connect.start();
-        }
-        return socket;
-    }
 
-    public static synchronized void setSocket(Socket socket){
-        InformationHandler.socket = socket;
-    }
 
 }
