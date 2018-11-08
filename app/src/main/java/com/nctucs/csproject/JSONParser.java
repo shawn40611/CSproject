@@ -3,6 +3,7 @@ package com.nctucs.csproject;
 import com.nctucs.csproject.Data.EventsStatusData;
 import com.nctucs.csproject.Data.GroupData;
 import com.nctucs.csproject.Data.NotificationData;
+import com.nctucs.csproject.Data.SelectedTimeData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import java.util.List;
 public class JSONParser {
     private Boolean reply_verify;
     private JSONObject object_update_status;
-    private JSONArray  mArray,object_notification,object_status,object_groups_list;
+    private JSONArray  mArray,object_notification,object_status,object_groups_list,object_select_time;
     private int reply_register;
     int type;
     public static final int TYPE_REPLY_VERIFY = 2000;
@@ -27,6 +28,7 @@ public class JSONParser {
     public static final int TYPE_GROUP_LIST = 2004;
     public static final int TYPE_UPDATE_STATUS = 2005;
     public static final int TYPE_REPLY_REGISTER = 2006;
+    public static final int TYPE_REPLY_ADD_EVENT = 2007;
 
    public JSONParser(String input){
        try{
@@ -57,6 +59,11 @@ public class JSONParser {
                  else if(funciton.equals("ReplyRegister")){
                      type = TYPE_REPLY_REGISTER;
                      reply_register = a.getInt("Data");
+                 }
+                 else if(funciton.equals("ReplyAddEvent")){
+                     type = TYPE_REPLY_ADD_EVENT;
+                     object_select_time = a.getJSONArray("Data");
+
                  }
           }
           if(mArray.length() > 1)
@@ -155,6 +162,25 @@ public class JSONParser {
            e.printStackTrace();
        }
        return data_list;
+    }
+
+    public ArrayList<SelectedTimeData> getSelectData(){
+       ArrayList<SelectedTimeData> data_list = new ArrayList<SelectedTimeData>();
+       try{
+           for(int i = 0 ; i < object_select_time.length() ; i++){
+               JSONObject tmp = object_select_time.getJSONObject(i);
+               SelectedTimeData data = new SelectedTimeData();
+               data.start = tmp.getLong("Starttime");
+               data.end = tmp.getLong("Endtime");
+               data.event_id = tmp.getInt("Event_id");
+               data.attendnumber = tmp.getInt("Attendnumber");
+               data_list.add(data);
+           }
+
+       }catch (JSONException e){
+           e.printStackTrace();
+       }
+       return  data_list;
     }
 
 

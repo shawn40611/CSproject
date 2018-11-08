@@ -38,7 +38,7 @@ public class JSONGenerator {
         }
         return this.arr;
     }
-    public JSONArray inviteEvent(String name,String location,String description,int preference,int time,int group) {
+    public JSONArray inviteEvent(String name,String location,String description,int preference,int time,int group,long now_date) {
         JSONObject invitation = new JSONObject();
         JSONObject data = new JSONObject();
         try {
@@ -46,15 +46,30 @@ public class JSONGenerator {
             data.put("Event_name",name);
             data.put("Event_location",location);
             data.put("Event_description",description);
-            data.put("Event_time",time);
+            data.put("Event_time",(time == 0? 30 : time*60));
             data.put("Event_preference",preference);
             data.put("Event_group",group);
+            data.put("Event_date",now_date);
             invitation.put("Data",data);
             this.arr.put(invitation);
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
         }
         return this.arr;
+    }
+    public JSONArray selectTime(int id){
+        JSONObject select = new JSONObject();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("Event_id",id);
+            select.put("function", "SelectedTime");
+            select.put("Data",data);
+            arr.put(select);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return  arr;
     }
     public JSONArray inviteGroup() {
         JSONObject invitation = new JSONObject();

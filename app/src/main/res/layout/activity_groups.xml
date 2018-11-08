@@ -23,21 +23,22 @@
             android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 
-    <Spinner
-        android:id="@+id/groups"
+    <Button
+        android:id="@+id/btn_groups"
         android:layout_below="@id/toolbar"
         android:layout_width="@dimen/dp_280"
         android:layout_height="@dimen/dp_50"
         android:layout_marginTop="@dimen/dp_48"
         android:layout_centerHorizontal="true"
+        android:text="@string/groups"
         android:background="@color/spinner_background"
-        android:spinnerMode="dropdown"/>
+        />
 
    <LinearLayout
         android:id="@+id/rv_groups_member"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/groups"
+        android:layout_below="@id/btn_groups"
        android:orientation="vertical"
         android:layout_marginTop="@dimen/dp_48"
         android:layout_above="@id/btn_add_groups"/>

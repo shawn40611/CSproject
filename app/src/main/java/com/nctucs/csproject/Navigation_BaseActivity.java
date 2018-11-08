@@ -294,7 +294,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
             System.out.println("start = " +  start + " end = " + end);
             List<String> eventStrings = new ArrayList<String>();
             Events events = mService.events().list("primary")
-                    .setMaxResults(10)
                     .setTimeMin(start)
                     .setTimeMax(end)
                     .setOrderBy("startTime")

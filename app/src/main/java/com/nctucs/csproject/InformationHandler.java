@@ -10,7 +10,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 import com.nctucs.csproject.Data.EventsStatusData;
+import com.nctucs.csproject.Data.GroupData;
 import com.nctucs.csproject.Data.NotificationData;
+import com.nctucs.csproject.Data.SelectedTimeData;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +29,8 @@ public class InformationHandler {
     public static Boolean isRegister = false;
     private static ArrayList<EventsStatusData> eventsStatusData;
     private static ArrayList<NotificationData> notificationData;
+    private static ArrayList<SelectedTimeData> selectedTimeData;
+    private static ArrayList<GroupData> groupData;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
@@ -78,6 +82,18 @@ public class InformationHandler {
         if(notificationData == null)
             notificationData = data;
         else  notificationData.addAll(data);
+    }
+    public static  void setSelectedTimeData(ArrayList<SelectedTimeData> data){
+        selectedTimeData = data;
+    }
+    public static void setGroupData(ArrayList<GroupData> data){
+        groupData = data;
+    }
+
+    public static ArrayList<GroupData> getGroupData(){return groupData;}
+
+    public  static ArrayList<SelectedTimeData> getSelectedTimeData(){
+        return selectedTimeData;
     }
 
     public static ArrayList<EventsStatusData> getEventsStatusData() {

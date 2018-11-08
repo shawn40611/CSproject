@@ -26,10 +26,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.services.calendar.model.Event;
+import com.nctucs.csproject.Data.GroupData;
+import com.nctucs.csproject.Data.SelectedTimeData;
 import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.JSONGenerator;
 import com.nctucs.csproject.JSONParser;
@@ -55,6 +59,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -74,7 +79,7 @@ public class MainActivity extends Navigation_BaseActivity {
 
     MaterialCalendarView materialCalendarView;//布局内的控件
     CalendarDay currentDate;//自定义的日期对象
-    int mYear, mMonth,mDay;
+    long mNowSelectedDate;
     private TextView test;
     private RecyclerView mRecyclerview;
     private ContentAdapter adapter;
@@ -84,6 +89,7 @@ public class MainActivity extends Navigation_BaseActivity {
 
     private Dialog dialog_register;
     private Dialog dialog_add_event;
+    private Dialog dialog_selected_time;
     private Dialog dialog_choose_time;
     private DrawerLayout mDrawerLayout;
     private int selected_time,selected_preference,selected_group;
@@ -116,6 +122,8 @@ public class MainActivity extends Navigation_BaseActivity {
 
     };
     private BroadcastReceiver mReceiver;
+    private Calendar now_c;
+    private Date now_day;
 
 
     @Override
@@ -144,13 +152,23 @@ public class MainActivity extends Navigation_BaseActivity {
                 .setCalendarDisplayMode(CalendarMode.MONTHS)//设置显示模式，可以显示月的模式，也可以显示周的模式
                 .commit();// 返回对象并保存
         //      设置点击日期的监听
-        Calendar now_c = Calendar.getInstance();
+        now_c = Calendar.getInstance();
+        now_day = new Date();
+        now_day.setYear(now_c.get(Calendar.YEAR)-1900);
+        now_day.setMonth(now_c.get(Calendar.MONTH));
+        now_day.setDate(now_c.get(Calendar.DAY_OF_MONTH));
+        now_day.setHours(0);
+        now_day.setMinutes(0);
+        now_day.setSeconds(0);
+        System.out.println(now_day.toString());
+        mNowSelectedDate = now_day.getTime();
 
         //init
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, @NonNull com.prolificinteractive.materialcalendarview.CalendarDay date, boolean selected) {
                 currentDate = date;
+                mNowSelectedDate = currentDate.getDate().getTime();
                 setStartDatetime(currentDate.getDate());
                 Calendar c = currentDate.getCalendar();
                 c.add(Calendar.DAY_OF_MONTH, 1);
@@ -167,6 +185,33 @@ public class MainActivity extends Navigation_BaseActivity {
                 currentDate.getCalendar().add(Calendar.DAY_OF_MONTH,-1);
             }
         });
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                setStartDatetime(now_day);
+                now_c.add(Calendar.DAY_OF_MONTH, 1);
+                Date nextday = new Date();
+                nextday.setYear(now_c.get(Calendar.YEAR)-1900);
+                nextday.setMonth(now_c.get(Calendar.MONTH));
+                nextday.setDate(now_c.get(Calendar.DAY_OF_MONTH));
+                nextday.setHours(0);
+                nextday.setMinutes(0);
+                nextday.setSeconds(0);
+                setEndDatetime(nextday);
+                getResultsFromApi();
+                setLoadDataComplete(new isLoadDataListener() {
+                    @Override
+                    public void loadComplete() {
+                        events = getData();
+                        System.out.println("set up " + (events != null));
+                        adapter.setData(events);
+                    }
+                });
+                now_c.add(Calendar.DAY_OF_MONTH,-1);
+            }
+        });
+        t.start();
+
 
         materialCalendarView.setDateSelected(now_c,true);
 
@@ -211,6 +256,9 @@ public class MainActivity extends Navigation_BaseActivity {
                             break;
                     }
                 }
+                else if(type == JSONParser.TYPE_REPLY_ADD_EVENT){
+                    showSelectedTime(InformationHandler.getSelectedTimeData());
+                }
             }
         };
         IntentFilter socketIntentFilter = new IntentFilter();
@@ -225,11 +273,12 @@ public class MainActivity extends Navigation_BaseActivity {
         super.onResume();
         Intent serviceIntent = new Intent(MainActivity.this,MyService.class);
         bindService(serviceIntent,mConnection,Context.BIND_AUTO_CREATE);
+
         setCheckStatus(new CheckStatus() {
             @Override
             public void complete() {
                 connected = true;
-                if(!InformationHandler.IsRegister()){
+                if(InformationHandler.IsRegister()){
 
                     final EditText et_name,et_student_id;
                     et_name = dialog_register.findViewById(R.id.et_add_name);
@@ -303,6 +352,20 @@ public class MainActivity extends Navigation_BaseActivity {
         menu_preference.getMenuInflater().inflate(R.menu.menu_preference,menu_preference.getMenu());
         selected_time  = -1;
         selected_preference = -1;
+        selected_group = -1;
+        final ArrayList<GroupData> data_list = InformationHandler.getGroupData();
+        for(int i = 0 ; i < data_list.size();i++){
+            GroupData data = data_list.get(i);
+            menu_group.getMenu().add(0,i,0,data.group_name);
+        }
+        menu_group.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                final int itemid = item.getItemId();
+                selected_group = data_list.get(itemid).group_id;
+                return true;
+            }
+        });
 
         menu_time.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -391,7 +454,9 @@ public class MainActivity extends Navigation_BaseActivity {
                 name = et_add_name.getText().toString();
                 location = et_add_location.getText().toString();
                 description = et_add_description.getText().toString();
-                data = generator.inviteEvent(name,location,description,selected_preference,selected_time,selected_group);
+                data = generator.
+                        inviteEvent(name,location,description,
+                                selected_preference,selected_time,selected_group,mNowSelectedDate);
                 mService.sendData(data);
                 progressBar.setVisibility(View.VISIBLE);
             }
@@ -399,8 +464,52 @@ public class MainActivity extends Navigation_BaseActivity {
         dialog_add_event.show();
     }
 
-    public void showSelectedTime(){
-
+    public void showSelectedTime(final ArrayList<SelectedTimeData> datalist){
+        dialog_selected_time = new Dialog(this);
+        dialog_selected_time.setContentView(R.layout.dialog_add_event_timelist);
+        dialog_selected_time.setCanceledOnTouchOutside(false);
+        LinearLayout time_list;
+        LinearLayout [] content = new LinearLayout[10];
+        LayoutInflater inflater = LayoutInflater.from(this);
+        time_list = dialog_selected_time.findViewById(R.id.time_list);
+        for(int i = 0 ; i < datalist.size() ; i++){
+            final SelectedTimeData tmp = datalist.get(i);
+            content[i] = (LinearLayout)inflater.inflate(R.layout.view_add_event_timelist,null);
+            TextView tv_add_event_time = content[i].findViewById(R.id.tv_add_event_time);
+            Date start,end;
+            start = new Date(datalist.get(i).start);
+            end = new Date(datalist.get(i).end);
+            String str = start.toString() + "-" +end.toString();
+            tv_add_event_time.setText(str);
+            final Dialog dialog_confirm = new Dialog(this);
+            dialog_confirm.setContentView(R.layout.dialog_log_out);
+            dialog_confirm.setCanceledOnTouchOutside(false);
+            Button btn_confirm,btn_cancel ;
+            btn_confirm = dialog_confirm.findViewById(R.id.btn_confirm);
+            btn_cancel = dialog_confirm.findViewById(R.id.btn_cancel);
+            btn_confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONGenerator generator = new JSONGenerator();
+                    JSONArray data = generator.selectTime(tmp.event_id);
+                    mService.sendData(data);
+                    dialog_confirm.dismiss();
+                    dialog_selected_time.dismiss();
+                }
+            });
+            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog_confirm.dismiss();
+                }
+            });
+            tv_add_event_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog_confirm.show();
+                }
+            });
+        }
     }
 
     private interface  CheckStatus{

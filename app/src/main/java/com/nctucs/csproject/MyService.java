@@ -51,7 +51,7 @@ public class MyService extends Service {
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8899;
+    public static final int PORT = 8888;
 
     private static final String SCOPES = "https://www.googleapis.com/auth/calendar";
     private GoogleSignInClient mGoogleSignInClient;
@@ -208,6 +208,8 @@ public class MyService extends Service {
                         case JSONParser.TYPE_REPLY_REGISTER:
                             intent.putExtra("reply",parser.getReplyRegister());
                             break;
+                        case JSONParser.TYPE_REPLY_ADD_EVENT:
+
                     }
 
                     sendBroadcast(intent);

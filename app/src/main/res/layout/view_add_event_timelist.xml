@@ -8,5 +8,6 @@
         android:layout_height="@dimen/dp_64"
         android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginRight="@dimen/dp_30"
+        android:clickable="true"
         android:background="@color/white" />
 </LinearLayout>
