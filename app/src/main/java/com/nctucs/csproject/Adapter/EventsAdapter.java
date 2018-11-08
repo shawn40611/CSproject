@@ -77,6 +77,8 @@ public class EventsAdapter extends android.support.v7.widget.RecyclerView.Adapte
 
     @Override
     public int getItemCount() {
+        if(mData == null)
+            return 0;
         return mData.size();
     }
 
