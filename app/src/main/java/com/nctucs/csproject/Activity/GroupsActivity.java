@@ -51,28 +51,30 @@ public class GroupsActivity extends Navigation_BaseActivity{
     protected void onResume() {
         super.onResume();
         data_list = InformationHandler.getGroupData();
-        for(int i = 0 ; i < data_list.size() ; i++){
-            GroupData data = data_list.get(i);
-            menu.getMenu().add(0,i,0,data.group_name);
-        }
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                now_select = data_list.get(item.getItemId());
-                ArrayList<String> list = now_select.member_list;
-                for(int i = 0 ; i < list.size() ; i++){
-                    RelativeLayout member = (RelativeLayout)mInflater.inflate(R.layout.list_member,null);
-                    TextView tv_member;
-                    ImageView iv_status;
-                    tv_member = member.findViewById(R.id.tv_member_name);
-                    iv_status = member.findViewById(R.id.iv_reply_status);
-                    tv_member.setText(list.get(i));
-                    iv_status.setVisibility(View.GONE);
-                    member_list.addView(member);
-                }
-                return true;
+        if(data_list != null) {
+            for (int i = 0; i < data_list.size(); i++) {
+                GroupData data = data_list.get(i);
+                menu.getMenu().add(0, i, 0, data.group_name);
             }
-        });
+            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    now_select = data_list.get(item.getItemId());
+                    ArrayList<String> list = now_select.member_list;
+                    for (int i = 0; i < list.size(); i++) {
+                        RelativeLayout member = (RelativeLayout) mInflater.inflate(R.layout.list_member, null);
+                        TextView tv_member;
+                        ImageView iv_status;
+                        tv_member = member.findViewById(R.id.tv_member_name);
+                        iv_status = member.findViewById(R.id.iv_reply_status);
+                        tv_member.setText(list.get(i));
+                        iv_status.setVisibility(View.GONE);
+                        member_list.addView(member);
+                    }
+                    return true;
+                }
+            });
+        }
 
 
     }
