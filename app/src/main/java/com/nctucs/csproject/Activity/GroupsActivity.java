@@ -4,6 +4,8 @@ import android.media.Image;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +33,16 @@ public class GroupsActivity extends Navigation_BaseActivity{
     private GroupData now_select;
     private LayoutInflater mInflater;
     private LinearLayout member_list;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
         CurrentMenuItem = 2;
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.group_toolbar);
         setToolbar(toolbar);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.groups);
         member_list = findViewById(R.id.member_list);
@@ -77,5 +81,13 @@ public class GroupsActivity extends Navigation_BaseActivity{
         }
 
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

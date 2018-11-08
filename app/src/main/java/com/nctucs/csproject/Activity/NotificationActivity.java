@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.NotificationAdapter;
@@ -30,12 +33,14 @@ public class NotificationActivity extends Navigation_BaseActivity {
     private RecyclerView.LayoutManager mLayourmanager;
     private Toolbar toolbar;
     private BroadcastReceiver mReciver;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         CurrentMenuItem = 3;
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         mRecyclerview = findViewById(R.id.rv_notification);
         mLayourmanager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -44,7 +49,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
         adapter = new NotificationAdapter(this, InformationHandler.getNotificationData());
         mRecyclerview.setAdapter(adapter);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.notification_toolbar);
         setToolbar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.notification);
@@ -69,5 +74,13 @@ public class NotificationActivity extends Navigation_BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReciver);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

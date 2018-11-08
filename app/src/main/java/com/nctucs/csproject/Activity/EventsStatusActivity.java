@@ -2,9 +2,12 @@ package com.nctucs.csproject.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.EventsAdapter;
@@ -22,14 +25,16 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
     EventsAdapter adapter;
     RecyclerView mRecyclerview;
     RecyclerView.LayoutManager mLayoutmanager;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_status);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.event_toolbar);
         setToolbar(toolbar);
         CurrentMenuItem = 1;
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.events_status);
 
@@ -63,5 +68,13 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
