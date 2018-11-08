@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GroupData {
 
-    int group_id;
-    ArrayList<String> member_list;
-    String group_name;
+    public int group_id;
+    public ArrayList<String> member_list;
+    public String group_name;
 }

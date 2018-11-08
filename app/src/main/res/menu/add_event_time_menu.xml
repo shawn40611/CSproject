@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/half_hour"
+             android:title="@string/add_event_half_hr"/>
+        <item android:id="@+id/one_hour"
+            android:title="@string/add_event_1hr"/>
+        <item android:id="@+id/two_hour"
+            android:title="@string/add_event_2hr"/>
+        <item android:id="@+id/three_hour"
+            android:title="@string/add_event_3hr"/>
+        <item android:id="@+id/four_hour"
+            android:title="@string/add_event_4hr"/>
+        <item android:id="@+id/five_hour"
+            android:title="@string/add_event_5hr"/>
+        <item android:id="@+id/all_day"
+            android:title="@string/add_event_all"/>
+    </group>
 </menu>

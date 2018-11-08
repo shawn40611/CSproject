@@ -18,6 +18,7 @@ public class JSONParser {
     private Boolean reply_verify;
     private JSONObject object_update_status;
     private JSONArray  mArray,object_notification,object_status,object_groups_list;
+    private int reply_register;
     int type;
     public static final int TYPE_REPLY_VERIFY = 2000;
     public static final int TYPE_UPDATE_DATA = 2001;
@@ -25,6 +26,7 @@ public class JSONParser {
     public static final int TYPE_STATUS = 2003;
     public static final int TYPE_GROUP_LIST = 2004;
     public static final int TYPE_UPDATE_STATUS = 2005;
+    public static final int TYPE_REPLY_REGISTER = 2006;
 
    public JSONParser(String input){
        try{
@@ -52,6 +54,10 @@ public class JSONParser {
                      type = TYPE_UPDATE_STATUS;
                      object_update_status = a.getJSONObject("Data");
                  }
+                 else if(funciton.equals("ReplyRegister")){
+                     type = TYPE_REPLY_REGISTER;
+                     reply_register = a.getInt("Data");
+                 }
           }
           if(mArray.length() > 1)
               type = TYPE_UPDATE_DATA;
@@ -63,6 +69,10 @@ public class JSONParser {
     }
     public int getType(){
        return  type;
+    }
+
+    public int getReplyRegister(){
+       return reply_register;
     }
     public Boolean getVerifyData(){
         return reply_verify;
@@ -119,6 +129,27 @@ public class JSONParser {
                data.reply_status = status_list;
 
                data_list.add(data);
+           }
+       }catch (JSONException e){
+           e.printStackTrace();
+       }
+       return data_list;
+    }
+
+    public ArrayList<GroupData> getGroupData(){
+       ArrayList<GroupData> data_list = new ArrayList<GroupData>();
+       try{
+           for (int i = 0 ; i < object_groups_list.length() ; i++){
+                JSONObject tmp = object_groups_list.getJSONObject(i);
+                GroupData data = new GroupData();
+                data.group_id = tmp.getInt("Group_id");
+                data.group_name = tmp.getString("Group_name");
+                JSONArray member = tmp.getJSONArray("Group_member");
+                ArrayList<String> member_list = new ArrayList<String>();
+                for(int j = 0 ; j < member.length() ; j++){
+                    member_list.add(member.getString(j));
+                }
+                data_list.add(data);
            }
        }catch (JSONException e){
            e.printStackTrace();

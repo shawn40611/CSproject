@@ -2,6 +2,7 @@ package com.nctucs.csproject.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -22,6 +23,7 @@ public class GroupsActivity extends Navigation_BaseActivity{
         setToolbar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.groups);
+        LinearLayout member_list = findViewById(R.id.member_list);
     }
 
     @Override

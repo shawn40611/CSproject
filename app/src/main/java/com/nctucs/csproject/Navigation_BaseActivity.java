@@ -94,7 +94,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     public Dialog dialog_log_out;
     private GoogleSignInClient mClient;
     Button confirm,cancel;
-    private SocketReceiver socketReceiver;
 
 
     @Override
@@ -206,17 +205,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
 
     }
 
-    public class SocketReceiver extends BroadcastReceiver{
-        public Boolean notify;
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if(action.equals(SOCKER_RCV)){
-                 data  = intent.getExtras().getString("Data");
-            }
-
-        }
-    }
 
 
 

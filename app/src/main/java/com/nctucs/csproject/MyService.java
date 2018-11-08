@@ -45,14 +45,13 @@ public class MyService extends Service {
     private GoogleSignInAccount mAccount;
     private Bitmap user_photo;
 
-    public static final String SOCKER_ACTION = "Control";
     public static final String SOCKER_RCV = "ReceiveStr";
     private ReceiveThread listener;
     private GoogleAccountCredential mCredential;
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8890;
+    public static final int PORT = 8899;
 
     private static final String SCOPES = "https://www.googleapis.com/auth/calendar";
     private GoogleSignInClient mGoogleSignInClient;
@@ -184,13 +183,16 @@ public class MyService extends Service {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
+                    System.out.println("data = "+data);
                     JSONParser parser = new JSONParser(data);
                     int type = parser.getType();
+                    Intent intent = new Intent(SOCKER_RCV);
+                    intent.putExtra("TYPE",type);
                     switch (type){
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
-                            InformationHandler.setNotificationData(parser.getNotificationData());
+                            InformationHandler.setIsRegister(parser.getVerifyData());
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
                             InformationHandler.setNotificationData(parser.getNotificationData());
@@ -203,9 +205,11 @@ public class MyService extends Service {
                             break;
                         case JSONParser.TYPE_GROUP_LIST:
                             break;
+                        case JSONParser.TYPE_REPLY_REGISTER:
+                            intent.putExtra("reply",parser.getReplyRegister());
+                            break;
                     }
-                    Intent intent = new Intent(SOCKER_RCV);
-                    intent.putExtra("Data", data);
+
                     sendBroadcast(intent);
 
                 }

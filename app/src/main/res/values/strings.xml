@@ -25,15 +25,19 @@
     <string name="delete">DELETE</string>
     <string name="confirm_delete">確定要刪除事件嗎?</string>
     <string name="confirm_add">確定要添加事件嗎?</string>
-    <string-array name="add_event_hr">
-        <item>0 小時</item>
-        <item>1 小時</item>
-        <item>2 小時</item>
-        <item>3 小時</item>
-        <item>4 小時</item>
-        <item>5 小時</item>
-        <item>6 小時</item>
-    </string-array>
+    <string name="add_event_half_hr">半小時</string>
+    <string name="add_event_1hr">1小時</string>
+    <string name="add_event_2hr">2小時</string>
+    <string name="add_event_3hr">3小時</string>
+    <string name="add_event_4hr">4小時</string>
+    <string name="add_event_5hr">5小時</string>
+    <string name="add_event_all">全天</string>
+
+    <string name="morning">早上</string>
+    <string name="noon">中午</string>
+    <string name="afternoon">下午</string>
+    <string name="night">晚上</string>
+
     <string-array name="add_event_min">
         <item>0 分鐘</item>
         <item>15 分鐘</item>

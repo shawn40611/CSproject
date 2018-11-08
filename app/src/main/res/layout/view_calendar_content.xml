@@ -28,7 +28,6 @@
         android:textSize="@dimen/dp_12"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/content_time_grey" />
-    <!--
     <View
         android:id="@+id/highlight"
         android:layout_width="@dimen/dp_6"
@@ -36,7 +35,7 @@
         android:layout_alignLeft="@id/tv_content"
         android:layout_alignTop="@id/tv_content"
         android:background="@color/orange_grey"/>
-        -->
+
 
 
 

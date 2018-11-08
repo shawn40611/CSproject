@@ -28,7 +28,7 @@ public class JSONGenerator {
         JSONObject data = new JSONObject();
         try {
             register.put("function", "Register");
-            data.put("student_id", stu_id);
+            data.put("Student_id", stu_id);
             data.put("Name", name);
             data.put("Email", email);
             register.put("Data", data);
@@ -38,10 +38,18 @@ public class JSONGenerator {
         }
         return this.arr;
     }
-    public JSONArray inviteEvent() {
+    public JSONArray inviteEvent(String name,String location,String description,int preference,int time,int group) {
         JSONObject invitation = new JSONObject();
+        JSONObject data = new JSONObject();
         try {
             invitation.put("function", "Add_Event");
+            data.put("Event_name",name);
+            data.put("Event_location",location);
+            data.put("Event_description",description);
+            data.put("Event_time",time);
+            data.put("Event_preference",preference);
+            data.put("Event_group",group);
+            invitation.put("Data",data);
             this.arr.put(invitation);
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());

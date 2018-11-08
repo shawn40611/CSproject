@@ -3,9 +3,11 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,11 +28,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.services.calendar.model.Event;
+import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.JSONGenerator;
 import com.nctucs.csproject.JSONParser;
 import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.Navigation_BaseActivity;
@@ -55,6 +64,7 @@ import java.util.List;
 
 import com.nctucs.csproject.Adapter.ContentAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -69,18 +79,21 @@ public class MainActivity extends Navigation_BaseActivity {
     private RecyclerView mRecyclerview;
     private ContentAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private GoogleSignInAccount mAccount;
+    private ProgressBar progressBar;
 
 
-    private  Dialog dialog_register;
-
+    private Dialog dialog_register;
+    private Dialog dialog_add_event;
+    private Dialog dialog_choose_time;
     private DrawerLayout mDrawerLayout;
+    private int selected_time,selected_preference,selected_group;
 
     private static  Socket mSocket;
     private Boolean connected = false;
     private OutputStream outputStream;
     private List<Event> events = null;
     private CheckStatus checkstatus;
+    private GoogleSignInAccount mAccount;
     private MyService myService;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -102,6 +115,7 @@ public class MainActivity extends Navigation_BaseActivity {
 
 
     };
+    private BroadcastReceiver mReceiver;
 
 
     @Override
@@ -111,6 +125,7 @@ public class MainActivity extends Navigation_BaseActivity {
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        mAccount = InformationHandler.getAccount();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -164,6 +179,43 @@ public class MainActivity extends Navigation_BaseActivity {
 
         dialog_register = new Dialog(this);
         dialog_register.setContentView(R.layout.dialog_register);
+        dialog_add_event = new Dialog(this);
+        dialog_add_event.setContentView(R.layout.dialog_add_event);
+        progressBar = findViewById(R.id.progressbar);
+
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int type = intent.getExtras().getInt("TYPE");
+                if(type == JSONParser.TYPE_REPLY_REGISTER){
+                    progressBar.setVisibility(View.GONE);
+                    int r = intent.getExtras().getInt("reply");
+                    Toast toast;
+                    switch (r){
+                        case 0:
+                            toast = Toast.makeText(MainActivity.this,"Register Success!",Toast.LENGTH_LONG);
+                            toast.show();
+                            dialog_register.dismiss();
+                            break;
+                        case 1:
+                            toast = Toast.makeText(MainActivity.this,"This Google account is used!",Toast.LENGTH_LONG);
+                            toast.show();
+                            break;
+                        case 2:
+                            toast = Toast.makeText(MainActivity.this,"This student id is used!",Toast.LENGTH_LONG);
+                            toast.show();
+                            break;
+                        case 3:
+                            toast = Toast.makeText(MainActivity.this,"Both Google account and id are used!",Toast.LENGTH_LONG);
+                            toast.show();
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter socketIntentFilter = new IntentFilter();
+        socketIntentFilter.addAction(SOCKER_RCV);
+        registerReceiver(mReceiver,socketIntentFilter);
 
 
     }
@@ -177,15 +229,32 @@ public class MainActivity extends Navigation_BaseActivity {
             @Override
             public void complete() {
                 connected = true;
-                System.out.println("connect");
+                if(!InformationHandler.IsRegister()){
+
+                    final EditText et_name,et_student_id;
+                    et_name = dialog_register.findViewById(R.id.et_add_name);
+                    et_student_id = dialog_register.findViewById(R.id.et_add_ID);
+                    dialog_register.setCanceledOnTouchOutside(false);
+                    dialog_register.show();
+                    Button btn_ok = dialog_register.findViewById(R.id.btn_ok);
+                    btn_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            JSONGenerator generator = new JSONGenerator();
+                            JSONArray data ;
+                            String id= et_student_id.getText().toString();
+                            String name = et_name.getText().toString();
+                            data = generator.register(id,name,mAccount.getEmail());
+                            myService.sendData(data);
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
             }
         });
-        JSONParser p = new JSONParser("a");
+
     }
 
-    public MyService getService(){
-        return myService;
-    }
 
     public void getTime(View view) {
         if (currentDate != null) {
@@ -199,10 +268,6 @@ public class MainActivity extends Navigation_BaseActivity {
 
     }
 
-
-
-
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -212,9 +277,136 @@ public class MainActivity extends Navigation_BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void showAddEvent(){
+
+        Button btn_ok,btn_cancel;
+        final Button btn_add_time,btn_add_group,btn_add_preference;
+        final EditText et_add_name,et_add_location,et_add_description;
+        final TextView tv_add_time,tv_add_group,tv_add_preference;
+        dialog_add_event.setCanceledOnTouchOutside(false);
+        btn_ok = dialog_add_event.findViewById(R.id.btn_ok);
+        btn_cancel = dialog_add_event.findViewById(R.id.btn_cancel);
+        btn_add_group = dialog_add_event.findViewById(R.id.btn_add_group);
+        btn_add_time = dialog_add_event.findViewById(R.id.btn_add_time);
+        btn_add_preference = dialog_add_event.findViewById(R.id.btn_add_preference);
+        et_add_name = dialog_add_event.findViewById(R.id.et_add_name);
+        et_add_location = dialog_add_event.findViewById(R.id.et_add_location);
+        et_add_description = dialog_add_event.findViewById(R.id.et_add_description);
+        tv_add_time = dialog_add_event.findViewById(R.id.tv_add_time);
+        tv_add_group = dialog_add_event.findViewById(R.id.tv_add_group);
+        tv_add_preference = dialog_add_event.findViewById(R.id.tv_add_preference);
+        final PopupMenu menu_time  = new PopupMenu(this,btn_add_time);
+        PopupMenu menu_group = new PopupMenu(this,btn_add_group);
+        final PopupMenu menu_preference = new PopupMenu(this,btn_add_preference);
+
+        menu_time.getMenuInflater().inflate(R.menu.add_event_time_menu,menu_time.getMenu());
+        menu_preference.getMenuInflater().inflate(R.menu.menu_preference,menu_preference.getMenu());
+        selected_time  = -1;
+        selected_preference = -1;
+
+        menu_time.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.half_hour:
+                        tv_add_time.setText(R.string.add_event_half_hr);
+                        selected_time = 0;
+                        break;
+                    case R.id.one_hour:
+                        tv_add_time.setText(R.string.add_event_1hr);
+                        selected_time = 1;
+                        break;
+                    case R.id.two_hour:
+                        tv_add_time.setText(R.string.add_event_2hr);
+                        selected_time = 2;
+                        break;
+                    case R.id.three_hour:
+                        tv_add_time.setText(R.string.add_event_3hr);
+                        selected_time = 3;
+                        break;
+                    case R.id.four_hour:
+                        tv_add_time.setText(R.string.add_event_4hr);
+                        selected_time = 4;
+                        break;
+                    case R.id.five_hour:
+                        tv_add_time.setText(R.string.add_event_5hr);
+                        selected_time = 5;
+                        break;
+                    case R.id.all_day:
+                        tv_add_time.setText(R.string.add_event_all);
+                        selected_time = 6;
+                        break;
+                }
+                return true;
+            }
+        });
+        menu_preference.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.morning:
+                        tv_add_preference.setText(R.string.morning);
+                        selected_preference = 0;
+                        break;
+                    case R.id.noon:
+                        tv_add_preference.setText(R.string.noon);
+                        selected_preference = 1;
+                        break;
+                    case R.id.afternoon:
+                        tv_add_preference.setText(R.string.afternoon);
+                        selected_preference = 2;
+                        break;
+                    case R.id.night:
+                        tv_add_preference.setText(R.string.night);
+                        selected_preference = 3;
+                        break;
+                }
+                return true;
+            }
+        });
+        btn_add_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu_time.show();
+            }
+        });
+        btn_add_preference.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu_preference.show();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_add_event.dismiss();
+            }
+        });
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONArray data ;
+                JSONGenerator generator = new JSONGenerator();
+                String name,location,description;
+                name = et_add_name.getText().toString();
+                location = et_add_location.getText().toString();
+                description = et_add_description.getText().toString();
+                data = generator.inviteEvent(name,location,description,selected_preference,selected_time,selected_group);
+                mService.sendData(data);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+        dialog_add_event.show();
+    }
+
+    public void showSelectedTime(){
+
+    }
+
     private interface  CheckStatus{
         public void complete();
     }
+
     private void setCheckStatus(CheckStatus check){
         this.checkstatus = check;
     }

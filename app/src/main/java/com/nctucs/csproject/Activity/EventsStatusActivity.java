@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.EventsAdapter;
 import com.nctucs.csproject.Data.EventsStatusData;
+import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
@@ -36,7 +37,7 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         mRecyclerview = findViewById(R.id.rv_events_status);
         mLayoutmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         ArrayList<EventsStatusData> fake_data;
-        fake_data = new ArrayList<EventsStatusData>(5);
+        /*fake_data = new ArrayList<EventsStatusData>(5);
         for(int i = 0 ; i < 5 ; i++){
             EventsStatusData tmp = new EventsStatusData();
             tmp.events_name = "Dinner";
@@ -48,8 +49,8 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
                 tmp.reply_status[j] = random.nextInt(3);
             }
             fake_data.add(tmp);
-        }
-        adapter = new EventsAdapter(this,fake_data);
+        }*/
+        adapter = new EventsAdapter(this, InformationHandler.getEventsStatusData());
         mRecyclerview.setAdapter(adapter);
         mRecyclerview.setLayoutManager(mLayoutmanager);
 

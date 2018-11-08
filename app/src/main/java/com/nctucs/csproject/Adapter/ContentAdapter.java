@@ -3,19 +3,12 @@ package com.nctucs.csproject.Adapter;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -85,51 +78,18 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             });
         }
         else {
-            final Dialog add_event_dialog = new Dialog(mContext);
-            add_event_dialog.setContentView(R.layout.dialog_add_event);
-            add_event_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            Button btn_time, btn_group, btn_preference, btn_ok, btn_cancel;
-            btn_time = add_event_dialog.findViewById(R.id.btn_add_time);
-            btn_group = add_event_dialog.findViewById(R.id.btn_add_group);
-            btn_preference = add_event_dialog.findViewById(R.id.btn_add_preference);
-            btn_cancel = add_event_dialog.findViewById(R.id.btn_cancel);
-            btn_ok = add_event_dialog.findViewById(R.id.btn_ok);
             holder.tv_content.setClickable(true);
             holder.tv_content.setText("ADD EVENT!");
             holder.tv_content_time.setVisibility(View.GONE);
             holder.tv_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    add_event_dialog.show();
-                }
-            });
-            btn_time.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-
-
-            btn_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    add_event_dialog.dismiss();
-                }
-            });
-            btn_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
+                  mContext.showAddEvent();
                 }
             });
         }
 
     }
-
-
-
 
     @Override
     public int getItemCount() {
@@ -160,7 +120,7 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             super(itemView);
             tv_content = itemView.findViewById(R.id.tv_content);
             tv_content_time = itemView.findViewById(R.id.tv_content_time);
-            //highlight = itemView.findViewById(R.id.highlight);
+            highlight = itemView.findViewById(R.id.highlight);
             dialog = new Dialog(mContext);
             dialog.setContentView(R.layout.dialog_calendar_content);
             tv_event_title = dialog.findViewById(R.id.tv_event_title);

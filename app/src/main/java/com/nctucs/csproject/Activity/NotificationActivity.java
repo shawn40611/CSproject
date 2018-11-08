@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.nctucs.csproject.Adapter.NotificationAdapter;
 import com.nctucs.csproject.Data.NotificationData;
+import com.nctucs.csproject.InformationHandler;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
@@ -40,16 +41,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
         mLayourmanager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerview.setLayoutManager(mLayourmanager);
         ArrayList<NotificationData> fake_data = new ArrayList<NotificationData>();
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            NotificationData tmp = new NotificationData();
-            tmp.events_name = "Dinner";
-            tmp.event_groups = "專題生";
-            tmp.event_inviter = "董則遠";
-            tmp.event_description = String.format("%s\n%s", "this is test", "this is test");
-            fake_data.add(tmp);
-        }
-        adapter = new NotificationAdapter(this, fake_data);
+        adapter = new NotificationAdapter(this, InformationHandler.getNotificationData());
         mRecyclerview.setAdapter(adapter);
 
         toolbar = findViewById(R.id.toolbar);

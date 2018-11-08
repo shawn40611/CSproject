@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/morning"
+             android:title="@string/morning"/>
+        <item android:id="@+id/noon"
+            android:title="@string/noon"/>
+        <item android:id="@+id/afternoon"
+            android:title="@string/afternoon"/>
+        <item android:id="@+id/night"
+            android:title="@string/night"/>
+    </group>
+</menu>

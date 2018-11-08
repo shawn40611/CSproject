@@ -29,21 +29,21 @@ public class AddEventActivity extends Navigation_BaseActivity {
         spnHr = findViewById(R.id.add_event_hr);
         spnMin = findViewById(R.id.add_event_min);
 
-        ArrayAdapter<CharSequence> arrAdapHr = ArrayAdapter.createFromResource(this,
+       /* ArrayAdapter<CharSequence> arrAdapHr = ArrayAdapter.createFromResource(this,
                 R.array.add_event_hr,
                 android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> arrAdapMin = ArrayAdapter.createFromResource(this,
                 R.array.add_event_min,
-                android.R.layout.simple_spinner_item);
+                android.R.layout.simple_spinner_item);*/
 
-        arrAdapHr.setDropDownViewResource(R.layout.spinner_dropdown);
+        /*arrAdapHr.setDropDownViewResource(R.layout.spinner_dropdown);
         arrAdapMin.setDropDownViewResource(R.layout.spinner_dropdown);
 
         spnHr.setAdapter(arrAdapHr);
         spnMin.setAdapter(arrAdapMin);
 
         spnHr.setOnItemSelectedListener(spnHrSelected);
-        spnMin.setOnItemSelectedListener(spnMinSelected);
+        spnMin.setOnItemSelectedListener(spnMinSelected);*/
 
     }
     private AdapterView.OnItemSelectedListener spnHrSelected
