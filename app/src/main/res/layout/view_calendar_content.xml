@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/tv_content"
-        android:layout_width="@dimen/dp_326"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         android:clickable="true"
         android:layout_centerInParent="true"
@@ -14,7 +14,9 @@
         android:textSize="@dimen/dp_24"
         android:fontFamily="@font/montserrat"
         android:background="@drawable/content"
-        android:paddingLeft="@dimen/dp_20" />
+        android:paddingLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"/>
     <TextView
         android:id="@+id/tv_content_time"
         android:layout_width="wrap_content"
@@ -26,6 +28,7 @@
         android:textSize="@dimen/dp_12"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/content_time_grey" />
+    <!--
     <View
         android:id="@+id/highlight"
         android:layout_width="@dimen/dp_6"
@@ -33,6 +36,7 @@
         android:layout_alignLeft="@id/tv_content"
         android:layout_alignTop="@id/tv_content"
         android:background="@color/orange_grey"/>
+        -->
 
 
 
