@@ -77,7 +77,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     public static final String SOCKER_RCV = "ReceiveStr";
     private String data;
 
-    public MyService mService;
     public Boolean mBound;
 
 
@@ -183,7 +182,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                                 public void onClick(View v) {
                                     mClient.signOut();
                                     dialog_log_out.dismiss();
-                                    mService.stopSelf();
                                     finish();
                                 }
                             });

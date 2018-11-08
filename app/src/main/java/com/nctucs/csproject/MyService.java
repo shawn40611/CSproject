@@ -51,7 +51,7 @@ public class MyService extends Service {
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8888;
+    public static final int PORT = 8898;
 
     private static final String SCOPES = "https://www.googleapis.com/auth/calendar";
     private GoogleSignInClient mGoogleSignInClient;
@@ -171,7 +171,7 @@ public class MyService extends Service {
             super.run();
             if (mSocket != null) {
                 while (!stop && !mSocket.isClosed()) {
-                    buf = new byte[1024];
+                    buf = new byte[20000];
                     try {
                         inputStream.read(buf);
                     } catch (IOException e) {
@@ -192,6 +192,7 @@ public class MyService extends Service {
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
+                            InformationHandler.setGroupData(parser.getGroupData());
                             InformationHandler.setIsRegister(parser.getVerifyData());
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
@@ -209,6 +210,8 @@ public class MyService extends Service {
                             intent.putExtra("reply",parser.getReplyRegister());
                             break;
                         case JSONParser.TYPE_REPLY_ADD_EVENT:
+                            InformationHandler.setSelectedTimeData(parser.getSelectData());
+                            break;
 
                     }
 

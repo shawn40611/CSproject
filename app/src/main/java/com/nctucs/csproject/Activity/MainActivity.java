@@ -79,12 +79,12 @@ public class MainActivity extends Navigation_BaseActivity {
 
     MaterialCalendarView materialCalendarView;//布局内的控件
     CalendarDay currentDate;//自定义的日期对象
-    long mNowSelectedDate;
+    private long mNowSelectedDate;
     private TextView test;
     private RecyclerView mRecyclerview;
     private ContentAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar,progressBarInAdd;
 
 
     private Dialog dialog_register;
@@ -162,6 +162,7 @@ public class MainActivity extends Navigation_BaseActivity {
         now_day.setSeconds(0);
         System.out.println(now_day.toString());
         mNowSelectedDate = now_day.getTime();
+        System.out.println(mNowSelectedDate);
 
         //init
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -226,14 +227,14 @@ public class MainActivity extends Navigation_BaseActivity {
         dialog_register.setContentView(R.layout.dialog_register);
         dialog_add_event = new Dialog(this);
         dialog_add_event.setContentView(R.layout.dialog_add_event);
-        progressBar = findViewById(R.id.progressbar);
+        progressBar = findViewById(R.id.main_progressbar);
 
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 int type = intent.getExtras().getInt("TYPE");
+                progressBar.setVisibility(View.GONE);
                 if(type == JSONParser.TYPE_REPLY_REGISTER){
-                    progressBar.setVisibility(View.GONE);
                     int r = intent.getExtras().getInt("reply");
                     Toast toast;
                     switch (r){
@@ -278,7 +279,7 @@ public class MainActivity extends Navigation_BaseActivity {
             @Override
             public void complete() {
                 connected = true;
-                if(InformationHandler.IsRegister()){
+                if(!InformationHandler.IsRegister()){
 
                     final EditText et_name,et_student_id;
                     et_name = dialog_register.findViewById(R.id.et_add_name);
@@ -289,13 +290,13 @@ public class MainActivity extends Navigation_BaseActivity {
                     btn_ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            progressBar.setVisibility(View.VISIBLE);
                             JSONGenerator generator = new JSONGenerator();
                             JSONArray data ;
                             String id= et_student_id.getText().toString();
                             String name = et_name.getText().toString();
                             data = generator.register(id,name,mAccount.getEmail());
                             myService.sendData(data);
-                            progressBar.setVisibility(View.VISIBLE);
                         }
                     });
                 }
@@ -345,7 +346,7 @@ public class MainActivity extends Navigation_BaseActivity {
         tv_add_group = dialog_add_event.findViewById(R.id.tv_add_group);
         tv_add_preference = dialog_add_event.findViewById(R.id.tv_add_preference);
         final PopupMenu menu_time  = new PopupMenu(this,btn_add_time);
-        PopupMenu menu_group = new PopupMenu(this,btn_add_group);
+        final PopupMenu menu_group = new PopupMenu(this,btn_add_group);
         final PopupMenu menu_preference = new PopupMenu(this,btn_add_preference);
         Toast toast;
 
@@ -365,6 +366,7 @@ public class MainActivity extends Navigation_BaseActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     final int itemid = item.getItemId();
                     selected_group = data_list.get(itemid).group_id;
+                    tv_add_group.setText(data_list.get(itemid).group_name);
                     return true;
                 }
             });
@@ -435,6 +437,12 @@ public class MainActivity extends Navigation_BaseActivity {
                     menu_time.show();
                 }
             });
+            btn_add_group.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu_group.show();
+                }
+            });
             btn_add_preference.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -450,17 +458,20 @@ public class MainActivity extends Navigation_BaseActivity {
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressBar.setVisibility(View.VISIBLE);
                     JSONArray data;
                     JSONGenerator generator = new JSONGenerator();
                     String name, location, description;
                     name = et_add_name.getText().toString();
                     location = et_add_location.getText().toString();
                     description = et_add_description.getText().toString();
+                    System.out.println("date");
                     data = generator.
                             inviteEvent(name, location, description,
-                                    selected_preference, selected_time, selected_group, mNowSelectedDate);
-                    mService.sendData(data);
-                    progressBar.setVisibility(View.VISIBLE);
+                                    selected_preference, selected_time, selected_group, (mNowSelectedDate/1000));
+                    myService.sendData(data);
+                    dialog_add_event.dismiss();
+
                 }
             });
             dialog_add_event.show();
@@ -478,18 +489,22 @@ public class MainActivity extends Navigation_BaseActivity {
         LinearLayout [] content = new LinearLayout[10];
         LayoutInflater inflater = LayoutInflater.from(this);
         time_list = dialog_selected_time.findViewById(R.id.time_list);
-        for(int i = 0 ; i < datalist.size() ; i++){
+
+        for(int i = 0 ; i < (datalist.size() < 10 ? datalist.size() : 10)  ; i++){
             final SelectedTimeData tmp = datalist.get(i);
             content[i] = (LinearLayout)inflater.inflate(R.layout.view_add_event_timelist,null);
             TextView tv_add_event_time = content[i].findViewById(R.id.tv_add_event_time);
             Date start,end;
-            start = new Date(datalist.get(i).start);
-            end = new Date(datalist.get(i).end);
+            start = new Date(datalist.get(i).start*1000);
+            end = new Date(datalist.get(i).end*1000);
             String str = start.toString() + "-" +end.toString();
             tv_add_event_time.setText(str);
             final Dialog dialog_confirm = new Dialog(this);
             dialog_confirm.setContentView(R.layout.dialog_log_out);
             dialog_confirm.setCanceledOnTouchOutside(false);
+            TextView tv_title;
+            tv_title = dialog_confirm.findViewById(R.id.tv_dialog_title);
+            tv_title.setText("確定要這個時間?");
             Button btn_confirm,btn_cancel ;
             btn_confirm = dialog_confirm.findViewById(R.id.btn_confirm);
             btn_cancel = dialog_confirm.findViewById(R.id.btn_cancel);
@@ -498,7 +513,7 @@ public class MainActivity extends Navigation_BaseActivity {
                 public void onClick(View v) {
                     JSONGenerator generator = new JSONGenerator();
                     JSONArray data = generator.selectTime(tmp.event_id);
-                    mService.sendData(data);
+                    myService.sendData(data);
                     dialog_confirm.dismiss();
                     dialog_selected_time.dismiss();
                 }
@@ -515,7 +530,9 @@ public class MainActivity extends Navigation_BaseActivity {
                     dialog_confirm.show();
                 }
             });
+            time_list.addView(content[i]);
         }
+        dialog_selected_time.show();
     }
 
     private interface  CheckStatus{

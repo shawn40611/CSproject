@@ -22,5 +22,10 @@
         <item name="colorControlActivated">@color/orange_grey</item>
     </style>
 
+    <style name="BlackProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:colorAccent">@color/black</item>
+    </style>
+
+
 
 </resources>
