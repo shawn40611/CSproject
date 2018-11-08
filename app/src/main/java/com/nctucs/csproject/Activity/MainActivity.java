@@ -347,6 +347,7 @@ public class MainActivity extends Navigation_BaseActivity {
         final PopupMenu menu_time  = new PopupMenu(this,btn_add_time);
         PopupMenu menu_group = new PopupMenu(this,btn_add_group);
         final PopupMenu menu_preference = new PopupMenu(this,btn_add_preference);
+        Toast toast;
 
         menu_time.getMenuInflater().inflate(R.menu.add_event_time_menu,menu_time.getMenu());
         menu_preference.getMenuInflater().inflate(R.menu.menu_preference,menu_preference.getMenu());
@@ -354,114 +355,119 @@ public class MainActivity extends Navigation_BaseActivity {
         selected_preference = -1;
         selected_group = -1;
         final ArrayList<GroupData> data_list = InformationHandler.getGroupData();
-        for(int i = 0 ; i < data_list.size();i++){
-            GroupData data = data_list.get(i);
-            menu_group.getMenu().add(0,i,0,data.group_name);
-        }
-        menu_group.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                final int itemid = item.getItemId();
-                selected_group = data_list.get(itemid).group_id;
-                return true;
+        if(data_list != null) {
+            for (int i = 0; i < data_list.size(); i++) {
+                GroupData data = data_list.get(i);
+                menu_group.getMenu().add(0, i, 0, data.group_name);
             }
-        });
+            menu_group.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    final int itemid = item.getItemId();
+                    selected_group = data_list.get(itemid).group_id;
+                    return true;
+                }
+            });
 
-        menu_time.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.half_hour:
-                        tv_add_time.setText(R.string.add_event_half_hr);
-                        selected_time = 0;
-                        break;
-                    case R.id.one_hour:
-                        tv_add_time.setText(R.string.add_event_1hr);
-                        selected_time = 1;
-                        break;
-                    case R.id.two_hour:
-                        tv_add_time.setText(R.string.add_event_2hr);
-                        selected_time = 2;
-                        break;
-                    case R.id.three_hour:
-                        tv_add_time.setText(R.string.add_event_3hr);
-                        selected_time = 3;
-                        break;
-                    case R.id.four_hour:
-                        tv_add_time.setText(R.string.add_event_4hr);
-                        selected_time = 4;
-                        break;
-                    case R.id.five_hour:
-                        tv_add_time.setText(R.string.add_event_5hr);
-                        selected_time = 5;
-                        break;
-                    case R.id.all_day:
-                        tv_add_time.setText(R.string.add_event_all);
-                        selected_time = 6;
-                        break;
+            menu_time.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.half_hour:
+                            tv_add_time.setText(R.string.add_event_half_hr);
+                            selected_time = 0;
+                            break;
+                        case R.id.one_hour:
+                            tv_add_time.setText(R.string.add_event_1hr);
+                            selected_time = 1;
+                            break;
+                        case R.id.two_hour:
+                            tv_add_time.setText(R.string.add_event_2hr);
+                            selected_time = 2;
+                            break;
+                        case R.id.three_hour:
+                            tv_add_time.setText(R.string.add_event_3hr);
+                            selected_time = 3;
+                            break;
+                        case R.id.four_hour:
+                            tv_add_time.setText(R.string.add_event_4hr);
+                            selected_time = 4;
+                            break;
+                        case R.id.five_hour:
+                            tv_add_time.setText(R.string.add_event_5hr);
+                            selected_time = 5;
+                            break;
+                        case R.id.all_day:
+                            tv_add_time.setText(R.string.add_event_all);
+                            selected_time = 6;
+                            break;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
-        menu_preference.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.morning:
-                        tv_add_preference.setText(R.string.morning);
-                        selected_preference = 0;
-                        break;
-                    case R.id.noon:
-                        tv_add_preference.setText(R.string.noon);
-                        selected_preference = 1;
-                        break;
-                    case R.id.afternoon:
-                        tv_add_preference.setText(R.string.afternoon);
-                        selected_preference = 2;
-                        break;
-                    case R.id.night:
-                        tv_add_preference.setText(R.string.night);
-                        selected_preference = 3;
-                        break;
+            });
+            menu_preference.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.morning:
+                            tv_add_preference.setText(R.string.morning);
+                            selected_preference = 0;
+                            break;
+                        case R.id.noon:
+                            tv_add_preference.setText(R.string.noon);
+                            selected_preference = 1;
+                            break;
+                        case R.id.afternoon:
+                            tv_add_preference.setText(R.string.afternoon);
+                            selected_preference = 2;
+                            break;
+                        case R.id.night:
+                            tv_add_preference.setText(R.string.night);
+                            selected_preference = 3;
+                            break;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
-        btn_add_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu_time.show();
-            }
-        });
-        btn_add_preference.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu_preference.show();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_add_event.dismiss();
-            }
-        });
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONArray data ;
-                JSONGenerator generator = new JSONGenerator();
-                String name,location,description;
-                name = et_add_name.getText().toString();
-                location = et_add_location.getText().toString();
-                description = et_add_description.getText().toString();
-                data = generator.
-                        inviteEvent(name,location,description,
-                                selected_preference,selected_time,selected_group,mNowSelectedDate);
-                mService.sendData(data);
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        });
-        dialog_add_event.show();
+            });
+            btn_add_time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu_time.show();
+                }
+            });
+            btn_add_preference.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu_preference.show();
+                }
+            });
+            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog_add_event.dismiss();
+                }
+            });
+            btn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONArray data;
+                    JSONGenerator generator = new JSONGenerator();
+                    String name, location, description;
+                    name = et_add_name.getText().toString();
+                    location = et_add_location.getText().toString();
+                    description = et_add_description.getText().toString();
+                    data = generator.
+                            inviteEvent(name, location, description,
+                                    selected_preference, selected_time, selected_group, mNowSelectedDate);
+                    mService.sendData(data);
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+            dialog_add_event.show();
+        }else {
+            toast = Toast.makeText(this,"Join a group first!",Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public void showSelectedTime(final ArrayList<SelectedTimeData> datalist){
