@@ -26,9 +26,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -73,7 +75,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class MainActivity extends Navigation_BaseActivity {
+public class MainActivity extends Navigation_BaseActivity implements View.OnFocusChangeListener{
 
 
 
@@ -85,6 +87,7 @@ public class MainActivity extends Navigation_BaseActivity {
     private ContentAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar progressBar,progressBarInAdd;
+
 
 
     private Dialog dialog_register;
@@ -275,6 +278,7 @@ public class MainActivity extends Navigation_BaseActivity {
         Intent serviceIntent = new Intent(MainActivity.this,MyService.class);
         bindService(serviceIntent,mConnection,Context.BIND_AUTO_CREATE);
 
+
         setCheckStatus(new CheckStatus() {
             @Override
             public void complete() {
@@ -287,6 +291,24 @@ public class MainActivity extends Navigation_BaseActivity {
                     dialog_register.setCanceledOnTouchOutside(false);
                     dialog_register.show();
                     Button btn_ok = dialog_register.findViewById(R.id.btn_ok);
+
+                    et_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                hideKeyboard(v);
+                            }
+                        }
+                    });
+                    et_student_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                hideKeyboard(v);
+                            }
+                        }
+                    });
+
                     btn_ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -349,6 +371,11 @@ public class MainActivity extends Navigation_BaseActivity {
         final PopupMenu menu_group = new PopupMenu(this,btn_add_group);
         final PopupMenu menu_preference = new PopupMenu(this,btn_add_preference);
         Toast toast;
+
+        et_add_description.setOnFocusChangeListener(this);
+        et_add_location.setOnFocusChangeListener(this);
+        et_add_name.setOnFocusChangeListener(this);
+
 
         menu_time.getMenuInflater().inflate(R.menu.add_event_time_menu,menu_time.getMenu());
         menu_preference.getMenuInflater().inflate(R.menu.menu_preference,menu_preference.getMenu());
@@ -479,6 +506,18 @@ public class MainActivity extends Navigation_BaseActivity {
             toast = Toast.makeText(this,"Join a group first!",Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            hideKeyboard(v);
+        }
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void showSelectedTime(final ArrayList<SelectedTimeData> datalist){

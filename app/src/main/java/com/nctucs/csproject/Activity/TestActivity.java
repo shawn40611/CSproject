@@ -1,9 +1,17 @@
 package com.nctucs.csproject.Activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +41,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-public class TestActivity extends Activity {
+public class TestActivity extends Activity implements View.OnFocusChangeListener {
 
     private static  String APPLICATION_NAME="";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -43,13 +51,21 @@ public class TestActivity extends Activity {
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "com.credentials.json";
     private GoogleSignInAccount mAccount;
+    private Dialog test_dialog;
+    private EditText et1, et2, et3;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-
+        Button btn = findViewById(R.id.test_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddEvent();
+            }
+        });
 
         mAccount = getIntent().getParcelableExtra("mAccount");
         APPLICATION_NAME = getString(R.string.app_name);
@@ -88,6 +104,41 @@ public class TestActivity extends Activity {
             System.out.println(e.getMessage());
         }*/
 
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+
+
+
+    public void showAddEvent(){
+
+        test_dialog = new Dialog(this);
+        test_dialog.setContentView(R.layout.dialog_test);
+        test_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        test_dialog.show();
+        et1 = test_dialog.findViewById(R.id.test_et_add_name);
+        et2 = test_dialog.findViewById(R.id.test_et_add_description);
+        et3 = test_dialog.findViewById(R.id.test_et_add_location);
+
+        et1.setOnFocusChangeListener(this);
+        et2.setOnFocusChangeListener(this);
+        et3.setOnFocusChangeListener(this);
+
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(v.getId() != R.id.test_et_add_name) Log.d("test!", "not et1");
+        else Log.d("testtt", "et1");
+        if (!hasFocus) {
+            hideKeyboard(v);
+        }
     }
 
     /*private static Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {

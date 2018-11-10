@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/img_calendar"
         android:layout_width="@dimen/dp_133"
         android:layout_height="@dimen/dp_145"
         android:layout_alignParentTop="true"
@@ -11,32 +12,13 @@
         android:layout_marginTop="@dimen/dp_94"
         android:src="@drawable/calendar" />
 
-    <Button
-        android:id="@+id/btn_tutorial_2_right"
-        android:layout_width="@dimen/dp_39"
-        android:layout_height="@dimen/dp_64"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/dp_28"
-        android:layout_marginTop="@dimen/dp_226"
-        android:background="@drawable/button_right" />
-
-    <Button
-        android:id="@+id/btn_tutorial_2_left"
-        android:layout_width="@dimen/dp_39"
-        android:layout_height="@dimen/dp_64"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="@dimen/dp_28"
-        android:layout_marginTop="@dimen/dp_226"
-        android:background="@drawable/button_left" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_tutorial_2_right"
+        android:layout_below="@id/img_calendar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_62"
+        android:layout_marginTop="@dimen/dp_126"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:text="@string/tutorial_2"

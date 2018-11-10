@@ -11,6 +11,7 @@
         android:visibility="gone" />
 
     <ImageView
+        android:id="@+id/img_check"
         android:layout_width="@dimen/dp_133"
         android:layout_height="@dimen/dp_133"
         android:layout_alignParentTop="true"
@@ -18,23 +19,14 @@
         android:layout_marginTop="@dimen/dp_93"
         android:src="@drawable/check" />
 
-    <Button
-        android:id="@+id/btn_tutorial_3_left"
-        android:layout_width="@dimen/dp_39"
-        android:layout_height="@dimen/dp_64"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="@dimen/dp_28"
-        android:layout_marginTop="@dimen/dp_226"
-        android:background="@drawable/button_left" />
 
     <TextView
         android:id="@+id/get_started"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_tutorial_3_left"
+        android:layout_below="@id/img_check"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_58"
+        android:layout_marginTop="@dimen/dp_126"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:text="@string/tutorial_3"
