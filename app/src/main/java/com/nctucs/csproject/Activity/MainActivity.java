@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -73,6 +75,7 @@ import com.nctucs.csproject.Adapter.ContentAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mortbay.servlet.ProxyServlet;
 
 
 public class MainActivity extends Navigation_BaseActivity implements View.OnFocusChangeListener{
@@ -228,8 +231,10 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
 
         dialog_register = new Dialog(this);
         dialog_register.setContentView(R.layout.dialog_register);
+        dialog_register.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_add_event = new Dialog(this);
         dialog_add_event.setContentView(R.layout.dialog_add_event);
+        dialog_add_event.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressBar = findViewById(R.id.main_progressbar);
 
         mReceiver = new BroadcastReceiver() {
@@ -372,9 +377,30 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
         final PopupMenu menu_preference = new PopupMenu(this,btn_add_preference);
         Toast toast;
 
-        et_add_description.setOnFocusChangeListener(this);
-        et_add_location.setOnFocusChangeListener(this);
-        et_add_name.setOnFocusChangeListener(this);
+        et_add_description.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        et_add_location.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        et_add_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
 
         menu_time.getMenuInflater().inflate(R.menu.add_event_time_menu,menu_time.getMenu());
@@ -461,18 +487,21 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             btn_add_time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    hideKeyboard(v);
                     menu_time.show();
                 }
             });
             btn_add_group.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    hideKeyboard(v);
                     menu_group.show();
                 }
             });
             btn_add_preference.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    hideKeyboard(v);
                     menu_preference.show();
                 }
             });

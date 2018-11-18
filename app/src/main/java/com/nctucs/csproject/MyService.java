@@ -51,10 +51,8 @@ public class MyService extends Service {
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8898;
+    public static final int PORT = 8888;
 
-    private static final String SCOPES = "https://www.googleapis.com/auth/calendar";
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     public void onCreate() {
@@ -183,7 +181,8 @@ public class MyService extends Service {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("data = "+data);
+                    if(data != null)
+                        System.out.println("data = "+data);
                     JSONParser parser = new JSONParser(data);
                     int type = parser.getType();
                     Intent intent = new Intent(SOCKER_RCV);

@@ -3,7 +3,7 @@
     android:layout_width="@dimen/dp_300"
     android:layout_height="@dimen/dp_494"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@drawable/dialog_bg"
     android:clickable="true"
     android:focusableInTouchMode="true" >
     <TextView

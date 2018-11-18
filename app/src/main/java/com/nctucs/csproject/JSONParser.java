@@ -103,7 +103,8 @@ public class JSONParser {
                     data.event_groups = tmp.getString("Event_group");
                     data.event_inviter = tmp.getString("Event_inviter");
                     data.event_description = tmp.getString("Event_description");
-                    data.events_time = new Date(tmp.getString("Event_time"));
+                    data.events_start_time = new Date(tmp.getInt("Event_start_time")*1000);
+                    data.event_end_time = new Date(tmp.getInt("Event_end_time")*1000);
                }
                data_list.add(data);
 

@@ -60,6 +60,12 @@ public class GroupsActivity extends Navigation_BaseActivity{
                 GroupData data = data_list.get(i);
                 menu.getMenu().add(0, i, 0, data.group_name);
             }
+            btn_list.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menu.show();
+                }
+            });
             menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {

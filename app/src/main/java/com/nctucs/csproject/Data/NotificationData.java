@@ -13,6 +13,7 @@ public class NotificationData extends Object{
     public String events_name = "";
     public String event_groups = "";
     public String event_inviter = "";
-    public Date   events_time;
+    public Date  events_start_time;
+    public Date event_end_time;
     public String event_description = "";
 }
