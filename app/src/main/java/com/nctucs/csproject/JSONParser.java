@@ -69,7 +69,7 @@ public class JSONParser {
           if(mArray.length() > 1)
               type = TYPE_UPDATE_DATA;
        }catch (JSONException e){
-           e.printStackTrace();
+           System.out.println(e.getMessage());
        }
 
 
@@ -96,22 +96,23 @@ public class JSONParser {
                    data.group_id = tmp.getInt("Group_id");
                    data.group_name = tmp.getString("Group_name");
                    data.group_inviter = tmp.getString("Group_inviter");
-               }else if(n_type.equals("Event")){
+               }else if(n_type.equals("invitation")){
                     data.type = 1;
                     data.events_name = tmp.getString("Event_name");
                     data.event_id = tmp.getInt("Event_id");
                     data.event_groups = tmp.getString("Event_group");
                     data.event_inviter = tmp.getString("Event_inviter");
                     data.event_description = tmp.getString("Event_description");
-                    data.events_start_time = new Date(tmp.getInt("Event_start_time")*1000);
-                    data.event_end_time = new Date(tmp.getInt("Event_end_time")*1000);
+                    data.event_start_time = new Date(tmp.getLong("Event_start_time")*1000);
+                    data.event_end_time = new Date(tmp.getLong("Event_end_time")*1000);
                }
                data_list.add(data);
 
            }
        }catch (JSONException e){
-           e.printStackTrace();
+           System.out.println(e.getMessage());
        }
+       System.out.println("Return = " + data_list.size());
        return data_list;
     }
 
@@ -123,7 +124,8 @@ public class JSONParser {
                EventsStatusData data = new EventsStatusData();
                data.event_id = tmp.getInt("Event_id");
                data.events_name = tmp.getString("Event_name");
-               data.events_time = new Date(tmp.getString("Event_time"));
+               data.events_start_time = new Date(tmp.getLong("Event_start_time"));
+               data.events_end_time = new Date(tmp.getLong("Event_end_time"));
                JSONArray member,status;
                member = tmp.getJSONArray("Member");
                status = tmp.getJSONArray("Status");
@@ -139,7 +141,7 @@ public class JSONParser {
                data_list.add(data);
            }
        }catch (JSONException e){
-           e.printStackTrace();
+           System.out.println(e.getMessage());
        }
        return data_list;
     }

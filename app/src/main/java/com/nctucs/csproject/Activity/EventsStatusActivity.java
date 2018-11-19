@@ -41,26 +41,9 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
 
         mRecyclerview = findViewById(R.id.rv_events_status);
         mLayoutmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        ArrayList<EventsStatusData> fake_data;
-        /*fake_data = new ArrayList<EventsStatusData>(5);
-        for(int i = 0 ; i < 5 ; i++){
-            EventsStatusData tmp = new EventsStatusData();
-            tmp.events_name = "Dinner";
-            Random random = new Random();
-            tmp.reply_status = new int[5];
-            tmp.member_list = new ArrayList<String>(5);
-            for(int j = 0 ; j < 5 ; j++){
-                tmp.member_list.add("Shawn Wu");
-                tmp.reply_status[j] = random.nextInt(3);
-            }
-            fake_data.add(tmp);
-        }*/
         adapter = new EventsAdapter(this, InformationHandler.getEventsStatusData());
         mRecyclerview.setAdapter(adapter);
         mRecyclerview.setLayoutManager(mLayoutmanager);
-
-
-
 
     }
 

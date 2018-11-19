@@ -2,10 +2,13 @@ package com.nctucs.csproject.Activity;
 
 import android.app.Notification;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import com.nctucs.csproject.Adapter.NotificationAdapter;
 import com.nctucs.csproject.Data.NotificationData;
 import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
@@ -34,6 +38,27 @@ public class NotificationActivity extends Navigation_BaseActivity {
     private Toolbar toolbar;
     private BroadcastReceiver mReciver;
     private DrawerLayout mDrawerLayout;
+    public MyService myService;
+    Boolean connected = false;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyService.MyBinder binder = (MyService.MyBinder) service;
+            myService = binder.getService();
+            if(myService != null) {
+                connected = true;
+            }
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+
+
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +93,10 @@ public class NotificationActivity extends Navigation_BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Intent serviceIntent = new Intent(NotificationActivity.this,MyService.class);
+        bindService(serviceIntent,mConnection,Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -83,4 +112,5 @@ public class NotificationActivity extends Navigation_BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

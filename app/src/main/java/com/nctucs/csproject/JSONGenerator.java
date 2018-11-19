@@ -81,13 +81,15 @@ public class JSONGenerator {
         }
         return this.arr;
     }
-    public JSONArray reply(String type, int id, boolean status) {
+    public JSONArray reply(String type, int id, int status) {
         JSONObject reply = new JSONObject();
         try {
+            JSONObject data = new JSONObject();
             reply.put("function", "Reply_Notification");
-            reply.put("type", type);
-            reply.put("id", id);
-            reply.put("status", status);
+            data.put("type", type);
+            data.put("id", id);
+            data.put("status", status);
+            reply.put("Data",data);
             this.arr.put(reply);
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());

@@ -16,5 +16,5 @@
     <color name="menu_background">#3E5A6A</color>
     <color name="spinner_background">#E5E5E5</color>
     <color name="content_time_grey">#5F5F5F</color>
-
+    <color name="ic_launcher_background">#607D8B</color>
 </resources>

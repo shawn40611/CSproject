@@ -79,9 +79,7 @@ public class InformationHandler {
         else eventsStatusData.addAll(data);
     }
     public static void setNotificationData(ArrayList<NotificationData> data){
-        if(notificationData == null)
             notificationData = data;
-        else  notificationData.addAll(data);
     }
     public static  void setSelectedTimeData(ArrayList<SelectedTimeData> data){
         selectedTimeData = data;

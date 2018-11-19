@@ -210,7 +210,6 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
                     @Override
                     public void loadComplete() {
                         events = getData();
-                        System.out.println("set up " + (events != null));
                         adapter.setData(events);
                     }
                 });
@@ -288,6 +287,7 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             @Override
             public void complete() {
                 connected = true;
+                System.out.println("binded" + InformationHandler.IsRegister());
                 if(!InformationHandler.IsRegister()){
 
                     final EditText et_name,et_student_id;
@@ -565,7 +565,10 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             Date start,end;
             start = new Date(datalist.get(i).start*1000);
             end = new Date(datalist.get(i).end*1000);
-            String str = start.toString() + "-" +end.toString();
+            String str = (start.getHours() >= 10 ? start.getHours() : "0" + start.getHours())
+                    + ":" + (start.getMinutes() >= 10 ? start.getMinutes() : "0" + start.getMinutes())
+                    +"-"+ (end.getHours() >= 10 ? end.getHours() : "0" + end.getHours())
+                    + ":" + (end.getMinutes() >= 10 ? end.getMinutes() : "0" + end.getMinutes());
             tv_add_event_time.setText(str);
             final Dialog dialog_confirm = new Dialog(this);
             dialog_confirm.setContentView(R.layout.dialog_log_out);
