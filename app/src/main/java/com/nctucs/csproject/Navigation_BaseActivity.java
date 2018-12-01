@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -102,6 +103,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         dialog_log_out.setContentView(R.layout.dialog_log_out);
         confirm = dialog_log_out.findViewById(R.id.btn_confirm);
         cancel = dialog_log_out.findViewById(R.id.btn_cancel);
+        setNavNew(R.id.nav_events, true);
+        setNavNew(R.id.nav_notification, false);
     }
 
     @Override
@@ -110,7 +113,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         mClient = InformationHandler.getClient();
         mAccount = InformationHandler.getAccount();
         mCredential = InformationHandler.getCredential(this);
-
     }
 
 
@@ -191,7 +193,13 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     }
 
 
+    private void setNavNew(@IdRes int itemId, Boolean new_item) {
 
+        if(!new_item) {
+            ImageView img = (ImageView) NV.getMenu().findItem(itemId).getActionView();
+            img.setVisibility(View.INVISIBLE);
+        }
+    }
 
 
 

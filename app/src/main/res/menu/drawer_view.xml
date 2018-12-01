@@ -7,13 +7,15 @@
             android:title="@string/calendar"/>
         <item
             android:id="@+id/nav_events"
-            android:title="@string/events_status" />
+            android:title="@string/events_status"
+            app:actionLayout="@layout/drawer_counter"/>
         <item
             android:id="@+id/nav_groups"
             android:title="@string/groups"/>
         <item
             android:id="@+id/nav_notification"
-            android:title="@string/notification"/>
+            android:title="@string/notification"
+            app:actionLayout="@layout/drawer_counter"/>
         <item
             android:id="@+id/nav_log_out"
             android:title="@string/log_out" />
