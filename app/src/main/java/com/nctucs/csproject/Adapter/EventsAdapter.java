@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.nctucs.csproject.Activity.EventsStatusActivity;
 import com.nctucs.csproject.Data.EventsStatusData;
+import com.nctucs.csproject.JSONGenerator;
 import com.nctucs.csproject.R;
 
+import org.json.JSONArray;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
@@ -47,39 +49,84 @@ public class EventsAdapter extends android.support.v7.widget.RecyclerView.Adapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final EventsViewHolder holder, int position) {
         if(mData != null){
-            EventsStatusData data = mData.get(position);
+            final EventsStatusData data = mData.get(position);
             holder.tv_events_status.setText(data.events_name);
             ArrayList<String> member_list = data.member_list;
             int [] status = data.reply_status;
-            for(int i = 0 ; i < member_list.size() ; i++){
-                RelativeLayout tmp;
-                tmp = (RelativeLayout)mInflater.inflate(R.layout.list_member,null);
-                TextView tv_member_name = tmp.findViewById(R.id.tv_member_name);
-                ImageView iv_reply_status = tmp.findViewById(R.id.iv_reply_status);
-                tv_member_name.setText(member_list.get(i));
-                switch ((status[i])){
-                    case 0:
-                        iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_refuse));
-                        break;
-                    case 1:
-                        iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_check));
-                        break;
-                    case 2:
-                        iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_waiting));
-                        break;
+            if(holder.member_list.getChildCount() == 0) {
+                for (int i = 0; i < member_list.size(); i++) {
+                    RelativeLayout tmp;
+                    tmp = (RelativeLayout) mInflater.inflate(R.layout.list_member, null);
+                    TextView tv_member_name = tmp.findViewById(R.id.tv_member_name);
+                    ImageView iv_reply_status = tmp.findViewById(R.id.iv_reply_status);
+                    tv_member_name.setText(member_list.get(i));
+                    switch ((status[i])) {
+                        case 0:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_refuse));
+                            break;
+                        case 1:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_check));
+                            break;
+                        case 2:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_waiting));
+                            break;
+                    }
+                    holder.member_list.addView(tmp);
                 }
-                holder.member_list.addView(tmp);
             }
+            else{
+                for (int i = 0; i < member_list.size(); i++) {
+                    View tmp = holder.member_list.getChildAt(i);
+                    ImageView iv_reply_status = tmp.findViewById(R.id.iv_reply_status);
+                    switch ((status[i])) {
+                        case 0:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_refuse));
+                            break;
+                        case 1:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_check));
+                            break;
+                        case 2:
+                            iv_reply_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_waiting));
+                            break;
+                    }
+                }
+
+            }
+            holder.btn_confirm_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    JSONGenerator generator = new JSONGenerator();
+                    JSONArray array = generator.confirmEvent(data.event_id,1);
+                    mContext.myService.sendData(array);
+                    holder.dialog_add.dismiss();
+                }
+            });
+            holder.btn_confirm_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    JSONGenerator generator = new JSONGenerator();
+                    JSONArray array = generator.confirmEvent(data.event_id,0);
+                    mContext.myService.sendData(array);
+                    holder.dialog_delete.dismiss();
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        if(mData == null)
+        if(mData == null) {
+            mContext.setNavNew(R.id.nav_events,false);
             return 0;
+        }
         return mData.size();
+    }
+    public void setData(ArrayList<EventsStatusData> data){
+        mData = data;
+        System.out.println("change");
+        notifyDataSetChanged();
     }
 
     public static class EventsViewHolder extends  RecyclerView.ViewHolder{
@@ -144,26 +191,10 @@ public class EventsAdapter extends android.support.v7.widget.RecyclerView.Adapte
                     dialog_delete.show();
                 }
             });
-            btn_confirm_add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //send confirm infomation to server
-                    //and update data
-                    dialog_add.dismiss();
-                }
-            });
             btn_cancel_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog_add.dismiss();
-                }
-            });
-            btn_confirm_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //send delete info to server
-                    //update data
-                    dialog_delete.dismiss();
                 }
             });
             btn_cancel_delete.setOnClickListener(new View.OnClickListener() {

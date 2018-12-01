@@ -96,7 +96,7 @@ public class JSONGenerator {
         }
         return this.arr;
     }
-    public JSONArray confirmEvent(int id, boolean status) {
+    public JSONArray confirmEvent(int id, int status) {
         JSONObject confirm = new JSONObject();
         try {
             confirm.put("function", "ConfirmEvent");

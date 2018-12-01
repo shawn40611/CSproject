@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,7 +40,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
     private BroadcastReceiver mReciver;
     private DrawerLayout mDrawerLayout;
     public MyService myService;
-    Boolean connected = false;
+    public Boolean connected = false;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -81,6 +82,7 @@ public class NotificationActivity extends Navigation_BaseActivity {
         mReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                setNavNew(R.id.nav_notification,true);
                 adapter.notifyDataSetChanged();
             }
         };

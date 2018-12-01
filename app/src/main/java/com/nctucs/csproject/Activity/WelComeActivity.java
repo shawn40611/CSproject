@@ -167,7 +167,7 @@ public class WelComeActivity extends FragmentActivity {
         String serverClientId = getString(R.string.server_client_id_1);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(SCOPES))
-                .requestServerAuthCode(serverClientId,false)
+                .requestServerAuthCode(serverClientId,true)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);

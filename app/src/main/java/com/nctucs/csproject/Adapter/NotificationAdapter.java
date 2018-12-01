@@ -141,8 +141,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public int getItemCount() {
-        if(mData == null)
+        if(mData == null) {
+            mContext.setNavNew(R.id.nav_notification,false);
             return 0;
+        }
         return mData.size();
     }
 

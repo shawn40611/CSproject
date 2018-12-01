@@ -1,11 +1,13 @@
 package com.nctucs.csproject;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.nctucs.csproject.Activity.MainActivity;
 import com.nctucs.csproject.Activity.WelComeActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +52,8 @@ public class MyService extends Service {
     public static final String SOCKER_RCV = "ReceiveStr";
     private ReceiveThread listener;
     private GoogleAccountCredential mCredential;
+    long[] mVibratePattern = new long[]{0, 200, 100, 200};
+
 
 
     public static final String ADDRESS = "178.128.90.63";
@@ -151,7 +157,9 @@ public class MyService extends Service {
         private Socket mSocket;
         private InputStream inputStream;
         private byte[] buf;
+        private String tmp;
         private String data;
+        private Vibrator vibrator;
 
         public ReceiveThread(Socket s) {
             mSocket = s;
@@ -167,6 +175,9 @@ public class MyService extends Service {
         @Override
         public void run() {
             super.run();
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            Boolean lastexception = false;
+            tmp = "";
             if (mSocket != null) {
                 while (!stop && !mSocket.isClosed()) {
                     buf = new byte[20000];
@@ -181,9 +192,11 @@ public class MyService extends Service {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    if(data != null)
-                        System.out.println("data = "+data);
-                    JSONParser parser = new JSONParser(data);
+                    if(data != null) {
+                        System.out.println("data = " + data);
+                        tmp += data;
+                    }
+                    JSONParser parser = new JSONParser(tmp);
                     int type = parser.getType();
                     Intent intent = new Intent(SOCKER_RCV);
                     intent.putExtra("TYPE",type);
@@ -193,24 +206,54 @@ public class MyService extends Service {
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             InformationHandler.setGroupData(parser.getGroupData());
                             InformationHandler.setIsRegister(parser.getVerifyData());
+                            tmp = "";
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
+                            if(vibrator.hasVibrator())
+                                vibrator.vibrate(mVibratePattern,-1);
                             InformationHandler.setNotificationData(parser.getNotificationData());
+                            tmp = "";
                             break;
                         case  JSONParser.TYPE_STATUS:
+                            if(vibrator.hasVibrator())
+                                vibrator.vibrate(mVibratePattern,-1);
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
+                            tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_VERIFY:
                             InformationHandler.setIsRegister(parser.getVerifyData());
+                            tmp = "";
                             break;
                         case JSONParser.TYPE_GROUP_LIST:
+                            tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_REGISTER:
+                            if(vibrator.hasVibrator())
+                                vibrator.vibrate(mVibratePattern,-1);
                             intent.putExtra("reply",parser.getReplyRegister());
+                            tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_ADD_EVENT:
                             InformationHandler.setSelectedTimeData(parser.getSelectData());
+                            tmp = "";
                             break;
+                        case JSONParser.TYPE_UPDATE_STATUS:
+                            JSONArray temp = parser.getUpdateStatusData();
+                            try {
+                                for(int i = 0 ; i < temp.length() ; i++) {
+                                    JSONObject object = temp.getJSONObject(i);
+                                    int id = object.getInt("Event_id");
+                                    JSONArray status = object.getJSONArray("Status");
+                                    InformationHandler.updataStatus(id, status);
+                                }
+                            }catch (JSONException e){
+
+                            }
+                            tmp = "";
+                            break;
+
+                        case JSONParser.TYPE_EXCEPTION:
+                            continue;
 
                     }
 

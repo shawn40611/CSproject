@@ -13,14 +13,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 public class JSONParser {
     private Boolean reply_verify;
-    private JSONObject object_update_status;
+    private JSONArray object_update_status;
     private JSONArray  mArray,object_notification,object_status,object_groups_list,object_select_time;
     private int reply_register;
     int type;
+    public static final int TYPE_EXCEPTION = 1999;
     public static final int TYPE_REPLY_VERIFY = 2000;
     public static final int TYPE_UPDATE_DATA = 2001;
     public static final int TYPE_NOTIFICATION = 2002;
@@ -31,48 +33,50 @@ public class JSONParser {
     public static final int TYPE_REPLY_ADD_EVENT = 2007;
 
    public JSONParser(String input){
-       try{
-          mArray = new JSONArray(input);
-          for(int i = 0 ; i < mArray.length() ; i++){
-                  JSONObject a = mArray.getJSONObject(i);
-                  String funciton = a.getString("function");
-                 if(funciton.equals("ReplyVerify")){
+       parse(input);
+    }
+    public void parse(String input){
+        try{
+            mArray = new JSONArray(input);
+            for(int i = 0 ; i < mArray.length() ; i++){
+                JSONObject a = mArray.getJSONObject(i);
+                String funciton = a.getString("function");
+                if(funciton.equals("ReplyVerify")){
                     type = TYPE_REPLY_VERIFY;
                     reply_verify = a.getBoolean("Data");
-                 }
-                 else if(funciton.equals("Notification")){
+                }
+                else if(funciton.equals("Notification")){
                     type = TYPE_NOTIFICATION;
                     object_notification = a.getJSONArray("Data");
-                 }
-                 else if(funciton.equals("Status")){
-                     type = TYPE_STATUS;
-                     object_status = a.getJSONArray("Data");
-                 }
-                 else if(funciton.equals("Group_List")){
-                     type = TYPE_GROUP_LIST;
-                     object_groups_list = a.getJSONArray("Data");
-                 }
-                 else if(funciton.equals("Update_Status")){
-                     type = TYPE_UPDATE_STATUS;
-                     object_update_status = a.getJSONObject("Data");
-                 }
-                 else if(funciton.equals("ReplyRegister")){
-                     type = TYPE_REPLY_REGISTER;
-                     reply_register = a.getInt("Data");
-                 }
-                 else if(funciton.equals("ReplyAddEvent")){
-                     type = TYPE_REPLY_ADD_EVENT;
-                     object_select_time = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("Status")){
+                    type = TYPE_STATUS;
+                    object_status = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("Group_List")){
+                    type = TYPE_GROUP_LIST;
+                    object_groups_list = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("update_status")){
+                    type = TYPE_UPDATE_STATUS;
+                    object_update_status = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("ReplyRegister")){
+                    type = TYPE_REPLY_REGISTER;
+                    reply_register = a.getInt("Data");
+                }
+                else if(funciton.equals("ReplyAddEvent")){
+                    type = TYPE_REPLY_ADD_EVENT;
+                    object_select_time = a.getJSONArray("Data");
 
-                 }
-          }
-          if(mArray.length() > 1)
-              type = TYPE_UPDATE_DATA;
-       }catch (JSONException e){
-           System.out.println(e.getMessage());
-       }
-
-
+                }
+            }
+            if(mArray.length() > 1)
+                type = TYPE_UPDATE_DATA;
+        }catch (JSONException e){
+            System.out.println("parse"+e.getMessage());
+            type = TYPE_EXCEPTION;
+        }
     }
     public int getType(){
        return  type;
@@ -110,7 +114,7 @@ public class JSONParser {
 
            }
        }catch (JSONException e){
-           System.out.println(e.getMessage());
+           System.out.println("getNoti"+e.getMessage());
        }
        System.out.println("Return = " + data_list.size());
        return data_list;
@@ -141,7 +145,7 @@ public class JSONParser {
                data_list.add(data);
            }
        }catch (JSONException e){
-           System.out.println(e.getMessage());
+           System.out.println("getEvent"+e.getMessage());
        }
        return data_list;
     }
@@ -184,6 +188,10 @@ public class JSONParser {
            e.printStackTrace();
        }
        return  data_list;
+    }
+
+    public JSONArray getUpdateStatusData(){
+       return object_update_status;
     }
 
 

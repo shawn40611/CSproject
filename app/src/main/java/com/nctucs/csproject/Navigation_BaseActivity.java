@@ -193,7 +193,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     }
 
 
-    private void setNavNew(@IdRes int itemId, Boolean new_item) {
+    public void setNavNew(@IdRes int itemId, Boolean new_item) {
 
         if(!new_item) {
             ImageView img = (ImageView) NV.getMenu().findItem(itemId).getActionView();

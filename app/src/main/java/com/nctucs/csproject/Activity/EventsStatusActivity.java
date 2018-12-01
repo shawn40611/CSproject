@@ -1,6 +1,14 @@
 package com.nctucs.csproject.Activity;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +21,7 @@ import android.widget.TextView;
 import com.nctucs.csproject.Adapter.EventsAdapter;
 import com.nctucs.csproject.Data.EventsStatusData;
 import com.nctucs.csproject.InformationHandler;
+import com.nctucs.csproject.MyService;
 import com.nctucs.csproject.Navigation_BaseActivity;
 import com.nctucs.csproject.R;
 
@@ -25,7 +34,29 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
     EventsAdapter adapter;
     RecyclerView mRecyclerview;
     RecyclerView.LayoutManager mLayoutmanager;
+    public MyService myService;
+    Boolean connected;
     private DrawerLayout mDrawerLayout;
+    private BroadcastReceiver mReceiver;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyService.MyBinder binder = (MyService.MyBinder) service;
+            myService = binder.getService();
+            if(myService != null) {
+                connected = true;
+            }
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+
+
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,12 +75,25 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         adapter = new EventsAdapter(this, InformationHandler.getEventsStatusData());
         mRecyclerview.setAdapter(adapter);
         mRecyclerview.setLayoutManager(mLayoutmanager);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setNavNew(R.id.nav_events,true);
+                adapter.setData(InformationHandler.getEventsStatusData());
+                System.out.println("status receive");
+            }
+        };
+        IntentFilter socketIntentFilter = new IntentFilter();
+        socketIntentFilter.addAction(SOCKER_RCV);
+        registerReceiver(mReceiver,socketIntentFilter);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Intent serviceIntent = new Intent(EventsStatusActivity.this,MyService.class);
+        bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);
 
     }
     public boolean onOptionsItemSelected(MenuItem item) {

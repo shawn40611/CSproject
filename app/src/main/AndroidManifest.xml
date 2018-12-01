@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -21,7 +22,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name="com.nctucs.csproject.Activity.WelComeActivity"
+            android:name=".Activity.WelComeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,22 +31,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nctucs.csproject.Activity.MainActivity"
+            android:name=".Activity.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.TestActivity"
-                    android:screenOrientation="portrait"/>
-
         <activity
-            android:name="com.nctucs.csproject.Activity.AddEventActivity"
+            android:name=".Activity.TestActivity"
+            android:screenOrientation="portrait"
+
             android:exported="true"/>
-        <activity android:name=".Activity.EventsStatusActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.NotificationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.GroupsActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".Activity.EventsStatusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.GroupsActivity"
+            android:screenOrientation="portrait" />
     </application>
-
 
 </manifest>

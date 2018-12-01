@@ -14,6 +14,9 @@ import com.nctucs.csproject.Data.GroupData;
 import com.nctucs.csproject.Data.NotificationData;
 import com.nctucs.csproject.Data.SelectedTimeData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
@@ -100,6 +103,23 @@ public class InformationHandler {
 
     public static ArrayList<NotificationData> getNotificationData() {
         return notificationData;
+    }
+
+    public static void updataStatus(int id, JSONArray status){
+        for(int i = 0 ; i < eventsStatusData.size() ; i++){
+            EventsStatusData data = eventsStatusData.get(i);
+            if(data.event_id == id){
+                System.out.println(data.events_name);
+                try {
+                    for(int j = 0 ; j < data.member_list.size();j++){
+                        data.reply_status[j] = status.getInt(j);
+                    }
+                }catch (JSONException e){
+                    System.out.println("Exception in update " + e);
+                }
+
+            }
+        }
     }
     public static void setIsRegister(Boolean reply){
         isRegister = reply;
