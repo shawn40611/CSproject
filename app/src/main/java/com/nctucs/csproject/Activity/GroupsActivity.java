@@ -54,6 +54,7 @@ public class GroupsActivity extends Navigation_BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
+
         data_list = InformationHandler.getGroupData();
         if(data_list != null) {
             for (int i = 0; i < data_list.size(); i++) {

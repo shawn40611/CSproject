@@ -171,14 +171,6 @@ public class WelComeActivity extends FragmentActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-
-            }
-        });
-        t.start();
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);

@@ -41,7 +41,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-public class TestActivity extends Activity implements View.OnFocusChangeListener {
+public class TestActivity extends Activity {
 
     private static  String APPLICATION_NAME="";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -59,13 +59,13 @@ public class TestActivity extends Activity implements View.OnFocusChangeListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-        Button btn = findViewById(R.id.test_button);
+       /* Button btn = findViewById(R.id.test_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAddEvent();
             }
-        });
+        });*/
 
         mAccount = getIntent().getParcelableExtra("mAccount");
         APPLICATION_NAME = getString(R.string.app_name);
@@ -115,7 +115,7 @@ public class TestActivity extends Activity implements View.OnFocusChangeListener
 
 
 
-    public void showAddEvent(){
+   /* public void showAddEvent(){
 
         test_dialog = new Dialog(this);
         test_dialog.setContentView(R.layout.dialog_test);
@@ -130,16 +130,16 @@ public class TestActivity extends Activity implements View.OnFocusChangeListener
         et3.setOnFocusChangeListener(this);
 
 
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if(v.getId() != R.id.test_et_add_name) Log.d("test!", "not et1");
         else Log.d("testtt", "et1");
         if (!hasFocus) {
             hideKeyboard(v);
         }
-    }
+    }*/
 
     /*private static Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {
         // Load client secrets.
