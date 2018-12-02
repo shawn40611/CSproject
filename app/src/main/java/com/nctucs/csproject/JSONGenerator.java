@@ -71,13 +71,42 @@ public class JSONGenerator {
 
         return  arr;
     }
-    public JSONArray inviteGroup() {
+    public JSONArray createGroup(String name) {
         JSONObject invitation = new JSONObject();
+        JSONObject data = new JSONObject();
         try {
-            invitation.put("function", "Add_Group");
+            invitation.put("function", "CreateGroup");
+            data.put("group_name",name);
+            invitation.put("Data",data);
             this.arr.put(invitation);
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
+        }
+        return this.arr;
+    }
+    public JSONArray search(String value){
+        JSONObject search = new JSONObject();
+        try {
+            search.put("function","Search");
+            search.put("Data",value);
+            arr.put(search);
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return this.arr;
+    }
+    public JSONArray addmember(int group_id,int user_id){
+        JSONObject add = new JSONObject();
+        JSONObject data = new JSONObject();
+        try{
+            add.put("function","AddMember");
+            data.put("group_id",group_id);
+            data.put("user_id",user_id);
+            add.put("Data",data);
+            this.arr.put(add);
+        }catch (JSONException e){
+            e.printStackTrace();
         }
         return this.arr;
     }
@@ -108,6 +137,7 @@ public class JSONGenerator {
         }
         return this.arr;
     }
+
 
 
 }

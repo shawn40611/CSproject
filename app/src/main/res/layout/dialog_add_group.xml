@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_320"
+    android:layout_height="@dimen/dp_250"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_bg"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_20"
+        android:fontFamily="@font/montserrat"
+        android:text="創建群組"
+        android:textSize="@dimen/dp_24"
+        android:textColor="@color/black"
+        />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_et_add_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:background="@color/transparent"
+        android:layout_marginTop="@dimen/dp_30"
+        app:theme="@style/TextInputLayoutLabelGrey">
+        <EditText
+            android:id="@+id/et_add_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="40dp"
+            android:ems="10"
+            android:hint="群組名稱"
+
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_31"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_29"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_toLeftOf="@+id/btn_ok"
+        android:background="@color/transparent"
+        android:text="cancel"
+        android:textColor="@color/green_grey" />
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_31"
+        android:background="@color/transparent"
+        android:textColor="@color/ok_yellow"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_29"
+        android:text="OK"/>
+
+    <ProgressBar
+        android:id="@+id/add_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

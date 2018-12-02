@@ -19,8 +19,11 @@ import java.util.Map;
 public class JSONParser {
     private Boolean reply_verify;
     private JSONArray object_update_status;
-    private JSONArray  mArray,object_notification,object_status,object_groups_list,object_select_time;
+    private JSONArray  mArray,object_notification,object_status,object_groups_list,object_select_time
+            ,object_search;
+    private int group_id;
     private int reply_register;
+    private String name;
     int type;
     public static final int TYPE_EXCEPTION = 1999;
     public static final int TYPE_REPLY_VERIFY = 2000;
@@ -31,6 +34,8 @@ public class JSONParser {
     public static final int TYPE_UPDATE_STATUS = 2005;
     public static final int TYPE_REPLY_REGISTER = 2006;
     public static final int TYPE_REPLY_ADD_EVENT = 2007;
+    public static final int TYPE_REPLY_SEARCH = 2008;
+    public static final int TYPE_REPLY_CREATE = 2009;
 
    public JSONParser(String input){
        parse(input);
@@ -44,6 +49,7 @@ public class JSONParser {
                 if(funciton.equals("ReplyVerify")){
                     type = TYPE_REPLY_VERIFY;
                     reply_verify = a.getBoolean("Data");
+                    name = a.getString("Name");
                 }
                 else if(funciton.equals("Notification")){
                     type = TYPE_NOTIFICATION;
@@ -69,6 +75,22 @@ public class JSONParser {
                     type = TYPE_REPLY_ADD_EVENT;
                     object_select_time = a.getJSONArray("Data");
 
+                }
+                else if(funciton.equals("update_group")){
+                    type = TYPE_GROUP_LIST;
+                    object_groups_list = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("Search")){
+                    type = TYPE_REPLY_SEARCH;
+                    object_search = a.getJSONArray("Data");
+                }
+                else if(funciton.equals("CreateGroup")){
+                    type = TYPE_REPLY_CREATE;
+                    System.out.println("parse = " + type);
+                    JSONObject object_create;
+                    object_create = a.getJSONObject("Data");
+                    group_id = object_create.getInt("group_id");
+                    System.out.println("parse id= " + group_id);
                 }
             }
             if(mArray.length() > 1)
@@ -163,6 +185,7 @@ public class JSONParser {
                 for(int j = 0 ; j < member.length() ; j++){
                     member_list.add(member.getString(j));
                 }
+                data.member_list = member_list;
                 data_list.add(data);
            }
        }catch (JSONException e){
@@ -194,6 +217,17 @@ public class JSONParser {
        return object_update_status;
     }
 
+    public JSONArray getSearchData(){
+       return object_search;
+    }
+
+    public int getGroupID(){
+       return group_id;
+    }
+
+    public String getName(){
+       return name;
+    }
 
 
 

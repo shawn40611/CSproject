@@ -34,6 +34,7 @@ public class InformationHandler {
     private static ArrayList<NotificationData> notificationData;
     private static ArrayList<SelectedTimeData> selectedTimeData;
     private static ArrayList<GroupData> groupData;
+    private static String me;
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     public static void setAccount(GoogleSignInAccount account){
@@ -75,6 +76,9 @@ public class InformationHandler {
     public static Bitmap getBitmap(){
         return mphoto;
     }
+    public static void setName(String name){
+        me = name;
+    }
 
     public static void setEventsStatusData(ArrayList<EventsStatusData> data){
         if(eventsStatusData == null)
@@ -89,6 +93,10 @@ public class InformationHandler {
     }
     public static void setGroupData(ArrayList<GroupData> data){
         groupData = data;
+    }
+    public static void addGroupData(GroupData data){
+        System.out.println("ADD" + data.group_name);
+        groupData.add(data);
     }
 
     public static ArrayList<GroupData> getGroupData(){return groupData;}
@@ -123,6 +131,9 @@ public class InformationHandler {
     }
     public static void setIsRegister(Boolean reply){
         isRegister = reply;
+    }
+    public static String getName(){
+        return me;
     }
 
     public static Boolean IsRegister() {

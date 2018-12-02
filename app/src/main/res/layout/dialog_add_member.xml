@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_320"
+    android:layout_height="@dimen/dp_550"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_bg"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_20"
+        android:fontFamily="@font/montserrat"
+        android:text="新增成員"
+        android:textSize="@dimen/dp_24"
+        android:textColor="@color/black"
+        />
+
+
+        <EditText
+            android:id="@+id/et_search_member"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_below="@id/tv_title"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_80"
+            android:ems="10"
+            android:hint="學號/名字/信箱"
+           android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btn_search_member"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/et_search_member"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:background="@drawable/search"
+        android:layout_alignParentRight="true"/>
+
+
+    <RelativeLayout
+        android:id="@+id/found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_ok"
+        android:layout_below="@id/et_search_member"
+        android:layout_marginTop="@dimen/dp_40"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/img_member_pic"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginRight="@dimen/dp_20"
+                android:src="@drawable/check" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/img_member_pic">
+
+                <TextView
+                    android:id="@+id/tv_member_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name" />
+
+                <TextView
+                    android:id="@+id/tv_member_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_member_name"
+                    android:text="ID" />
+
+                <TextView
+                    android:id="@+id/tv_member_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_member_id"
+                    android:text="email@gmail.com" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="65dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/member"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="加入" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/not_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/et_search_member"
+        android:layout_above="@id/btn_ok"
+        android:layout_marginTop="@dimen/dp_40"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/tv_member_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="找不到此用戶"/>
+
+    </RelativeLayout>
+
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_31"
+        android:background="@color/transparent"
+        android:textColor="@color/ok_yellow"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_29"
+        android:text="OK"/>
+
+    <ProgressBar
+        android:id="@+id/add_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

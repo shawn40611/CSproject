@@ -287,7 +287,6 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             @Override
             public void complete() {
                 connected = true;
-                System.out.println("binded" + InformationHandler.IsRegister());
                 if(!InformationHandler.IsRegister()){
 
                     final EditText et_name,et_student_id;
@@ -322,6 +321,7 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
                             JSONArray data ;
                             String id= et_student_id.getText().toString();
                             String name = et_name.getText().toString();
+                            InformationHandler.setName(name);
                             data = generator.register(id,name,mAccount.getEmail());
                             myService.sendData(data);
                         }

@@ -33,13 +33,12 @@
         android:text="@string/groups"
         android:background="@color/spinner_background"
         />
-
    <LinearLayout
         android:id="@+id/rv_groups_member"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/btn_groups"
-       android:orientation="vertical"
+        android:orientation="vertical"
         android:layout_marginTop="@dimen/dp_48"
         android:layout_above="@id/btn_add_groups"/>
 
@@ -47,12 +46,12 @@
     
     <Button
         android:id="@+id/btn_add_groups"
-        android:layout_width="@dimen/dp_80"
-        android:layout_height="@dimen/dp_80"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_18"
-        android:layout_marginBottom="@dimen/dp_18"
+        android:layout_marginRight="@dimen/dp_25"
+        android:layout_marginBottom="@dimen/dp_25"
         android:background="@drawable/add_groups"/>
 
 </RelativeLayout>

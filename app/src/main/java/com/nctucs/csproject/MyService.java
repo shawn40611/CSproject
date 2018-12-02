@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
@@ -199,13 +200,17 @@ public class MyService extends Service {
                     JSONParser parser = new JSONParser(tmp);
                     int type = parser.getType();
                     Intent intent = new Intent(SOCKER_RCV);
-                    intent.putExtra("TYPE",type);
+                    Bundle bag = new Bundle();
+                    System.out.println("service type = " + type);
+                    bag.putInt("TYPE",type);
                     switch (type){
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             InformationHandler.setGroupData(parser.getGroupData());
                             InformationHandler.setIsRegister(parser.getVerifyData());
+                            if(parser.getVerifyData())
+                                InformationHandler.setName(parser.getName());
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
@@ -225,6 +230,7 @@ public class MyService extends Service {
                             tmp = "";
                             break;
                         case JSONParser.TYPE_GROUP_LIST:
+                            InformationHandler.setGroupData(parser.getGroupData());
                             tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_REGISTER:
@@ -251,11 +257,21 @@ public class MyService extends Service {
                             }
                             tmp = "";
                             break;
-
+                        case JSONParser.TYPE_REPLY_CREATE:
+                            int group_id = parser.getGroupID();
+                            bag.putInt("group_id",group_id);
+                            tmp = "";
+                            break;
+                        case JSONParser.TYPE_REPLY_SEARCH:
+                            JSONArray array = parser.getSearchData();
+                            bag.putString("SearchData",array.toString());
+                            tmp = "";
+                            break;
                         case JSONParser.TYPE_EXCEPTION:
                             continue;
 
                     }
+                    intent.putExtras(bag);
 
                     sendBroadcast(intent);
 
