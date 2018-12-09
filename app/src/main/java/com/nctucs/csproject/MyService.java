@@ -227,8 +227,9 @@ public class MyService extends Service {
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
                             appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
-                            notification = new Notification.Builder(getApplicationContext())
+                            notification = new Notification.Builder(MyService.this)
                                     .setContentIntent(appIntent)
+                                    .setSmallIcon(R.drawable.calendar)
                                     .setTicker("notification on status bar.")
                                     .setWhen(System.currentTimeMillis())
                                     .setAutoCancel(true)
@@ -236,7 +237,7 @@ public class MyService extends Service {
                                     .setContentText("There is a new notification!")
                                     .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
                                     .build();
-                            manager.notify(0,notification);
+                            manager.notify(123,notification);
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             tmp = "";
                             break;
@@ -246,8 +247,9 @@ public class MyService extends Service {
                             notifyIntent = new Intent(MyService.this, EventsStatusActivity.class);
                             notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
-                            notification = new Notification.Builder(getApplicationContext())
+                            notification = new Notification.Builder(MyService.this)
                                     .setContentIntent(appIntent)
+                                    .setSmallIcon(R.drawable.calendar)
                                     .setTicker("notification on status bar.")
                                     .setWhen(System.currentTimeMillis())
                                     .setAutoCancel(true)
@@ -255,7 +257,7 @@ public class MyService extends Service {
                                     .setContentText("You Can Check Event Status Now!!")
                                     .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
                                     .build();
-                            manager.notify(0,notification);
+                            manager.notify(123,notification);
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             tmp = "";
                             break;
