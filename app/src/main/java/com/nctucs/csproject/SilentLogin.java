@@ -77,8 +77,12 @@ public class SilentLogin {
             @Override
             public void run() {
                 ConnectionResult result  = mGoogleApiClient.blockingConnect();
-                if(result.isSuccess())
+                if(result.isSuccess()){
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                    if(listener != null){
+                        listener.loginComplete();
+                    }
+                }
             }
         }).start();
 

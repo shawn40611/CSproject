@@ -60,7 +60,7 @@ public class MyService extends Service {
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8898;
+    public static final int PORT = 8888;
 
 
     @Override

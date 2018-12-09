@@ -151,6 +151,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                 public void loginComplete() {
                     if (login.isLoginSuccess()) {
                         mAccount = InformationHandler.getAccount();
+                        System.out.println("login");
                         Message message = new Message();
                         message.what = UPDATE_ACCOUNT;
                         handler.sendMessage(message);
@@ -209,6 +210,10 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.out.println("onDestroy");
+        if(dialog_log_out != null){
+            dialog_log_out.dismiss();
+        }
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -260,9 +265,14 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                                 @Override
                                 public void onClick(View v) {
                                     SilentLogin login = new SilentLogin(getApplicationContext(),mAccount.getAccount());
+                                    login.setLoginListener(new SilentLogin.isLoginCompleteListener() {
+                                        @Override
+                                        public void loginComplete() {
+                                            finish();
+                                        }
+                                    });
                                     login.signOut();
-                                    dialog_log_out.dismiss();
-                                    finish();
+
                                 }
                             });
                             cancel.setOnClickListener(new View.OnClickListener() {
