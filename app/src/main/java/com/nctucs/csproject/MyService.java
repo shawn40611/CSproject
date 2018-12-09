@@ -1,6 +1,7 @@
 package com.nctucs.csproject;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
@@ -175,13 +177,16 @@ public class MyService extends Service {
                     e.printStackTrace();
                 }
             }
-            manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
 
         @Override
         public void run() {
             super.run();
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                manager.createNotificationChannel(new NotificationChannel("channel1", "name", NotificationManager.IMPORTANCE_DEFAULT));
+            }
             Boolean lastexception = false;
             tmp = "";
             if (mSocket != null) {
@@ -211,6 +216,8 @@ public class MyService extends Service {
                     Notification notification;
                     PendingIntent appIntent;
                     Intent notifyIntent;
+
+
                     switch (type){
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
@@ -222,21 +229,33 @@ public class MyService extends Service {
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
-                            notifyIntent = new Intent(MyService.this, NotificationActivity.class);
+                            notifyIntent = new Intent(getApplicationContext(), NotificationActivity.class);
                             notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
-                            appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
-                            notification = new Notification.Builder(MyService.this)
-                                    .setContentIntent(appIntent)
-                                    .setSmallIcon(R.drawable.calendar)
-                                    .setTicker("notification on status bar.")
-                                    .setWhen(System.currentTimeMillis())
-                                    .setAutoCancel(true)
-                                    .setContentTitle("New Notification")
-                                    .setContentText("There is a new notification!")
-                                    .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
-                                    .build();
+                            appIntent = PendingIntent.getActivity(getApplicationContext(), 0, notifyIntent, 0);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                notification = new Notification.Builder(getApplicationContext())
+                                        .setContentIntent(appIntent)
+                                        .setSmallIcon(R.drawable.ic_notification)
+                                        .setTicker("notification on status bar.")
+                                        .setWhen(System.currentTimeMillis())
+                                        .setAutoCancel(true)
+                                        .setContentTitle("New Notification")
+                                        .setContentText("There is a new notification!")
+                                        .setChannelId("channel1")
+                                        .build();
+                            }else{
+                                notification = new Notification.Builder(getApplicationContext())
+                                        .setContentIntent(appIntent)
+                                        .setSmallIcon(R.drawable.ic_notification)
+                                        .setTicker("notification on status bar.")
+                                        .setWhen(System.currentTimeMillis())
+                                        .setAutoCancel(true)
+                                        .setContentTitle("New Notification")
+                                        .setContentText("There is a new notification!")
+                                        .build();
+                            }
                             manager.notify(123,notification);
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             tmp = "";
@@ -244,19 +263,31 @@ public class MyService extends Service {
                         case  JSONParser.TYPE_STATUS:
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
-                            notifyIntent = new Intent(MyService.this, EventsStatusActivity.class);
+                            notifyIntent = new Intent(getApplicationContext(), EventsStatusActivity.class);
                             notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
-                            notification = new Notification.Builder(MyService.this)
-                                    .setContentIntent(appIntent)
-                                    .setSmallIcon(R.drawable.calendar)
-                                    .setTicker("notification on status bar.")
-                                    .setWhen(System.currentTimeMillis())
-                                    .setAutoCancel(true)
-                                    .setContentTitle("Event Build Success")
-                                    .setContentText("You Can Check Event Status Now!!")
-                                    .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
-                                    .build();
+                            appIntent = PendingIntent.getActivity(getApplicationContext(), 0, notifyIntent, 0);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                notification = new Notification.Builder(getApplicationContext())
+                                        .setContentIntent(appIntent)
+                                        .setSmallIcon(R.drawable.ic_notification)
+                                        .setTicker("notification on status bar.")
+                                        .setWhen(System.currentTimeMillis())
+                                        .setAutoCancel(true)
+                                        .setContentTitle("Event Build Success")
+                                        .setContentText("You Can Check Event Status Now!!")
+                                        .setChannelId("channel1")
+                                        .build();
+                            }else{
+                                notification = new Notification.Builder(getApplicationContext())
+                                        .setContentIntent(appIntent)
+                                        .setSmallIcon(R.drawable.ic_notification)
+                                        .setTicker("notification on status bar.")
+                                        .setWhen(System.currentTimeMillis())
+                                        .setAutoCancel(true)
+                                        .setContentTitle("Event Build Success")
+                                        .setContentText("You Can Check Event Status Now!!")
+                                        .build();
+                            }
                             manager.notify(123,notification);
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             tmp = "";
