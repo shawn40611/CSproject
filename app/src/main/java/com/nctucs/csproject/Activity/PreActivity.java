@@ -69,6 +69,7 @@ public class PreActivity extends Activity {
         }else{
             intent.setClass(PreActivity.this, WelComeActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
