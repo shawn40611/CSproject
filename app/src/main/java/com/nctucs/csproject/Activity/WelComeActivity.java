@@ -217,7 +217,6 @@ public class WelComeActivity extends FragmentActivity {
             if(mAccount != null) {
                 Intent socketIntent = new Intent();
                 socketIntent.setClass(WelComeActivity.this, MyService.class);
-                System.out.println("StartService");
                 JSONGenerator generator = new JSONGenerator();
                 JSONArray data = generator.setUp(mAccount.getServerAuthCode(),mAccount.getEmail());
                 socketIntent.putExtra("Set_up",data.toString());
@@ -226,8 +225,6 @@ public class WelComeActivity extends FragmentActivity {
                 mCredential =  GoogleAccountCredential.usingOAuth2(
                         getApplicationContext(), Arrays.asList(SCOPES))
                         .setSelectedAccount(mAccount.getAccount());
-                InformationHandler.setCredential(mCredential);
-                InformationHandler.setClient(mGoogleSignInClient);
 
                 Thread t = new Thread(new Runnable() {
                     @Override

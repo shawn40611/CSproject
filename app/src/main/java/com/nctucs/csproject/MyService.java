@@ -1,5 +1,8 @@
 package com.nctucs.csproject;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +25,9 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.nctucs.csproject.Activity.EventsStatusActivity;
 import com.nctucs.csproject.Activity.MainActivity;
+import com.nctucs.csproject.Activity.NotificationActivity;
 import com.nctucs.csproject.Activity.WelComeActivity;
 
 import org.json.JSONArray;
@@ -47,18 +52,15 @@ public class MyService extends Service {
     private OutputStream outputStream;
     private final IBinder binder = new MyBinder();
     private Boolean stop = false;
-    private GoogleSignInAccount mAccount;
-    private Bitmap user_photo;
 
     public static final String SOCKER_RCV = "ReceiveStr";
     private ReceiveThread listener;
-    private GoogleAccountCredential mCredential;
     long[] mVibratePattern = new long[]{0, 200, 100, 200};
 
 
 
     public static final String ADDRESS = "178.128.90.63";
-    public static final int PORT = 8888;
+    public static final int PORT = 8898;
 
 
     @Override
@@ -100,7 +102,8 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String s = intent.getStringExtra("Set_up");
         sendData(s);
-        return super.onStartCommand(intent, flags, startId);
+        System.out.println("onStartCommand "+s);
+        return START_REDELIVER_INTENT;
 
     }
 
@@ -161,6 +164,7 @@ public class MyService extends Service {
         private String tmp;
         private String data;
         private Vibrator vibrator;
+        private NotificationManager manager;
 
         public ReceiveThread(Socket s) {
             mSocket = s;
@@ -171,6 +175,7 @@ public class MyService extends Service {
                     e.printStackTrace();
                 }
             }
+            manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
 
         @Override
@@ -203,6 +208,9 @@ public class MyService extends Service {
                     Bundle bag = new Bundle();
                     System.out.println("service type = " + type);
                     bag.putInt("TYPE",type);
+                    Notification notification;
+                    PendingIntent appIntent;
+                    Intent notifyIntent;
                     switch (type){
                         case JSONParser.TYPE_UPDATE_DATA:
                             InformationHandler.setNotificationData(parser.getNotificationData());
@@ -214,14 +222,40 @@ public class MyService extends Service {
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
+                            notifyIntent = new Intent(MyService.this, NotificationActivity.class);
+                            notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
+                            appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
+                            notification = new Notification.Builder(getApplicationContext())
+                                    .setContentIntent(appIntent)
+                                    .setTicker("notification on status bar.")
+                                    .setWhen(System.currentTimeMillis())
+                                    .setAutoCancel(true)
+                                    .setContentTitle("New Notification")
+                                    .setContentText("There is a new notification!")
+                                    .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
+                                    .build();
+                            manager.notify(0,notification);
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_STATUS:
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
+                            notifyIntent = new Intent(MyService.this, EventsStatusActivity.class);
+                            notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            appIntent = PendingIntent.getActivity(MyService.this, 0, notifyIntent, 0);
+                            notification = new Notification.Builder(getApplicationContext())
+                                    .setContentIntent(appIntent)
+                                    .setTicker("notification on status bar.")
+                                    .setWhen(System.currentTimeMillis())
+                                    .setAutoCancel(true)
+                                    .setContentTitle("Event Build Success")
+                                    .setContentText("You Can Check Event Status Now!!")
+                                    .setOngoing(false)      //true使notification变为ongoing，用户不能手动清除  // notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
+                                    .build();
+                            manager.notify(0,notification);
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             tmp = "";
                             break;
@@ -278,6 +312,31 @@ public class MyService extends Service {
                 }
             }
         }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("On service destroy");
+        stop = true;
+        try {
+            if(socket != null)
+                socket.close();
+            if(outputStream != null)
+                outputStream.close();
+        }catch (IOException e){
+            System.out.println(e.getMessage().toString());
+        }
+
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        System.out.println("On task destroy");
+        this.stopSelf();
+
 
     }
 }

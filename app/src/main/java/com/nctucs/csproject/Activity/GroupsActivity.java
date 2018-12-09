@@ -213,6 +213,14 @@ public class GroupsActivity extends Navigation_BaseActivity{
 
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(mConnection);
+        unregisterReceiver(mReciver);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

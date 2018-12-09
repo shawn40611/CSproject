@@ -96,6 +96,14 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         bindService(serviceIntent,mConnection, Context.BIND_AUTO_CREATE);
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(mConnection);
+        unregisterReceiver(mReceiver);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

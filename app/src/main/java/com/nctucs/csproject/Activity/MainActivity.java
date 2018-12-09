@@ -332,6 +332,20 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(mConnection);
+        unregisterReceiver(mReceiver);
+        if(dialog_selected_time != null)
+            dialog_selected_time.dismiss();
+        if(dialog_choose_time != null)
+            dialog_choose_time.dismiss();
+        if(dialog_add_event != null)
+            dialog_add_event.dismiss();
+        if(dialog_register != null)
+            dialog_register.dismiss();
+    }
 
     public void getTime(View view) {
         if (currentDate != null) {

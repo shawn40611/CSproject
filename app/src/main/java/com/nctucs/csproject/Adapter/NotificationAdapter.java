@@ -34,7 +34,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         mContext =(NotificationActivity) context;
         mInflater = LayoutInflater.from(mContext);
         mData = data;
-        System.out.println("DataSize = " + mData.size());
     }
 
     @NonNull

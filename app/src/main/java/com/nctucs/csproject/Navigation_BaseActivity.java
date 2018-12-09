@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -24,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.ConnectionResult;
@@ -44,9 +47,11 @@ import com.nctucs.csproject.Activity.EventsStatusActivity;
 import com.nctucs.csproject.Activity.GroupsActivity;
 import com.nctucs.csproject.Activity.MainActivity;
 import com.nctucs.csproject.Activity.NotificationActivity;
+import com.nctucs.csproject.Activity.WelComeActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -78,11 +83,31 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    static final int UPDATE_ACCOUNT = 2000;
     private ImageView iv_user_photo;
     private TextView tv_user_email;
+    private SilentLogin login;
+    private Boolean setEmail = false;
+    private Boolean setImage = false;
     public Dialog dialog_log_out;
-    private GoogleSignInClient mClient;
     Button confirm,cancel;
+    private Boolean loginCompelete = false;
+    private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case UPDATE_ACCOUNT:
+                    tv_user_email.setText(mAccount.getEmail());
+                    if (InformationHandler.getBitmap() != null) {
+                        iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+                    }
+                    break;
+            }
+        }
+    };
+
 
 
     @Override
@@ -97,9 +122,12 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         View header = NV.getHeaderView(0);
         tv_user_email = header.findViewById(R.id.tv_usr_email);
         iv_user_photo = header.findViewById(R.id.iv_usr_photo);
-        tv_user_email.setText(mAccount.getEmail());
-        if(InformationHandler.getBitmap() != null)
-            iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+        if(mAccount != null) {
+            tv_user_email.setText(mAccount.getEmail());
+            if (InformationHandler.getBitmap() != null) {
+                iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+            }
+        }
         iv_user_photo.setBackgroundResource(R.drawable.usr_photo);
         dialog_log_out = new Dialog(this);
         dialog_log_out.setContentView(R.layout.dialog_log_out);
@@ -112,15 +140,75 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mClient = InformationHandler.getClient();
         mAccount = InformationHandler.getAccount();
-        mCredential = InformationHandler.getCredential(this);
+        if(mAccount == null){
+            if(login == null)
+                login = new SilentLogin(getApplicationContext(),
+                        GoogleSignIn.getLastSignedInAccount(getApplicationContext()).getAccount());
+            login.signIn();
+            login.setLoginListener(new SilentLogin.isLoginCompleteListener() {
+                @Override
+                public void loginComplete() {
+                    if (login.isLoginSuccess()) {
+                        mAccount = InformationHandler.getAccount();
+                        Message message = new Message();
+                        message.what = UPDATE_ACCOUNT;
+                        handler.sendMessage(message);
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(Navigation_BaseActivity.this, WelComeActivity.class);
+                    }
+                }
+            });
+        }
+
+
     }
 
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println("onRestart");
+        if(login == null) {
+            login = new SilentLogin(getApplicationContext(),
+                    GoogleSignIn.getLastSignedInAccount(getApplicationContext()).getAccount());
+            login.signIn();
+            login.setLoginListener(new SilentLogin.isLoginCompleteListener() {
+                @Override
+                public void loginComplete() {
+                    if (login.isLoginSuccess()) {
+                        mAccount = InformationHandler.getAccount();
+                        if (!setEmail) {
+                            tv_user_email.setText(mAccount.getEmail());
+                        }
+                        if (!setImage) {
+                            iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
+                            System.out.println("set Image");
+                        }
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(Navigation_BaseActivity.this, WelComeActivity.class);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("onResume");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -171,7 +259,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                             confirm.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mClient.signOut();
+                                    SilentLogin login = new SilentLogin(getApplicationContext(),mAccount.getAccount());
+                                    login.signOut();
                                     dialog_log_out.dismiss();
                                     finish();
                                 }
@@ -202,7 +291,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
             img.setVisibility(View.INVISIBLE);
         }
     }
-
 
 
     /****************Get Google Calendar Data*********************/
@@ -364,7 +452,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         end = new DateTime(date);
     }
     public   List<Event>  getData(){
-        return  items.size() == 0 ? null : items;
+        return  items==null? null : items;
     }
     public interface isLoadDataListener {
         public void loadComplete();
@@ -373,9 +461,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         this.loadLisneter = dataComplete;
     }
 
-    public void clearLoadDataComplete(){
-        this.loadLisneter = null;
-    }
 
 
 }

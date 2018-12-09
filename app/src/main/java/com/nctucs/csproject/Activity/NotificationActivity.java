@@ -102,9 +102,15 @@ public class NotificationActivity extends Navigation_BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(mConnection);
+        unregisterReceiver(mReciver);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReciver);
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
