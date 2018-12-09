@@ -268,7 +268,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                                     login.setLoginListener(new SilentLogin.isLoginCompleteListener() {
                                         @Override
                                         public void loginComplete() {
-                                            finish();
+
                                         }
                                     });
                                     login.signOut();

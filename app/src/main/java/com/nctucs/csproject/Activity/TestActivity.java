@@ -33,6 +33,7 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.nctucs.csproject.R;
+import com.nctucs.csproject.SilentLogin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,101 +60,10 @@ public class TestActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-       /* Button btn = findViewById(R.id.test_button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddEvent();
-            }
-        });*/
 
-        mAccount = getIntent().getParcelableExtra("mAccount");
-        APPLICATION_NAME = getString(R.string.app_name);
-        /*try {
 
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            //Calendar service = new Calendar.Builder(transport, JSON_FACTORY, getCredentials(transport,mAccount,TestActivity.this))
-                    //.setApplicationName(APPLICATION_NAME)
-                    //.build();
-
-            // List the next 10 events from the primary calendar.
-            DateTime now = new DateTime(System.currentTimeMillis());
-            //Events events = service.events().list("primary")
-              //      .setMaxResults(10)
-                //    .setTimeMin(now)
-                  //  .setOrderBy("startTime")
-                    //.setSingleEvents(true)
-                    //.execute();
-            //List<Event> items = events.getItems();
-            if (items.isEmpty()) {
-                System.out.println("No upcoming events found.");
-            } else {
-                System.out.println("Upcoming events");
-                for (Event event : items) {
-                    DateTime start = event.getStart().getDateTime();
-                    if (start == null) {
-                        start = event.getStart().getDate();
-                    }
-                    System.out.printf("%s (%s)\n", event.getSummary(), start);
-                    TextView tv = findViewById(R.id.tv_test);
-                    tv.setText(event.getSummary());
-                }
-            }
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }*/
 
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 
-
-
-
-
-   /* public void showAddEvent(){
-
-        test_dialog = new Dialog(this);
-        test_dialog.setContentView(R.layout.dialog_test);
-        test_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        test_dialog.show();
-        et1 = test_dialog.findViewById(R.id.test_et_add_name);
-        et2 = test_dialog.findViewById(R.id.test_et_add_description);
-        et3 = test_dialog.findViewById(R.id.test_et_add_location);
-
-        et1.setOnFocusChangeListener(this);
-        et2.setOnFocusChangeListener(this);
-        et3.setOnFocusChangeListener(this);
-
-
-    }*/
-
-   /* @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if(v.getId() != R.id.test_et_add_name) Log.d("test!", "not et1");
-        else Log.d("testtt", "et1");
-        if (!hasFocus) {
-            hideKeyboard(v);
-        }
-    }*/
-
-    /*private static Credential getCredentials(HttpTransport transport, GoogleSignInAccount mAccount, Context mcontext) throws IOException {
-        // Load client secrets.
-       // InputStream in = mcontext.getResources().openRawResource(R.raw.credentials);
-        System.out.println(in != null);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                transport, JSON_FACTORY, clientSecrets, SCOPES)
-                //.setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
-        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize(mAccount.getId());
-    }
-*/
 }

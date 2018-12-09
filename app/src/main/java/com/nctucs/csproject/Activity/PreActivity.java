@@ -58,9 +58,11 @@ public class PreActivity extends Activity {
                         startService(socketIntent);
                         intent.setClass(PreActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         intent.setClass(PreActivity.this, WelComeActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 }
             });
