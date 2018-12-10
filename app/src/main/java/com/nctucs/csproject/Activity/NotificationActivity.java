@@ -65,6 +65,11 @@ public class NotificationActivity extends Navigation_BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        Intent intent = getIntent();
+        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
+            System.out.println("notification");
+            adapter.notifyDataSetChanged();
+        }
         CurrentMenuItem = 3;
         mDrawerLayout = findViewById(R.id.drawer_layout);
 

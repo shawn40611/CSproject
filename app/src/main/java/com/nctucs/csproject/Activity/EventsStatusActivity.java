@@ -62,13 +62,17 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_status);
+        Intent intent = getIntent();
+        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
+            System.out.println("event status notification");
+            adapter.notifyDataSetChanged();
+        }
         toolbar = findViewById(R.id.event_toolbar);
         setToolbar(toolbar);
         CurrentMenuItem = 1;
         mDrawerLayout = findViewById(R.id.drawer_layout);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.events_status);
-
 
         mRecyclerview = findViewById(R.id.rv_events_status);
         mLayoutmanager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);

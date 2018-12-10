@@ -231,6 +231,7 @@ public class MyService extends Service {
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_NOTIFICATION:
+                            InformationHandler.setNotificationData(parser.getNotificationData());
                             notifyIntent = new Intent(getApplicationContext(), NotificationActivity.class);
                             notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             if(vibrator.hasVibrator())
@@ -258,13 +259,11 @@ public class MyService extends Service {
                                         .setContentText("There is a new notification!")
                                         .build();
                             }
-                            intent.putExtras(bag);
-                            sendBroadcast(intent);
                             manager.notify(123,notification);
-                            InformationHandler.setNotificationData(parser.getNotificationData());
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_STATUS:
+                            InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             if(vibrator.hasVibrator())
                                 vibrator.vibrate(mVibratePattern,-1);
                             notifyIntent = new Intent(getApplicationContext(), EventsStatusActivity.class);
@@ -292,10 +291,7 @@ public class MyService extends Service {
                                         .setContentText("You Can Check Event Status Now!!")
                                         .build();
                             }
-                            intent.putExtras(bag);
-                            sendBroadcast(intent);
                             manager.notify(123,notification);
-                            InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_VERIFY:
