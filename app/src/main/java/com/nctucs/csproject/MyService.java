@@ -52,6 +52,7 @@ import static android.content.ContentValues.TAG;
 public class MyService extends Service {
     private Socket socket;
     private OutputStream outputStream;
+    private InputStream inputStream;
     private final IBinder binder = new MyBinder();
     private Boolean stop = false;
 
@@ -126,10 +127,12 @@ public class MyService extends Service {
                 @Override
                 public void run() {
                     try {
+                        System.out.println("send =" + data);
                         outputStream.write(data.getBytes(Charset.forName("UTF-8")));
                         outputStream.flush();
+
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("send data exception" + e.getMessage());
                     }
                 }
             });
@@ -161,7 +164,6 @@ public class MyService extends Service {
 
     public class ReceiveThread extends Thread {
         private Socket mSocket;
-        private InputStream inputStream;
         private byte[] buf;
         private String tmp;
         private String data;
@@ -256,6 +258,8 @@ public class MyService extends Service {
                                         .setContentText("There is a new notification!")
                                         .build();
                             }
+                            intent.putExtras(bag);
+                            sendBroadcast(intent);
                             manager.notify(123,notification);
                             InformationHandler.setNotificationData(parser.getNotificationData());
                             tmp = "";
@@ -288,6 +292,8 @@ public class MyService extends Service {
                                         .setContentText("You Can Check Event Status Now!!")
                                         .build();
                             }
+                            intent.putExtras(bag);
+                            sendBroadcast(intent);
                             manager.notify(123,notification);
                             InformationHandler.setEventsStatusData(parser.getEventStatusData());
                             tmp = "";
@@ -352,12 +358,17 @@ public class MyService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("On service destroy");
+        JSONObject object = new JSONObject();
         stop = true;
         try {
-            if(socket != null)
-                socket.close();
             if(outputStream != null)
                 outputStream.close();
+            if(inputStream != null)
+                inputStream.close();
+            if(socket != null) {
+                socket.shutdownOutput();
+                socket.shutdownInput();
+            }
         }catch (IOException e){
             System.out.println(e.getMessage().toString());
         }

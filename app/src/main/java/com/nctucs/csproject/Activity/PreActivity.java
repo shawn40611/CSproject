@@ -53,7 +53,7 @@ public class PreActivity extends Activity {
                         socketIntent.setClass(PreActivity.this, MyService.class);
                         JSONGenerator generator = new JSONGenerator();
                         final GoogleSignInAccount account = InformationHandler.getAccount();
-                        JSONArray data = generator.setUp(account.getServerAuthCode(),account.getEmail());
+                        JSONArray data = generator.setUp("",account.getEmail());
                         socketIntent.putExtra("Set_up",data.toString());
                         startService(socketIntent);
                         intent.setClass(PreActivity.this, MainActivity.class);
