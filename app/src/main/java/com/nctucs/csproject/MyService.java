@@ -189,7 +189,6 @@ public class MyService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.createNotificationChannel(new NotificationChannel("channel1", "name", NotificationManager.IMPORTANCE_DEFAULT));
             }
-            Boolean lastexception = false;
             tmp = "";
             if (mSocket != null) {
                 while (!stop && !mSocket.isClosed()) {

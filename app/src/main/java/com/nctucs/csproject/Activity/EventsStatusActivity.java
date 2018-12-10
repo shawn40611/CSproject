@@ -63,10 +63,6 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_status);
         Intent intent = getIntent();
-        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
-            System.out.println("event status notification");
-            adapter.notifyDataSetChanged();
-        }
         toolbar = findViewById(R.id.event_toolbar);
         setToolbar(toolbar);
         CurrentMenuItem = 1;
@@ -90,6 +86,10 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         IntentFilter socketIntentFilter = new IntentFilter();
         socketIntentFilter.addAction(SOCKER_RCV);
         registerReceiver(mReceiver,socketIntentFilter);
+        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
+            System.out.println("event status notification");
+            adapter.notifyDataSetChanged();
+        }
 
     }
 

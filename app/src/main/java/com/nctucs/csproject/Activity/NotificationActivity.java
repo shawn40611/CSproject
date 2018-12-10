@@ -66,10 +66,6 @@ public class NotificationActivity extends Navigation_BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         Intent intent = getIntent();
-        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
-            System.out.println("notification");
-            adapter.notifyDataSetChanged();
-        }
         CurrentMenuItem = 3;
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -94,6 +90,10 @@ public class NotificationActivity extends Navigation_BaseActivity {
         IntentFilter socketIntentFilter = new IntentFilter();
         socketIntentFilter.addAction(SOCKER_RCV);
         registerReceiver(mReciver,socketIntentFilter);
+        if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
+            System.out.println("notification");
+            adapter.notifyDataSetChanged();
+        }
 
     }
 
