@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import java.util.List;
@@ -90,6 +92,13 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
     private ContentAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar progressBar,progressBarInAdd;
+    private PopupMenu menu;
+    private Comparator<SelectedTimeData> comparator = new Comparator<SelectedTimeData>() {
+        @Override
+        public int compare(SelectedTimeData o1, SelectedTimeData o2) {
+            return (o1.attendnumber > o2.attendnumber)? -1: (o1.attendnumber < o2.attendnumber)? 1 : 0;
+        }
+    };
 
 
 
@@ -150,14 +159,12 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText(R.string.calendar);
 
-        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);// 實例化
+        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
         materialCalendarView.setBackgroundColor(getResources().getColor(R.color.main_background));
-        //编辑日历属性
         materialCalendarView.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)   //设置每周开始的第一天
-                .setCalendarDisplayMode(CalendarMode.MONTHS)//设置显示模式，可以显示月的模式，也可以显示周的模式
-                .commit();// 返回对象并保存
-        //      设置点击日期的监听
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
         now_c = Calendar.getInstance();
         now_day = new Date();
         now_day.setYear(now_c.get(Calendar.YEAR)-1900);
@@ -166,9 +173,7 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
         now_day.setHours(0);
         now_day.setMinutes(0);
         now_day.setSeconds(0);
-        System.out.println(now_day.toString());
         mNowSelectedDate = now_day.getTime();
-        System.out.println(mNowSelectedDate);
 
         //init
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -568,15 +573,18 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
         dialog_selected_time.setContentView(R.layout.dialog_add_event_timelist);
         dialog_selected_time.setCanceledOnTouchOutside(false);
         LinearLayout time_list;
-        LinearLayout [] content = new LinearLayout[10];
+        RelativeLayout [] content = new RelativeLayout[10];
         LayoutInflater inflater = LayoutInflater.from(this);
         time_list = dialog_selected_time.findViewById(R.id.time_list);
+        Collections.sort(datalist,comparator);
 
         for(int i = 0 ; i < (datalist.size() < 10 ? datalist.size() : 10)  ; i++){
             final SelectedTimeData tmp = datalist.get(i);
-            content[i] = (LinearLayout)inflater.inflate(R.layout.view_add_event_timelist,null);
-            TextView tv_add_event_time = content[i].findViewById(R.id.tv_add_event_time);
+            content[i] = (RelativeLayout)inflater.inflate(R.layout.select_list,time_list,false);
+            TextView tv_add_event_time = content[i].findViewById(R.id.tv_timecode);
+            TextView tv_member_num  = content[i].findViewById(R.id.tv_member);
             Date start,end;
+            System.out.println("num = " + datalist.get(i).attendnumber);
             start = new Date(datalist.get(i).start*1000);
             end = new Date(datalist.get(i).end*1000);
             String str = (start.getHours() >= 10 ? start.getHours() : "0" + start.getHours())
@@ -584,6 +592,7 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
                     +"-"+ (end.getHours() >= 10 ? end.getHours() : "0" + end.getHours())
                     + ":" + (end.getMinutes() >= 10 ? end.getMinutes() : "0" + end.getMinutes());
             tv_add_event_time.setText(str);
+            tv_member_num.setText("人數:"+datalist.get(i).attendnumber);
             final Dialog dialog_confirm = new Dialog(this);
             dialog_confirm.setContentView(R.layout.dialog_log_out);
             dialog_confirm.setCanceledOnTouchOutside(false);
