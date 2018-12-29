@@ -10,7 +10,7 @@
         android:layout_marginTop="@dimen/dp_30"
         android:text="確定要登出嗎？"
         android:fontFamily="@font/montserrat"
-        android:textSize="@dimen/dp_30"/>
+        android:textSize="@dimen/dp_20"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

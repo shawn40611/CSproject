@@ -598,7 +598,7 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             dialog_confirm.setCanceledOnTouchOutside(false);
             TextView tv_title;
             tv_title = dialog_confirm.findViewById(R.id.tv_dialog_title);
-            tv_title.setText("確定要這個時間?");
+            tv_title.setText("確定要這個時間嗎?");
             Button btn_confirm,btn_cancel ;
             btn_confirm = dialog_confirm.findViewById(R.id.btn_confirm);
             btn_cancel = dialog_confirm.findViewById(R.id.btn_cancel);

@@ -4,22 +4,22 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/img_message"
-        android:layout_width="@dimen/dp_177"
-        android:layout_height="@dimen/dp_135"
+        android:id="@+id/img_group"
+        android:layout_width="@dimen/dp_180"
+        android:layout_height="@dimen/dp_130"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_94"
-        android:src="@drawable/message" />
+        android:src="@drawable/group" />
 
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_message"
+        android:layout_below="@id/img_group"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_126"
+        android:layout_marginTop="@dimen/dp_131"
         android:fontFamily="@font/montserrat"
         android:text="@string/tutorial_1"
         android:textColor="@color/white"

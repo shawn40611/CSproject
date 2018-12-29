@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_25"
         android:fontFamily="@font/montserrat"
-        android:text="Register Now"
-        android:textSize="@dimen/dp_32"
+        android:text="註冊"
+        android:textSize="@dimen/dp_28"
         android:textColor="@color/black"/>
 
     <android.support.design.widget.TextInputLayout
@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_30"
             android:ems="10"
-            android:hint="Name"
+            android:hint="名字"
             android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
@@ -57,7 +57,7 @@
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginLeft="@dimen/dp_30"
         android:ems="10"
-        android:hint="Student ID"
+        android:hint="學號"
         android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 

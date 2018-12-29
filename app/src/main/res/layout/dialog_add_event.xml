@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_20"
         android:fontFamily="@font/montserrat"
-        android:text="Add Event"
+        android:text="新增事件"
         android:textSize="@dimen/dp_24"
         android:textColor="@color/black"/>
     <android.support.design.widget.TextInputLayout
@@ -31,7 +31,7 @@
             android:layout_width="@dimen/dp_250"
             android:layout_height="@dimen/dp_50"
             android:layout_marginLeft="@dimen/dp_30"
-            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_25"
             android:ems="10"
             android:hint="名稱"
 

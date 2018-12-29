@@ -79,7 +79,7 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
         }
         else {
             holder.tv_content.setClickable(true);
-            holder.tv_content.setText("ADD EVENT!");
+            holder.tv_content.setText("按這裡新增事件");
             holder.tv_content_time.setVisibility(View.GONE);
             holder.tv_content.setOnClickListener(new View.OnClickListener() {
                 @Override

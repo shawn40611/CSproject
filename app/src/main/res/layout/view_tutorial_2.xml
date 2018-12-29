@@ -4,19 +4,19 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/img_calendar"
-        android:layout_width="@dimen/dp_133"
-        android:layout_height="@dimen/dp_145"
+        android:id="@+id/img_message"
+        android:layout_width="@dimen/dp_177"
+        android:layout_height="@dimen/dp_135"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_94"
-        android:src="@drawable/calendar" />
+        android:src="@drawable/message" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_calendar"
+        android:layout_below="@id/img_message"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_126"
         android:fontFamily="@font/montserrat"

@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">csProject</string>
-    <string name="tutorial_1">Tell us your preferences</string>
-    <string name="tutorial_2">Your events will be\nscheduled automatically</string>
-    <string name="tutorial_3">LET\'S&#160;GET&#160;STARTED</string>
+    <string name="tutorial_1">建立與他人的群組</string>
+    <string name="tutorial_2">新增事件並等待回覆</string>
+    <string name="tutorial_3">輕鬆掌握事件狀態</string>
     <string name="server_client_id">944195913670-l96k2b8m86e50v8c0i9nnp1pglu6e37q.apps.googleusercontent.com</string>
     <string name="server_client_id_1">944195913670-gqtu4ev90krsftg1q6065sdmi1ongl7u.apps.googleusercontent.com</string>
     <string name="add_event_name">行程名稱</string>
     <string name="add_event_time">需要時間</string>
     <string name="add_event_hint">名稱</string>
-    <string name="events_status">EVENTS&#160;STATUS</string>
+    <string name="events_status">我發起的事件</string>
     <string name="add_event_button_submit">送出</string>
     <string name="add_event_done_yes">好</string>
     <string name="add_event_done_no">不要</string>
@@ -17,10 +17,10 @@
     <string name="add_event_done_content2">(event name)</string>
     <string name="add_event_done_content3">安排在</string>
     <string name="add_event_done_content4">(event time)</string>
-    <string name="calendar">CALENDAR</string>
-    <string name="groups">GROUPS</string>
-    <string name="log_out">LOG&#160;OUT</string>
-    <string name="notification">NOTIFICATION</string>
+    <string name="calendar">行事曆</string>
+    <string name="groups">群組</string>
+    <string name="log_out">登出</string>
+    <string name="notification">我的邀請</string>
     <string name="add">ADD</string>
     <string name="delete">DELETE</string>
     <string name="confirm_delete">確定要刪除事件嗎?</string>

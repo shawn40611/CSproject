@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginLeft="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_20"
         android:fontFamily="@font/montserrat"
         android:text="創建群組"
