@@ -80,6 +80,7 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 setNavNew(R.id.nav_events,true);
                 adapter.setData(InformationHandler.getEventsStatusData());
+                adapter.notifyDataSetChanged();
                 System.out.println("status receive");
             }
         };
@@ -87,7 +88,8 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         socketIntentFilter.addAction(SOCKER_RCV);
         registerReceiver(mReceiver,socketIntentFilter);
         if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
-            System.out.println("event status notification");
+            System.out.println("event status ");
+            adapter.setData(InformationHandler.getEventsStatusData());
             adapter.notifyDataSetChanged();
         }
 

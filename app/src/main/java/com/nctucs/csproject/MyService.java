@@ -45,6 +45,7 @@ import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
@@ -187,7 +188,10 @@ public class MyService extends Service {
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                manager.createNotificationChannel(new NotificationChannel("channel1", "name", NotificationManager.IMPORTANCE_DEFAULT));
+                ArrayList<NotificationChannel> channels = new ArrayList<NotificationChannel>();
+                channels.add(new NotificationChannel("channel1", "name", NotificationManager.IMPORTANCE_DEFAULT));
+                channels.add(new NotificationChannel("channel2", "nam2", NotificationManager.IMPORTANCE_DEFAULT));
+                manager.createNotificationChannels(channels);
             }
             tmp = "";
             if (mSocket != null) {
@@ -277,7 +281,7 @@ public class MyService extends Service {
                                         .setAutoCancel(true)
                                         .setContentTitle("Event Build Success")
                                         .setContentText("You Can Check Event Status Now!!")
-                                        .setChannelId("channel1")
+                                        .setChannelId("channel2")
                                         .build();
                             }else{
                                 notification = new Notification.Builder(getApplicationContext())
@@ -290,7 +294,7 @@ public class MyService extends Service {
                                         .setContentText("You Can Check Event Status Now!!")
                                         .build();
                             }
-                            manager.notify(123,notification);
+                            manager.notify(124,notification);
                             tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_VERIFY:

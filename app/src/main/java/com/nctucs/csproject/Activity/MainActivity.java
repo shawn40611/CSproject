@@ -236,9 +236,6 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
         dialog_register = new Dialog(this);
         dialog_register.setContentView(R.layout.dialog_register);
         dialog_register.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog_add_event = new Dialog(this);
-        dialog_add_event.setContentView(R.layout.dialog_add_event);
-        dialog_add_event.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressBar = findViewById(R.id.main_progressbar);
 
         mReceiver = new BroadcastReceiver() {
@@ -375,6 +372,9 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
 
     public void showAddEvent(){
 
+        dialog_add_event = new Dialog(this);
+        dialog_add_event.setContentView(R.layout.dialog_add_event);
+        dialog_add_event.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Button btn_ok,btn_cancel;
         final Button btn_add_time,btn_add_group,btn_add_preference;
         final EditText et_add_name,et_add_location,et_add_description;
@@ -535,17 +535,40 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
                 public void onClick(View v) {
                     progressBar.setVisibility(View.VISIBLE);
                     JSONArray data;
+                    Toast toast;
+                    Boolean error_detect = false;
                     JSONGenerator generator = new JSONGenerator();
                     String name, location, description;
                     name = et_add_name.getText().toString();
+                    if(name.equals("")){
+                        toast = Toast.makeText(MainActivity.this,"請輸入事件名稱",Toast.LENGTH_SHORT);
+                        toast.show();
+                        error_detect = true;
+                    }
                     location = et_add_location.getText().toString();
                     description = et_add_description.getText().toString();
-                    System.out.println("date");
-                    data = generator.
-                            inviteEvent(name, location, description,
-                                    selected_preference, selected_time, selected_group, (mNowSelectedDate/1000));
-                    myService.sendData(data);
-                    dialog_add_event.dismiss();
+                    if(selected_time < 0 && !error_detect){
+                        toast = Toast.makeText(MainActivity.this,"請選擇時間",Toast.LENGTH_SHORT);
+                        toast.show();
+                        error_detect = true;
+                    }
+                    if(selected_group < 0 && !error_detect){
+                        toast = Toast.makeText(MainActivity.this,"請選擇群組",Toast.LENGTH_SHORT);
+                        toast.show();
+                        error_detect = true;
+                    }
+                    if(selected_preference < 0 && !error_detect){
+                        toast = Toast.makeText(MainActivity.this,"請選擇偏好",Toast.LENGTH_SHORT);
+                        toast.show();
+                        error_detect = true;
+                    }
+                    if(!error_detect) {
+                        data = generator.
+                                inviteEvent(name, location, description,
+                                        selected_preference, selected_time, selected_group, (mNowSelectedDate / 1000));
+                        myService.sendData(data);
+                        dialog_add_event.dismiss();
+                    }
 
                 }
             });

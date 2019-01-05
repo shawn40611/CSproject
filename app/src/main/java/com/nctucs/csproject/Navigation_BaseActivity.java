@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Navigation_BaseActivity extends AppCompatActivity{
 
@@ -310,6 +311,8 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         }  else if (! isDeviceOnline()) {
             System.out.println("No network connection available.");
         } else {
+            mCredential = GoogleAccountCredential.usingOAuth2( getApplicationContext(), Arrays.asList(SCOPES))
+                    .setSelectedAccount(mAccount.getAccount());
             requestTask = new MakeRequestTask(mCredential);
             requestTask.execute();
 
@@ -373,6 +376,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
+                System.out.println("request error " + e.getMessage());
                 return null;
             }
         }
@@ -393,7 +397,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                     .setSingleEvents(true)
                     .execute();
             items = events.getItems();
-
+            System.out.println("Data size = "+items.size());
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
                 if (start == null) {
@@ -456,6 +460,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
 
     }
     public void setStartDatetime(Date date){
+        System.out.println("start Date = " + date);
         start = new DateTime(date);
     }
     public void setEndDatetime(Date date){

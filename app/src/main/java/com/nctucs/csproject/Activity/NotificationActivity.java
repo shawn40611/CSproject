@@ -91,7 +91,6 @@ public class NotificationActivity extends Navigation_BaseActivity {
         socketIntentFilter.addAction(SOCKER_RCV);
         registerReceiver(mReciver,socketIntentFilter);
         if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
-            System.out.println("notification");
             adapter.notifyDataSetChanged();
         }
 
