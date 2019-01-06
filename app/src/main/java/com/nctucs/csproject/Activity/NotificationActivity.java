@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;

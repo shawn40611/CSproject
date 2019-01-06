@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
@@ -78,7 +79,9 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                setNavNew(R.id.nav_events,true);
+                Message message = new Message();
+                message.what = 2002;
+                callHandler(message);
                 adapter.setData(InformationHandler.getEventsStatusData());
                 adapter.notifyDataSetChanged();
                 System.out.println("status receive");
@@ -89,6 +92,9 @@ public class EventsStatusActivity extends Navigation_BaseActivity {
         registerReceiver(mReceiver,socketIntentFilter);
         if(intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK){
             System.out.println("event status ");
+            Message message = new Message();
+            message.what = 2002;
+            callHandler(message);
             adapter.setData(InformationHandler.getEventsStatusData());
             adapter.notifyDataSetChanged();
         }

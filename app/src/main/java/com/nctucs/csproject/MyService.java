@@ -13,6 +13,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -263,6 +264,9 @@ public class MyService extends Service {
                                         .build();
                             }
                             manager.notify(123,notification);
+                            Message message = new Message();
+                            message.what = 2001;
+                            Navigation_BaseActivity.callHandler(message);
                             tmp = "";
                             break;
                         case  JSONParser.TYPE_STATUS:
@@ -295,6 +299,9 @@ public class MyService extends Service {
                                         .build();
                             }
                             manager.notify(124,notification);
+                            Message nmessage = new Message();
+                            nmessage.what = 2002;
+                            Navigation_BaseActivity.callHandler(nmessage);
                             tmp = "";
                             break;
                         case JSONParser.TYPE_REPLY_VERIFY:

@@ -60,16 +60,15 @@ public class Navigation_BaseActivity extends AppCompatActivity{
 
     private DrawerLayout DL;
     private FrameLayout FL;
-    protected NavigationView NV;
+    static protected NavigationView NV;
     protected Toolbar toolbar;
     protected int CurrentMenuItem = 0;//紀錄目前User位於哪一個項目
     private DateTime start,end;
-    private GoogleSignInAccount mAccount;
+    static private GoogleSignInAccount mAccount;
     private GoogleAccountCredential mCredential;
     private Boolean done = false;
     private MakeRequestTask requestTask;
     private isLoadDataListener loadLisneter;
-    //private final String ACCOUNT = "myaccount";
     public static final String SOCKER_RCV = "ReceiveStr";
     private String data;
 
@@ -85,16 +84,19 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     static final int UPDATE_ACCOUNT = 2000;
-    private ImageView iv_user_photo;
-    private TextView tv_user_email;
+    static final int NEW_NOTIFICATION = 2001;
+    static final int NEW_STATUS = 2002;
+    static private ImageView iv_user_photo;
+    static private TextView tv_user_email;
     private SilentLogin login;
     private Boolean setEmail = false;
     private Boolean setImage = false;
     public Dialog dialog_log_out;
+    static private Boolean first = true;
     Button confirm,cancel;
     private Boolean loginCompelete = false;
     private static final String SCOPES ="https://www.googleapis.com/auth/calendar";
-    private Handler handler = new Handler(){
+    static private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -104,6 +106,13 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                     if (InformationHandler.getBitmap() != null) {
                         iv_user_photo.setImageBitmap(InformationHandler.getBitmap());
                     }
+                    break;
+                case NEW_NOTIFICATION:
+                    System.out.println("notification");
+                    setNavNew(R.id.nav_notification,true);
+                    break;
+                case NEW_STATUS:
+                    setNavNew(R.id.nav_events,true);
                     break;
             }
         }
@@ -134,8 +143,6 @@ public class Navigation_BaseActivity extends AppCompatActivity{
         dialog_log_out.setContentView(R.layout.dialog_log_out);
         confirm = dialog_log_out.findViewById(R.id.btn_confirm);
         cancel = dialog_log_out.findViewById(R.id.btn_cancel);
-        setNavNew(R.id.nav_events, true);
-        setNavNew(R.id.nav_notification, false);
     }
 
     @Override
@@ -244,6 +251,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                             intent2.setClass(Navigation_BaseActivity.this, EventsStatusActivity.class);
                             startActivity(intent2);
                             overridePendingTransition(0, 0);
+                            setNavNew(R.id.nav_events,false);
                             finish();
                             break;
                         case R.id.nav_groups:
@@ -258,6 +266,7 @@ public class Navigation_BaseActivity extends AppCompatActivity{
                             intent4.setClass(Navigation_BaseActivity.this, NotificationActivity.class);
                             startActivity(intent4);
                             overridePendingTransition(0,0);
+                            setNavNew(R.id.nav_notification,false);
                             finish();
                             break;
                         case R.id.nav_log_out:
@@ -295,11 +304,14 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     }
 
 
-    public void setNavNew(@IdRes int itemId, Boolean new_item) {
-
+    static public void setNavNew(@IdRes int itemId, Boolean new_item) {
         if(!new_item) {
             ImageView img = (ImageView) NV.getMenu().findItem(itemId).getActionView();
-            img.setVisibility(View.INVISIBLE);
+            img.setVisibility(View.GONE);
+        }
+        else{
+            ImageView img = (ImageView) NV.getMenu().findItem(itemId).getActionView();
+            img.setVisibility(View.VISIBLE);
         }
     }
 
@@ -474,6 +486,9 @@ public class Navigation_BaseActivity extends AppCompatActivity{
     }
     public void setLoadDataComplete(isLoadDataListener dataComplete) {
         this.loadLisneter = dataComplete;
+    }
+    static public void callHandler(Message message){
+        handler.sendMessage(message);
     }
 
 
