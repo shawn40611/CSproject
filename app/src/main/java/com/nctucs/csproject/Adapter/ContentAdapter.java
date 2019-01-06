@@ -52,13 +52,18 @@ public class ContentAdapter extends android.support.v7.widget.RecyclerView.Adapt
             holder.tv_content.setClickable(true);
             Event event = mData.get(position);
             holder.tv_content.setText(event.getSummary());
-            Date start = new Date(event.getStart().getDateTime().getValue());
-            Date end = new Date(event.getEnd().getDateTime().getValue());
-            holder.tv_content_time.setVisibility(View.VISIBLE);
-             String s = (start.getHours() >= 10 ? start.getHours() : "0" + start.getHours())
-                     + ":" + (start.getMinutes() >= 10 ? start.getMinutes() : "0" + start.getMinutes())
-                     +"-"+ (end.getHours() >= 10 ? end.getHours() : "0" + end.getHours())
-                     + ":" + (end.getMinutes() >= 10 ? end.getMinutes() : "0" + end.getMinutes());
+            String s;
+            if(event.getStart().getDateTime() != null && event.getEnd().getDateTime() != null) {
+                Date start = new Date(event.getStart().getDateTime().getValue());
+                Date end = new Date(event.getEnd().getDateTime().getValue());
+                holder.tv_content_time.setVisibility(View.VISIBLE);
+                 s = (start.getHours() >= 10 ? start.getHours() : "0" + start.getHours())
+                        + ":" + (start.getMinutes() >= 10 ? start.getMinutes() : "0" + start.getMinutes())
+                        + "-" + (end.getHours() >= 10 ? end.getHours() : "0" + end.getHours())
+                        + ":" + (end.getMinutes() >= 10 ? end.getMinutes() : "0" + end.getMinutes());
+            }else{
+                s = "All Day Event";
+            }
             holder.tv_content_time.setText(s);
             holder.tv_event_title.setText(event.getSummary());
             holder.tv_event_time.setText(s);
