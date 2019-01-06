@@ -13,7 +13,5 @@
             android:title="@string/add_event_4hr"/>
         <item android:id="@+id/five_hour"
             android:title="@string/add_event_5hr"/>
-        <item android:id="@+id/all_day"
-            android:title="@string/add_event_all"/>
     </group>
 </menu>

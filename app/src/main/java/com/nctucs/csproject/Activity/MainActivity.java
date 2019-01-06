@@ -471,10 +471,10 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
                             tv_add_time.setText(R.string.add_event_5hr);
                             selected_time = 5;
                             break;
-                        case R.id.all_day:
+                        /*case R.id.all_day:
                             tv_add_time.setText(R.string.add_event_all);
                             selected_time = 6;
-                            break;
+                            break;*/
                     }
                     return true;
                 }
