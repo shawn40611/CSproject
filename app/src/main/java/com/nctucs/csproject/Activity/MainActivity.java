@@ -96,7 +96,57 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
     private Comparator<SelectedTimeData> comparator = new Comparator<SelectedTimeData>() {
         @Override
         public int compare(SelectedTimeData o1, SelectedTimeData o2) {
-            return (o1.attendnumber > o2.attendnumber)? -1: (o1.attendnumber < o2.attendnumber)? 1 : 0;
+            if(o1.attendnumber > o2.attendnumber)
+                return -1;
+            else if(o1.attendnumber < o2.attendnumber)
+                return 1;
+            else{
+                long timeunit = 0;
+                switch (selected_preference){
+                    case 0:
+                        timeunit = 8*3600;
+                        break;
+                    case 1:
+                        timeunit = 11*3600;
+                        break;
+                    case 2:
+                        timeunit = 15*3600;
+                        break;
+                    case 3:
+                        timeunit = 18*3600;
+                        break;
+                }
+                long o1_starttime = ((o1.start+8*3600)%86400);
+                long o2_starttime = ((o2.start+8*3600)%86400);
+                if(Math.abs(o1_starttime-timeunit) <= 4*3600 && Math.abs(o2_starttime-timeunit) <= 4*3600){
+                    if(o1_starttime-timeunit >= 0 && o2_starttime-timeunit < 0) {
+                        System.out.println("a,o1 = "+o1_starttime/3600 + ",o2 = "+o2_starttime/3600);
+                        return -1;
+                    }
+                    else if(o2_starttime-timeunit >= 0 && o1_starttime-timeunit < 0) {
+                        System.out.println("b,o1 = "+o1_starttime/3600 + ",o2 = "+o2_starttime/3600);
+                        return 1;
+                    }
+                    else if(o2_starttime-timeunit < 0 && o1_starttime-timeunit < 0){
+                        System.out.println("c,o1 = "+o1_starttime/3600 + ",o2 = "+o2_starttime/3600);
+                        return Math.abs(o1_starttime - timeunit) < Math.abs(o2_starttime - timeunit) ? -1 :
+                                Math.abs(o1_starttime - timeunit) > Math.abs(o2_starttime - timeunit) ? 1 : 0;
+                    }
+                }
+                else if(Math.abs(o1_starttime-timeunit) <= 4*3600 && Math.abs(o2_starttime-timeunit) > 4*3600) {
+                    return -1;
+                }
+                else if(Math.abs(o1_starttime-timeunit) > 4*3600 && Math.abs(o2_starttime-timeunit) <= 4*3600) {
+                    return 1;
+                }
+                else {
+                    return Math.abs(o1_starttime-timeunit) < Math.abs(o2_starttime-timeunit)? -1 :
+                            Math.abs(o1_starttime-timeunit) > Math.abs(o2_starttime-timeunit)?1:0;
+                }
+                return 0;
+
+            }
+
         }
     };
 
@@ -607,8 +657,9 @@ public class MainActivity extends Navigation_BaseActivity implements View.OnFocu
             TextView tv_add_event_time = content[i].findViewById(R.id.tv_timecode);
             TextView tv_member_num  = content[i].findViewById(R.id.tv_member);
             Date start,end;
-            System.out.println("num = " + datalist.get(i).attendnumber);
+            System.out.println("start = "+datalist.get(i).start*1000);
             start = new Date(datalist.get(i).start*1000);
+            System.out.println("start datetime"+start);
             end = new Date(datalist.get(i).end*1000);
             String str = (start.getHours() >= 10 ? start.getHours() : "0" + start.getHours())
                     + ":" + (start.getMinutes() >= 10 ? start.getMinutes() : "0" + start.getMinutes())
